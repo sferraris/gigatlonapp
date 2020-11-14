@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Ajustes</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_account">Perfil</string>
+    <string name="menu_routines">Rutinas</string>
+    <string name="menu_favorites">Favoritas</string>
+    <string name="menu_progress">Progreso</string>
+</resources>
