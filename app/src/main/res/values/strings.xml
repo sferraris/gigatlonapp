@@ -27,5 +27,25 @@
     <string name="RoutineCreator">RoutineCreator</string>
     <string name="routine_duration">Duraiton: 15:05</string>
     <string name="routine_diff">Difficulty: Rookie</string>
+    <string name="Message">Clicked Item %1$d!!!</string>
+    <string name="Fav">Clicked fave %1$d!!!</string>
+    <string name="favebutton">faveButton</string>
+    <string name="sharebutton">ShareButton</string>
+    <string name="Submit">Submit</string>
+    <string name="profile_pic">Profile pic</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="edit_weight">Edit weight</string>
+    <string name="edit_date">Edit Date</string>
+    <string name="edit_height">Edit height</string>
+    <string name="AddWeight">Add Weight</string>
+
+    <string-array name="brew_array">
+        <item>Newest Date</item>
+        <item>Oldest Date</item>
+        <item>Lowest Difficulty</item>
+        <item>Highest Difficulty</item>
+        <item>Lowest Rating</item>
+        <item>Highest Rating</item>
+    </string-array>
 
 </resources>

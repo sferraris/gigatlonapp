@@ -15,44 +15,52 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gigatlon.R;
+import com.example.gigatlon.ui.RoutineAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RoutinesFragment extends Fragment {
 
     private RoutinesViewModel routinesViewModel;
     RoutineAdapter adapter;
+    View root;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         routinesViewModel = new ViewModelProvider(this).get(RoutinesViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_routines, container, false);
+        root = inflater.inflate(R.layout.fragment_routines, container, false);
+
         final TextView textView = root.findViewById(R.id.text_routines);
+        adapter = new RoutineAdapter(routinesViewModel.getList());
         routinesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
-        ArrayList<String> l = new ArrayList<>();
-        l.add("Horse");
-        l.add("Cow");
-        l.add("Dog");
-        l.add("Cat");
-        l.add("Shark");
-        adapter = new RoutineAdapter(l);
+        routinesViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                adapter = new RoutineAdapter(strings);
+                RecyclerView recyclerView = root.findViewById(R.id.animalList);
+                recyclerView.setHasFixedSize(true);
 
-       RecyclerView recyclerView = root.findViewById(R.id.animalList);
-        recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-
-        recyclerView.setAdapter(adapter);
-
-        root.findViewById(R.id.floatingBtn).setOnClickListener(v -> {
-            l.add("sheep");
-            adapter.notifyDataSetChanged();
+                recyclerView.setAdapter(adapter);
+            }
         });
+        if(routinesViewModel.getList().isEmpty()) {
+            routinesViewModel.addElement("Horse");
+            routinesViewModel.addElement("Cat");
+            routinesViewModel.addElement("Shark");
+            routinesViewModel.addElement("Dog");
+        }
+
+
+
+
         return root;
     }
+
 }

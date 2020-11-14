@@ -11,12 +11,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gigatlon.R;
+import com.example.gigatlon.ui.RoutineAdapter;
+
+import java.util.List;
 
 public class FavoritesFragment extends Fragment {
 
     private FavoritesViewModel favoritesViewModel;
+    RoutineAdapter adapter;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +37,25 @@ public class FavoritesFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        adapter = new RoutineAdapter(favoritesViewModel.getList());
+        favoritesViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                adapter = new RoutineAdapter(strings);
+                RecyclerView recyclerView = root.findViewById(R.id.animalList);
+                recyclerView.setHasFixedSize(true);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+
+                recyclerView.setAdapter(adapter);
+            }
+        });
+        if(favoritesViewModel.getList().isEmpty()) {
+            favoritesViewModel.addElement("Horse");
+            favoritesViewModel.addElement("Cat");
+            favoritesViewModel.addElement("Shark");
+            favoritesViewModel.addElement("Dog");
+        }
         return root;
     }
 }
