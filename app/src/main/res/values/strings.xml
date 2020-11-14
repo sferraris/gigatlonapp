@@ -22,4 +22,10 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="add">Add</string>
+    <string name="routine_name">Routine Name</string>
+    <string name="RoutineCreator">RoutineCreator</string>
+    <string name="routine_duration">Duraiton: 15:05</string>
+    <string name="routine_diff">Difficulty: Rookie</string>
+
 </resources>
