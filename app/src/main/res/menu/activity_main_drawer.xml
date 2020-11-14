@@ -6,22 +6,28 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
+            android:actionLayout="@layout/fragment_home"
             android:icon="@drawable/ic_baseline_home_24"
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_account"
+            android:actionLayout="@layout/fragment_account"
+            android:checkable="false"
             android:icon="@drawable/ic_baseline_account_circle_24"
             android:title="@string/menu_account" />
         <item
             android:id="@+id/nav_routines"
+            android:actionLayout="@layout/fragment_routines"
             android:icon="@drawable/ic_baseline_directions_run_24"
             android:title="@string/menu_routines" />
         <item
             android:id="@+id/nav_favorites"
+            android:actionLayout="@layout/fragment_favorites"
             android:icon="@drawable/ic_baseline_favorite_24"
             android:title="@string/menu_favorites" />
         <item
             android:id="@+id/nav_progress"
+            android:actionLayout="@layout/fragment_progress"
             android:icon="@drawable/ic_baseline_show_chart_24"
             android:title="@string/menu_progress" />
     </group>
