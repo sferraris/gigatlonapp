@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gigatlon.R;
+import com.example.gigatlon.ui.MainActivity;
 import com.example.gigatlon.ui.RoutineAdapter;
 
 import java.util.List;
@@ -33,6 +34,9 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        MainActivity m = (MainActivity) getContext();
+
+
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

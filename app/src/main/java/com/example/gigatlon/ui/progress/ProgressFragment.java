@@ -1,5 +1,8 @@
 package com.example.gigatlon.ui.progress;
 
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,9 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gigatlon.R;
 import com.example.gigatlon.ui.RoutineAdapter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ProgressFragment extends Fragment {
@@ -51,6 +59,7 @@ public class ProgressFragment extends Fragment {
                 EditText text =root.findViewById(R.id.addWeight);
                 String Imput = text.getText().toString();
                 progressViewModel.addElement(Double.valueOf(Imput));
+                graph.setVisibility(View.VISIBLE);
 
                 progressViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<Double>>() {
                     @Override
@@ -67,6 +76,15 @@ public class ProgressFragment extends Fragment {
                             graph.getViewport().setXAxisBoundsManual(true);
                             graph.getViewport().setMinX(0);
                             graph.getViewport().setMaxX(strings.size());
+                            graph.setTitle("Progress");
+                            graph.setTitleTextSize(100);
+                            graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+                            graph.getGridLabelRenderer().setHighlightZeroLines(false);
+
+
+
+
+
                         } catch (IllegalArgumentException e) {
 
                         }
@@ -74,6 +92,10 @@ public class ProgressFragment extends Fragment {
                 });
             }
         });
+
+        if(progressViewModel.getListData().getValue().isEmpty()) {
+           graph.setVisibility(View.INVISIBLE);
+        }
 
 
         return root;

@@ -13,6 +13,7 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_progress">Progress</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="extended_routine">Extended Routine</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -38,6 +39,7 @@
     <string name="edit_date">Edit Date</string>
     <string name="edit_height">Edit height</string>
     <string name="AddWeight">Add Weight</string>
+    <string name="ExecuteRoutine">Execute</string>
 
     <string-array name="brew_array">
         <item>Newest Date</item>
@@ -46,6 +48,12 @@
         <item>Highest Difficulty</item>
         <item>Lowest Rating</item>
         <item>Highest Rating</item>
+    </string-array>
+
+    <string-array name="gender">
+        <item>Female</item>
+        <item>Male</item>
+        <item>Other</item>
     </string-array>
 
 </resources>

@@ -9,8 +9,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
 
 import java.util.List;
@@ -22,15 +30,21 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
     public RoutineAdapter(List<String> data){
         this.data = data;
     }
+    ViewGroup parent;
+
 
     @NonNull
     @Override
     public RoutineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.list_item, parent, false);
+        this.parent = parent;
+
 
         return new RoutineViewHolder(view);
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull RoutineViewHolder holder, int position) {
@@ -39,6 +53,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         holder.routineCreator.setText("By: Micus");
         holder.routineDiff.setText("Difficulty: Rookie");
         holder.routineDuration.setText("Duration: 15:05s");
+
+
+
 
     }
 
@@ -68,12 +85,15 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                 Context context = routineName.getContext();
                 String message = context.getResources().getString(R.string.Fav, getAdapterPosition());
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+
             });
             itemView.findViewById(R.id.shareButton).setOnClickListener(v -> {
                 Context context = routineName.getContext();
                 Toast.makeText(context, "Clicked Share!!", Toast.LENGTH_SHORT).show();
             });
 
+            itemView.setOnClickListener( Navigation.createNavigateOnClickListener(R.id.nav_extended_routine, null));
 
         }
 
@@ -82,6 +102,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
             Context context = routineName.getContext();
             String message = context.getResources().getString(R.string.Message, getAdapterPosition());
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+
+
         }
     }
 
