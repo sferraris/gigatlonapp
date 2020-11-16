@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Extended_routine">
+    tools:context=".ui.extended_routine.Extended_routine"
+    >
 
     <TextView
         android:id="@+id/RoutineName"
@@ -83,24 +84,28 @@
         app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
 
     <Button
-        android:id="@+id/execute"
+        android:id="@+id/execute_exer"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/ExecuteRoutine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cycleList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:scrollbars="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/routine_diff" />
-    -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cycleList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:paddingBottom="200dp"
+        android:scrollbars="vertical"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/routine_diff" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

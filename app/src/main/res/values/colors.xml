@@ -6,9 +6,11 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="grey">#8F8F8F</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FF9800</color>
     <color name="orange_darken1">#FF7800</color>
     <color name="orange_darken2">#FF6D00</color>
     <color name="orange_lighten1">#FFCC80</color>
+    <color name="Yellow">#FDD835</color>
 </resources>

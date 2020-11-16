@@ -1,6 +1,7 @@
 package com.example.gigatlon.ui;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
 
 
 
+
     }
 
     @Override
@@ -93,7 +95,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                 Toast.makeText(context, "Clicked Share!!", Toast.LENGTH_SHORT).show();
             });
 
-            itemView.setOnClickListener( Navigation.createNavigateOnClickListener(R.id.nav_extended_routine, null));
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", getAdapterPosition());
+            itemView.setOnClickListener( Navigation.createNavigateOnClickListener(R.id.nav_extended_routine, bundle));
+
+
 
         }
 
