@@ -1,13 +1,17 @@
 package com.example.gigatlon.repository;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
 import com.example.gigatlon.api.ApiClient;
 import com.example.gigatlon.api.ApiResponse;
 import com.example.gigatlon.api.ApiUserService;
+import com.example.gigatlon.api.database.AppDatabase;
+import com.example.gigatlon.api.database.UserDao;
 import com.example.gigatlon.api.model.Credentials;
 import com.example.gigatlon.api.model.Token;
 import com.example.gigatlon.api.model.User;
@@ -15,9 +19,13 @@ import com.example.gigatlon.api.model.User;
 public class UserRepository {
 
     private final ApiUserService apiService;
+    private UserDao dao;
+    private AppDatabase db;
 
-    public UserRepository(Context context) {
-        this.apiService = ApiClient.create(context, ApiUserService.class);
+    public UserRepository(Application application) {
+        db = Room.databaseBuilder(application, AppDatabase.class, "database").build();
+        dao = db.userDao();
+        this.apiService = ApiClient.create(application.getApplicationContext(), ApiUserService.class);
     }
 
     public LiveData<Resource<Token>> login(Credentials credentials) {

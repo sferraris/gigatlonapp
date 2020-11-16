@@ -1,6 +1,7 @@
 package com.example.gigatlon.ui.account;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -26,7 +27,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.gigatlon.AppPreferences;
+import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
+import com.example.gigatlon.repository.Status;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Calendar;
@@ -39,16 +43,33 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        accountViewModel = new ViewModelProvider(this, new AccountViewModelFactory(getActivity().getApplication())).get(AccountViewModel.class);
         View root = inflater.inflate(R.layout.fragment_account, container, false);
         final TextView textView = root.findViewById(R.id.text_account);
-        accountViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
+        Application app = getActivity().getApplication();
+        root.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onClick(View view) {
+                accountViewModel.login().observe(getViewLifecycleOwner(), r ->
+                {
+                    if (r.getStatus() == Status.SUCCESS) {
+                        Log.d("Bien ahi", "Bien ahi");
+                        AppPreferences preferences = new AppPreferences(app);
+                        preferences.setAuthToken(r.getData().getToken());
+                    } else
+                        Log.d("todo mal", "todo mal");
+                });
             }
         });
-
+        root.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), r -> {
+                    if (r.getStatus() == Status.SUCCESS)
+                        textView.setText(r.getData().getUsername());
+                });
+            }
+        });
         root.findViewById(R.id.edit_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,19 +1,38 @@
 package com.example.gigatlon.ui.account;
 
+import android.app.Application;
+import android.util.Log;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class AccountViewModel extends ViewModel {
+import com.example.gigatlon.api.model.Credentials;
+import com.example.gigatlon.api.model.Token;
+import com.example.gigatlon.api.model.User;
+import com.example.gigatlon.repository.Resource;
+import com.example.gigatlon.repository.UserRepository;
 
-    private MutableLiveData<String> name;
+public class AccountViewModel extends AndroidViewModel {
 
-    public AccountViewModel() {
-        name = new MutableLiveData<>();
-        name.setValue("Holis");
+    private LiveData<Resource<User>> user;
+    private LiveData<Resource<Token>> token;
+    private UserRepository repo;
+
+    public AccountViewModel(Application app, UserRepository repo) {
+        super(app);
+        this.repo = repo;
     }
 
-    public LiveData<String> getName() {
-        return name;
+    public LiveData<Resource<Token>> login() {
+        Log.d("holis", "holis");
+        token = repo.login(new Credentials("johndoe", "1234567890"));
+        return token;
     }
+
+    public LiveData<Resource<User>> getCurrentUser() {
+        if (user == null)
+            user = repo.getCurrentUser();
+        return user;
+    }
+
 }
