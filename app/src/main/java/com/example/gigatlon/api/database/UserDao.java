@@ -12,11 +12,11 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAll(UserEntity... users);
+    public void insert(UserEntity user);
 
     @Update
-    public void updateAll(UserEntity... users);
+    public void update(UserEntity user);
 
     @Query("SELECT * FROM userentity")
-    public LiveData<List<UserEntity>> getAll();
+    public LiveData<List<UserEntity>> get();
 }

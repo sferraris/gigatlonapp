@@ -24,7 +24,6 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public LiveData<Resource<Token>> login() {
-        Log.d("holis", "holis");
         token = repo.login(new Credentials("johndoe", "1234567890"));
         return token;
     }
