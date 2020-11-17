@@ -37,13 +37,7 @@ public class HomeFragment extends Fragment {
         MainActivity m = (MainActivity) getContext();
 
 
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         adapter = new RoutineAdapter(homeViewModel.getList());
         homeViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override

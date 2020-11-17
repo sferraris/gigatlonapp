@@ -34,13 +34,8 @@ public class FavoritesFragment extends Fragment {
         favoritesViewModel =
                 new ViewModelProvider(this).get(FavoritesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_favorites, container, false);
-        final TextView textView = root.findViewById(R.id.text_favorites);
-        favoritesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
+
         adapter = new RoutineAdapter(favoritesViewModel.getList());
         favoritesViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override

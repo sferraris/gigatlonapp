@@ -56,6 +56,10 @@
         <item name="listPreferredItemPaddingRight">8dp</item>
     </style>
 
+    <style name="drop_down" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textSize">@dimen/standard_text_size</item>
+    </style>
+
 
 
     <style name="My.Date.Picker" parent="Theme.AppCompat.Light.Dialog">

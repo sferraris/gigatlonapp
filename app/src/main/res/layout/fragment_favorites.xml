@@ -7,20 +7,12 @@
     tools:context=".ui.favorites.FavoritesFragment"
     android:id="@+id/list_activity_id2">
 
-    <TextView
-        android:id="@+id/text_favorites"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <include
         layout="@layout/list_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/text_favorites"
+        app:layout_constraintEnd_toEndOf="parent"
 
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_favorites" />
 </androidx.constraintlayout.widget.ConstraintLayout>

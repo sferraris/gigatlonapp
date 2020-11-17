@@ -42,13 +42,6 @@ public class ProgressFragment extends Fragment {
         progressViewModel =
                 new ViewModelProvider(this).get(ProgressViewModel.class);
         View root = inflater.inflate(R.layout.fragment_progress, container, false);
-        final TextView textView = root.findViewById(R.id.text_progress);
-        progressViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         GraphView graph = root.findViewById(R.id.graphView);
         graph.setVisibility(View.VISIBLE);

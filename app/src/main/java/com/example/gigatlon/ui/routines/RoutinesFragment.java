@@ -34,14 +34,9 @@ public class RoutinesFragment extends Fragment {
         routinesViewModel = new ViewModelProvider(this).get(RoutinesViewModel.class);
         root = inflater.inflate(R.layout.fragment_routines, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_routines);
+
         adapter = new RoutineAdapter(routinesViewModel.getList());
-        routinesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         routinesViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {

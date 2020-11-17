@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/nav_second_execute"
         android:name="com.example.gigatlon.ui.execute.second_execute"
-        android:label="@string/menu_progress"
+        android:label="@string/execute"
         tools:layout="@layout/fragment_second_execute_list" >
         <action
             android:id="@+id/action_nav_second_execute_self"
@@ -51,7 +51,7 @@
     <fragment
         android:id="@+id/nav_execute"
         android:name="com.example.gigatlon.ui.execute.Execute"
-        android:label="@string/menu_progress"
+        android:label="@string/execute"
         tools:layout="@layout/exercise_execution" >
         <action
             android:id="@+id/action_nav_execute_self"
