@@ -20,4 +20,6 @@
     <dimen name="timer_text_size">50sp</dimen>
     <dimen name="execution_current_text_szie">20sp</dimen>
     <dimen name="large_icon_size">80dp</dimen>
+    <dimen name="land_current_exec_size">25sp</dimen>
+    <dimen name="land_detail_size">18sp</dimen>
 </resources>
