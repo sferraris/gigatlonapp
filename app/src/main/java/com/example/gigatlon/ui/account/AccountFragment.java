@@ -3,38 +3,24 @@ package com.example.gigatlon.ui.account;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.gigatlon.AppPreferences;
-import com.example.gigatlon.MyApplication;
+import com.example.gigatlon.MyPreferences;
 import com.example.gigatlon.R;
-import com.example.gigatlon.repository.Status;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.example.gigatlon.vo.Status;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class AccountFragment extends Fragment {
 
@@ -54,7 +40,7 @@ public class AccountFragment extends Fragment {
                 {
                     if (r.getStatus() == Status.SUCCESS) {
                         Log.d("Bien ahi", "Bien ahi");
-                        AppPreferences preferences = new AppPreferences(app);
+                        MyPreferences preferences = new MyPreferences(app);
                         preferences.setAuthToken(r.getData().getToken());
                     } else
                         Log.d("todo mal", "todo mal");

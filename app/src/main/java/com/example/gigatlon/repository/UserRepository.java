@@ -1,111 +1,211 @@
 package com.example.gigatlon.repository;
 
-import android.app.Application;
-import android.content.Context;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 
-import com.example.gigatlon.api.ApiClient;
 import com.example.gigatlon.api.ApiResponse;
 import com.example.gigatlon.api.ApiUserService;
-import com.example.gigatlon.api.database.AppDatabase;
-import com.example.gigatlon.api.database.UserDao;
-import com.example.gigatlon.api.model.Credentials;
-import com.example.gigatlon.api.model.PagedList;
-import com.example.gigatlon.api.model.Routine;
-import com.example.gigatlon.api.model.Token;
-import com.example.gigatlon.api.model.User;
-import com.example.gigatlon.api.model.UserWithPassword;
-import com.example.gigatlon.api.model.UserWithoutPassword;
-import com.example.gigatlon.api.model.Weighting;
-import com.example.gigatlon.api.model.WeightingWithDate;
+import com.example.gigatlon.api.model.CredentialsModel;
+import com.example.gigatlon.api.model.TokenModel;
+import com.example.gigatlon.api.model.UserModel;
+import com.example.gigatlon.api.model.UserWithPasswordModel;
+import com.example.gigatlon.db.MyDatabase;
+import com.example.gigatlon.db.entity.UserEntity;
+import com.example.gigatlon.domain.User;
+import com.example.gigatlon.vo.AbsentLiveData;
+import com.example.gigatlon.vo.Resource;
+
+import java.util.concurrent.TimeUnit;
 
 public class UserRepository {
 
-    private final ApiUserService apiService;
-    private UserDao dao;
-    private AppDatabase db;
+    private static final String RATE_LIMITER_GETUSER_KEY = "@@getuser@@";
 
-    public UserRepository(Application application) {
-        db = Room.databaseBuilder(application, AppDatabase.class, "database").build();
-        dao = db.userDao();
-        this.apiService = ApiClient.create(application.getApplicationContext(), ApiUserService.class);
+    private AppExecutors executors;
+    private ApiUserService service;
+    private MyDatabase database;
+    private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
+
+    public UserRepository(AppExecutors executors, ApiUserService service, MyDatabase database) {
+        this.executors = executors;
+        this.service = service;
+        this.database = database;
     }
 
-    public LiveData<Resource<User>> createUser(UserWithPassword userWithPassword) {
-        return new NetworkBoundResource<User, User>()
+    private User mapUserEntityToDomain (UserEntity entity) {
+        return new User(entity.id, entity.username, entity.fullName, entity.gender, entity.birthdate, entity.email, entity.avatarUrl);
+    }
+
+    private UserEntity mapUserModelToEntity (UserModel model) {
+        return new UserEntity(model.getId(), model.getUsername(), model.getFullName(), model.getGender(), model.getBirthdate(), model.getEmail(), model.getAvatarUrl());
+    }
+
+    private User mapUserModelToDomain (UserModel model) {
+        return new User(model.getId(), model.getUsername(), model.getFullName(), model.getGender(), model.getBirthdate(), model.getEmail(), model.getAvatarUrl());
+    }
+
+    private UserWithPasswordModel mapUserDomainToUserWithPassword(User user) {
+        return new UserWithPasswordModel(user.getUsername(), user.getPassword(), user.getFullName(), user.getGender(), user.getBirthdate(), user.getEmail(), user.getPhone(), user.getAvatarUrl());
+    }
+
+    public LiveData<Resource<User>> createUser(User user) {
+        return new NetworkBoundResource<User, Void, UserModel>(executors, null, null, this::mapUserModelToDomain)
         {
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable UserModel model) {
+                return false;
+            }
+
             @NonNull
             @Override
-            protected LiveData<ApiResponse<User>> createCall() {
-                return apiService.createUser(userWithPassword);
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<UserModel>> createCall() {
+                UserWithPasswordModel model = mapUserDomainToUserWithPassword(user);
+                return service.createUser(model);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<Token>> login(Credentials credentials) {
-        return new NetworkBoundResource<Token, Token>()
-        {
+    public LiveData<Resource<String>> login(String username, String password) {
+
+        return new NetworkBoundResource<String, Void, TokenModel>(executors,null, null, model -> model.getToken()) {
+
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable TokenModel model) {
+                return false;
+            }
+
             @NonNull
             @Override
-            protected LiveData<ApiResponse<Token>> createCall() {
-                return apiService.login(credentials);
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<TokenModel>> createCall() {
+                return service.login(new CredentialsModel(username, password));
             }
         }.asLiveData();
     }
 
     public LiveData<Resource<Void>> logout() {
-        return new NetworkBoundResource<Void, Void>()
-        {
+
+        return new NetworkBoundResource<Void, Void, Void>
+                (executors, null, null, null) {
+
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Void model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<Void>> createCall() {
-                return apiService.logout();
+                return service.logout();
             }
         }.asLiveData();
     }
 
     public LiveData<Resource<User>> getCurrentUser() {
-        return new NetworkBoundResource<User, User>()
+        return new NetworkBoundResource<User, UserEntity, UserModel>(executors, this::mapUserEntityToDomain, this::mapUserModelToEntity, this::mapUserModelToDomain)
+        {
+            @Override
+            protected void saveCallResult(@NonNull UserEntity entity) {
+                database.userDao().insert(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable UserEntity entity) {
+                return (entity == null) || rateLimit.shouldFetch(RATE_LIMITER_GETUSER_KEY);
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable UserModel model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<UserEntity> loadFromDb() {
+                return database.userDao().get();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<UserModel>> createCall() {
+                return service.getCurrentUser();
+            }
+        }.asLiveData();
+    }
+/*
+    public LiveData<Resource<UserModel>> updateCurrentUser(UserWithoutPasswordModel userWithoutPasswordModel) {
+        return new NetworkBoundResource<UserModel, UserModel>()
         {
             @NonNull
             @Override
-            protected LiveData<ApiResponse<User>> createCall() {
-                return apiService.getCurrentUser();
+            protected LiveData<ApiResponse<UserModel>> createCall() {
+                return apiService.updateCurrentUser(userWithoutPasswordModel);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<User>> updateCurrentUser(UserWithoutPassword userWithoutPassword) {
-        return new NetworkBoundResource<User, User>()
+    public LiveData<Resource<WeightingWithDateModel>> createWeighting(WeightingModel weightingModel) {
+        return new NetworkBoundResource<WeightingWithDateModel, WeightingWithDateModel>()
         {
             @NonNull
             @Override
-            protected LiveData<ApiResponse<User>> createCall() {
-                return apiService.updateCurrentUser(userWithoutPassword);
+            protected LiveData<ApiResponse<WeightingWithDateModel>> createCall() {
+                return apiService.createWeighting(weightingModel);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<WeightingWithDate>> createWeighting(Weighting weighting) {
-        return new NetworkBoundResource<WeightingWithDate, WeightingWithDate>()
+    public LiveData<Resource<PagedListModel<WeightingWithDateModel>>> getWeightings() {
+        return new NetworkBoundResource<PagedListModel<WeightingWithDateModel>, PagedListModel<WeightingWithDateModel>>()
         {
             @NonNull
             @Override
-            protected LiveData<ApiResponse<WeightingWithDate>> createCall() {
-                return apiService.createWeighting(weighting);
-            }
-        }.asLiveData();
-    }
-
-    public LiveData<Resource<PagedList<WeightingWithDate>>> getWeightings() {
-        return new NetworkBoundResource<PagedList<WeightingWithDate>, PagedList<WeightingWithDate>>()
-        {
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<PagedList<WeightingWithDate>>> createCall() {
+            protected LiveData<ApiResponse<PagedListModel<WeightingWithDateModel>>> createCall() {
                 return apiService.getWeightings();
             }
         }.asLiveData();
@@ -122,12 +222,12 @@ public class UserRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<PagedList<Routine>>> getFavourites() {
-        return new NetworkBoundResource<PagedList<Routine>, PagedList<Routine>>()
+    public LiveData<Resource<PagedListModel<RoutineModel>>> getFavourites() {
+        return new NetworkBoundResource<PagedListModel<RoutineModel>, PagedListModel<RoutineModel>>()
         {
             @NonNull
             @Override
-            protected LiveData<ApiResponse<PagedList<Routine>>> createCall() {
+            protected LiveData<ApiResponse<PagedListModel<RoutineModel>>> createCall() {
                 return apiService.getFavourites();
             }
         }.asLiveData();
@@ -143,4 +243,6 @@ public class UserRepository {
             }
         }.asLiveData();
     }
+
+ */
 }

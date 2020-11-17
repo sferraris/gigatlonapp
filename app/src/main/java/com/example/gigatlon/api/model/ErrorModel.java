@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Error {
+public class ErrorModel {
 
     public static final int LOCAL_UNEXPECTED_ERROR = 10;
 
@@ -19,14 +19,14 @@ public class Error {
     @Expose
     private List<String> details = null;
 
-    public Error()  {
+    public ErrorModel()  {
     }
 
-    public Error(Integer code, String description) {
+    public ErrorModel(Integer code, String description) {
         this(code, description, null);
     }
 
-    public Error(Integer code, String description, List<String> details) {
+    public ErrorModel(Integer code, String description, List<String> details) {
         this.code = code;
         this.description = description;
         this.details = details;

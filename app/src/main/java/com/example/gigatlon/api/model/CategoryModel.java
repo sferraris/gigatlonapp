@@ -3,7 +3,7 @@ package com.example.gigatlon.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Category {
+public class CategoryModel {
 
     @SerializedName("id")
     @Expose
@@ -15,10 +15,10 @@ public class Category {
     @Expose
     private String detail;
 
-    public Category() {
+    public CategoryModel() {
     }
 
-    public Category(Integer id, String name, String detail) {
+    public CategoryModel(Integer id, String name, String detail) {
         super();
         this.id = id;
         this.name = name;

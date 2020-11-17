@@ -1,4 +1,4 @@
-package com.example.gigatlon.repository;
+package com.example.gigatlon.vo;
 
 public enum Status {
     SUCCESS,

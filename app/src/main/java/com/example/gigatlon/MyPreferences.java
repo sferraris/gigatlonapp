@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 
 import com.example.gigatlon.R;
 
-public class AppPreferences {
+public class MyPreferences {
     private final String AUTH_TOKEN = "auth_token";
 
     private SharedPreferences sharedPreferences;
 
-    public AppPreferences(Context context) {
+    public MyPreferences(Context context) {
         sharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE);
     }
 

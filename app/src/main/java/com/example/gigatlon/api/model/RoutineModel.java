@@ -3,7 +3,7 @@ package com.example.gigatlon.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Routine {
+public class RoutineModel {
 
     @SerializedName("id")
     @Expose
@@ -28,15 +28,15 @@ public class Routine {
     private String difficulty;
     @SerializedName("creator")
     @Expose
-    private Creator creator;
+    private CreatorModel creatorModel;
     @SerializedName("category")
     @Expose
-    private Category category;
+    private CategoryModel category;
 
-    public Routine() {
+    public RoutineModel() {
     }
 
-    public Routine(Integer id, String name, String detail, Integer dateCreated, Integer averageRating, Boolean isPublic, String difficulty, Creator creator, Category category) {
+    public RoutineModel(Integer id, String name, String detail, Integer dateCreated, Integer averageRating, Boolean isPublic, String difficulty, CreatorModel creatorModel, CategoryModel category) {
         super();
         this.id = id;
         this.name = name;
@@ -45,7 +45,7 @@ public class Routine {
         this.averageRating = averageRating;
         this.isPublic = isPublic;
         this.difficulty = difficulty;
-        this.creator = creator;
+        this.creatorModel = creatorModel;
         this.category = category;
     }
 
@@ -105,19 +105,19 @@ public class Routine {
         this.difficulty = difficulty;
     }
 
-    public Creator getCreator() {
-        return creator;
+    public CreatorModel getCreatorModel() {
+        return creatorModel;
     }
 
-    public void setCreator(Creator creator) {
-        this.creator = creator;
+    public void setCreatorModel(CreatorModel creatorModel) {
+        this.creatorModel = creatorModel;
     }
 
-    public Category getCategory() {
+    public CategoryModel getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryModel category) {
         this.category = category;
     }
 

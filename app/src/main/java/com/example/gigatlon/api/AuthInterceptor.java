@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.example.gigatlon.AppPreferences;
+import com.example.gigatlon.MyPreferences;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,10 +15,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class AuthInterceptor implements Interceptor {
-    private final AppPreferences preferences;
+    private final MyPreferences preferences;
 
     public AuthInterceptor(Context context) {
-        preferences = new AppPreferences(context);
+        preferences = new MyPreferences(context);
     }
 
     @NotNull

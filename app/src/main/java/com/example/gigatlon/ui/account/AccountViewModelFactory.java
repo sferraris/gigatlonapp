@@ -13,7 +13,6 @@ public class AccountViewModelFactory implements ViewModelProvider.Factory {
     private Application application;
 
     public AccountViewModelFactory(Application application) {
-        Log.d("holis", "holis");
         this.application = application;
     }
 

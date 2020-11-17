@@ -3,7 +3,7 @@ package com.example.gigatlon.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Creator {
+public class CreatorModel {
 
     @SerializedName("id")
     @Expose
@@ -24,10 +24,10 @@ public class Creator {
     @Expose
     private Integer dateLastActive;
 
-    public Creator() {
+    public CreatorModel() {
     }
 
-    public Creator(Integer id, String username, String gender, String avatarUrl, Integer dateCreated, Integer dateLastActive) {
+    public CreatorModel(Integer id, String username, String gender, String avatarUrl, Integer dateCreated, Integer dateLastActive) {
         super();
         this.id = id;
         this.username = username;
