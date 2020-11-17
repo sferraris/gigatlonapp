@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="exerciseName"
-        android:textSize="20sp"
+        android:textSize="@dimen/exercise_name_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="exerciseType"
+        android:textSize="@dimen/exercise_data_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exerciseName" />
 
@@ -31,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Duration"
+        android:textSize="@dimen/exercise_data_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Reps" />
 
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Repetition"
+        android:textSize="@dimen/exercise_data_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exerciseType" />
 

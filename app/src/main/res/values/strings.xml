@@ -41,6 +41,7 @@
     <string name="AddWeight">Add Weight</string>
     <string name="ExecuteRoutine">Execute</string>
     <string name="current_cycle">Current Cycle</string>
+    <string name="bar">-</string>
 
     <string-array name="brew_array">
         <item>Newest Date</item>

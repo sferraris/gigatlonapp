@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.progress.ProgressFragment">
+    tools:context=".ui.progress.ProgressFragment"
+
+    >
 
     <TextView
         android:id="@+id/text_progress"
@@ -36,9 +38,12 @@
         android:layout_height="39dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="50dp"
+        android:background="@drawable/boarder"
         android:contentDescription="@string/edit_weight"
+        android:gravity="center"
         android:hint="Peso"
         android:inputType="numberDecimal"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintEnd_toStartOf="@+id/add"
         app:layout_constraintHorizontal_bias="0.627"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +56,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="60dp"
         android:text="@string/AddWeight"
+        android:textSize="@dimen/button_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graphView" />
 

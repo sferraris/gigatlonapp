@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.execute.Execute"
-    >
+    tools:context=".ui.execute.Execute">
 
     <ImageButton
         android:id="@+id/pauseTimer"
-        android:layout_width="@dimen/large_icon_size"
-        android:layout_height="@dimen/large_icon_size"
-        android:layout_marginTop="20dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ExerCycle"
+        app:layout_constraintStart_toEndOf="@+id/text_bar"
+        app:layout_constraintTop_toBottomOf="@+id/text_bar"
         app:srcCompat="@drawable/ic_baseline_pause_circle_outline_24" />
 
     <TextView
@@ -25,57 +22,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
         android:text="@string/current_cycle"
-        android:textSize="@dimen/execution_current_text_szie"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/text_bar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Exercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:text="Current Exercise"
-        android:textSize="@dimen/execution_current_text_szie"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pauseTimer" />
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/text_bar"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/exer_reps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Current exer reps"
-        android:textSize="@dimen/standard_text_size"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exer_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/pauseTimer" />
 
     <TextView
         android:id="@+id/exer_remaining_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
         android:text="00:00"
         android:textColor="@color/orange"
-        android:textSize="@dimen/timer_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exer_reps" />
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pauseTimer"
+        app:layout_constraintEnd_toStartOf="@+id/text_bar"
+        app:layout_constraintTop_toTopOf="@+id/pauseTimer" />
 
     <Button
         android:id="@+id/exer_prev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="20dp"
         android:text="Anterior"
-        android:textSize="@dimen/button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -83,10 +76,9 @@
         android:id="@+id/exer_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20dp"
         android:text="Next"
-        android:textSize="@dimen/button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -94,22 +86,36 @@
         android:id="@+id/next_exer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="15dp"
         android:text="Next exer"
-        android:textSize="@dimen/standard_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exer_remaining_time" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/exer_next"
+        app:layout_constraintEnd_toEndOf="@+id/exer_next"
+        app:layout_constraintStart_toStartOf="@+id/exer_next" />
 
     <TextView
         android:id="@+id/exer_detail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:gravity="center"
         android:maxLines="3"
         android:text="Detail"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exer_reps" />
+
+    <TextView
+        android:id="@+id/text_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/bar"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Exercise" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

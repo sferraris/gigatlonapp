@@ -10,11 +10,13 @@
 
     <Spinner
         android:id="@+id/planets_spinner"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
+        android:layout_marginLeft="10dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="3dp"
+        android:spinnerMode="dropdown"
+        android:theme="@style/Widget.AppCompat.DropDownItem.Spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
