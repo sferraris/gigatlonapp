@@ -109,6 +109,7 @@
         android:gravity="center"
         android:maxLines="3"
         android:text="Detail"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Exercise" />
