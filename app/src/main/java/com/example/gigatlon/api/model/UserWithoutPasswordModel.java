@@ -3,6 +3,8 @@ package com.example.gigatlon.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class UserWithoutPasswordModel {
 
     @SerializedName("username")
@@ -16,7 +18,7 @@ public class UserWithoutPasswordModel {
     private String gender;
     @SerializedName("birthdate")
     @Expose
-    private Integer birthdate;
+    private Date birthdate;
     @SerializedName("email")
     @Expose
     private String email;
@@ -27,7 +29,7 @@ public class UserWithoutPasswordModel {
     @Expose
     private String avatarUrl;
 
-    public UserWithoutPasswordModel(String username, String fullName, String gender, Integer birthdate, String email, String phone, String avatarUrl) {
+    public UserWithoutPasswordModel(String username, String fullName, String gender, Date birthdate, String email, String phone, String avatarUrl) {
         super();
         this.username = username;
         this.fullName = fullName;
@@ -62,11 +64,11 @@ public class UserWithoutPasswordModel {
         this.gender = gender;
     }
 
-    public Integer getBirthdate() {
+    public Date getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Integer birthdate) {
+    public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
 

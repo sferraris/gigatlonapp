@@ -12,14 +12,13 @@ import com.example.gigatlon.api.model.CredentialsModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;
+import com.example.gigatlon.api.model.UserWithoutPasswordModel;
 import com.example.gigatlon.db.MyDatabase;
 import com.example.gigatlon.db.entity.UserEntity;
 import com.example.gigatlon.domain.User;
 import com.example.gigatlon.vo.AbsentLiveData;
 import com.example.gigatlon.vo.Resource;
 
-
-import java.text.ParseException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -39,14 +38,7 @@ public class UserRepository {
     }
 
     private User mapUserEntityToDomain (UserEntity entity) {
-        String date = entity.birthdate;
-        Date d1 =  null;
-        try {
-            d1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return new User(entity.id, entity.username, entity.fullName, entity.gender, d1, entity.email, entity.avatarUrl);
+        return new User(entity.id, entity.username, entity.fullName, entity.gender, entity.birthdate, entity.email, entity.avatarUrl);
     }
 
     private UserEntity mapUserModelToEntity (UserModel model) {
@@ -189,18 +181,40 @@ public class UserRepository {
             }
         }.asLiveData();
     }
-/*
-    public LiveData<Resource<UserModel>> updateCurrentUser(UserWithoutPasswordModel userWithoutPasswordModel) {
-        return new NetworkBoundResource<UserModel, UserModel>()
+
+    public LiveData<Resource<User>> updateCurrentUser(User user) {
+        return new NetworkBoundResource<User, UserEntity, UserModel>(executors, this::mapUserEntityToDomain, this::mapUserModelToEntity, this::mapUserModelToDomain)
         {
+            @Override
+            protected void saveCallResult(@NonNull UserEntity entity) {
+                database.userDao().update(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable UserEntity entity) {
+                return entity != null;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable UserModel model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<UserEntity> loadFromDb() {
+                return database.userDao().get();
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<UserModel>> createCall() {
-                return apiService.updateCurrentUser(userWithoutPasswordModel);
+                UserWithoutPasswordModel model = new UserWithoutPasswordModel(user.getUsername(), user.getFullName(), user.getGender(), user.getBirthdate(), user.getEmail(), user.getPhone(), user.getAvatarUrl());
+                return service.updateCurrentUser(model);
             }
         }.asLiveData();
     }
-
+/*
     public LiveData<Resource<WeightingWithDateModel>> createWeighting(WeightingModel weightingModel) {
         return new NetworkBoundResource<WeightingWithDateModel, WeightingWithDateModel>()
         {

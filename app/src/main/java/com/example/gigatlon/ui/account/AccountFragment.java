@@ -14,25 +14,94 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.gigatlon.MyApplication;
+import com.example.gigatlon.MyPreferences;
 import com.example.gigatlon.R;
+import com.example.gigatlon.databinding.FragmentAccountBinding;
+import com.example.gigatlon.repository.UserRepository;
+import com.example.gigatlon.ui.MainActivity;
+import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
+import com.example.gigatlon.vo.Status;
 
 import java.util.Calendar;
 
 public class AccountFragment extends Fragment {
 
+    private MyApplication application;
+    private MainActivity activity;
+    private AccountViewModel accountViewModel;
     private AlertDialog dialog;
+    private FragmentAccountBinding binding;
+
+    public static AccountFragment create() {
+        return new AccountFragment();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAccountBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        View root = inflater.inflate(R.layout.fragment_account, container, false);
-        final TextView textView = root.findViewById(R.id.text_account);
-        Application app = getActivity().getApplication();
+        application = (MyApplication)getActivity().getApplication();
+        activity = (MainActivity)getActivity();
 
+        RepositoryViewModelFactory viewModelFactory = new RepositoryViewModelFactory(UserRepository.class, application.getUserRepository());
+        accountViewModel = new ViewModelProvider(this, viewModelFactory).get(AccountViewModel.class);
+
+        binding.login.setOnClickListener(v -> accountViewModel
+                .login("johndoe", "1234567890")
+                .observe(getViewLifecycleOwner(), resource -> {
+                    switch (resource.status) {
+                        case LOADING:
+                            binding.login.setEnabled(false);
+                            //activity.showProgressBar();
+                            break;
+                        case SUCCESS:
+                            binding.login.setEnabled(true);
+                            application.getPreferences().setAuthToken(resource.data);
+                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
+                            //callback.onLoggedIn();
+                            break;
+                        case ERROR:
+                            binding.login.setEnabled(true);
+                            //activity.hideProgressBar();
+                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }));
+
+        binding.get.setOnClickListener(v -> accountViewModel
+                .getCurrentUser()
+                .observe(getViewLifecycleOwner(), resource -> {
+                    switch (resource.status) {
+                        case LOADING:
+                            binding.login.setEnabled(false);
+                            //activity.showProgressBar();
+                            break;
+                        case SUCCESS:
+                            binding.login.setEnabled(true);
+                            binding.textAccount.setText(resource.data.getFullName());
+                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
+                            //callback.onLoggedIn();
+                            break;
+                        case ERROR:
+                            binding.login.setEnabled(true);
+                            //activity.hideProgressBar();
+                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }));
+        /*
         root.findViewById(R.id.edit_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +165,7 @@ public class AccountFragment extends Fragment {
 
             }
         });
-
-        return root;
+*/
+        //return root;
     }
 }
