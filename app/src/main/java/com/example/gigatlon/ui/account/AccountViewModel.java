@@ -23,22 +23,12 @@ public class AccountViewModel extends RepositoryViewModel<UserRepository> {
         user = null; //TODO cambiarlo
     }
 
-<<<<<<< Updated upstream
-    public LiveData<Resource<TokenModel>> login() {
-        return null;
-    }
-
-    public LiveData<Resource<UserModel>> getCurrentUser() {
-
-        return null;
-=======
     public LiveData<Resource<String>> login(String username, String password) { //TODO sacarlo
         return repository.login(username, password);
     }
 
     public LiveData<Resource<User>> getCurrentUser() {
         return repository.getCurrentUser();
->>>>>>> Stashed changes
     }
 
     public LiveData<Resource<User>> updateCurrentUser(User user) {

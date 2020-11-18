@@ -38,7 +38,8 @@ public class UserRepository {
     }
 
     private User mapUserEntityToDomain (UserEntity entity) {
-        return new User(entity.id, entity.username, entity.fullName, entity.gender, entity.birthdate, entity.email, entity.avatarUrl);
+        Date d = new Date("11/12/99");
+        return new User(entity.id, entity.username, entity.fullName, entity.gender, d, entity.email, entity.avatarUrl);
     }
 
     private UserEntity mapUserModelToEntity (UserModel model) {
