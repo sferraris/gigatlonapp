@@ -1,6 +1,8 @@
 package com.example.gigatlon.repository;
 
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.example.gigatlon.domain.Weighting;
 import com.example.gigatlon.vo.AbsentLiveData;
 import com.example.gigatlon.vo.Resource;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,8 +49,14 @@ public class UserRepository {
     }
 
     private User mapUserEntityToDomain (UserEntity entity) {
-        Date d = new Date("11/12/99"); //TODO ARREGLARLO
-        return new User(entity.id, entity.username, entity.fullName, entity.gender, d, entity.email, entity.avatarUrl);
+        Date real_date = new Date();
+        try {
+            real_date=new SimpleDateFormat("dd/MM/yyyy").parse(entity.birthdate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return new User(entity.id, entity.username, entity.fullName, entity.gender, real_date, entity.email, entity.avatarUrl);
     }
 
     private UserEntity mapUserModelToEntity (UserModel model) {

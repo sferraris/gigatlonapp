@@ -48,8 +48,14 @@
     <string name="full_name">Full Name</string>
     <string name="create_account">Don\'t have an account? <a href="to_somewher" >Register now!</a></string>
     <string name="have_account">Already have an account? <a href="to_somewher" >Log in now!</a></string>
-    <string name="confirm_message">"Thank you for choosing Gigatlon. Press Confirm Email to confirm your email "</string>
+    <string name="confirm_message">Thank you for choosing Gigatlon. Press Confirm Email to confirm your email</string>
     <string name="cofirm">Confirm email</string>
+    <string name="full_name_account">\"Full Name: \"</string>
+    <string name="birthdate">Birthdate: </string>
+    <string name="gender">Gender: </string>
+    <string name="mail">Email: </string>
+
+
     <string-array name="brew_array">
         <item>Newest Date</item>
         <item>Oldest Date</item>
@@ -60,9 +66,9 @@
     </string-array>
 
     <string-array name="gender">
-        <item>Female</item>
-        <item>Male</item>
-        <item>Other</item>
+        <item>female</item>
+        <item>male</item>
+        <item>other</item>
     </string-array>
 
 </resources>

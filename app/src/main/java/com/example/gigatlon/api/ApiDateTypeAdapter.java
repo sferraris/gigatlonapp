@@ -1,5 +1,7 @@
 package com.example.gigatlon.api;
 
+import android.util.Log;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -18,8 +20,9 @@ public class ApiDateTypeAdapter extends TypeAdapter<Date> {
 
     @Override
     public Date read(JsonReader in) throws IOException {
-        if (in != null)
+        if (in != null) {
             return new Date(in.nextLong());
+        }
         else
             return null;
     }

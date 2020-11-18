@@ -1,11 +1,14 @@
 package com.example.gigatlon.db.entity;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -40,7 +43,9 @@ public class UserEntity {
         this.username = username;
         this.fullName = fullName;
         this.gender = gender;
-        this.birthdate = birthdate.toString();
+        SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+        String s = form.format(birthdate);
+        this.birthdate = s;
         this.email = email;
         this.avatarUrl = avatarUrl;
 
