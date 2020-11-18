@@ -56,9 +56,14 @@
         <item name="listPreferredItemPaddingRight">8dp</item>
     </style>
 
-    <style name="drop_down" parent="Widget.AppCompat.DropDownItem.Spinner">
-        <item name="android:textSize">@dimen/standard_text_size</item>
+    <style name="button"  >
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/grey</item>
+
     </style>
+
+
+
 
 
 

@@ -23,4 +23,9 @@
     <dimen name="land_current_exec_size">25sp</dimen>
     <dimen name="land_detail_size">18sp</dimen>
     <dimen name="title">20sp</dimen>
+    <dimen name="account_title_size">28sp</dimen>
+    <dimen name="popup_text_size">18sp</dimen>
+    <dimen name="progress_height">200dp</dimen>
+    <dimen name="app_name_size">50sp</dimen>
+    <dimen name="huge_icon_size">300dp</dimen>
 </resources>

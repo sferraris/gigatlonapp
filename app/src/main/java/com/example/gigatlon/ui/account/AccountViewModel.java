@@ -23,14 +23,12 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public LiveData<Resource<TokenModel>> login() {
-        token = repo.login(new CredentialsModel("johndoe", "1234567890"));
-        return token;
+        return null;
     }
 
     public LiveData<Resource<UserModel>> getCurrentUser() {
-        if (user == null)
-            user = repo.getCurrentUser();
-        return user;
+
+        return null;
     }
 
 }

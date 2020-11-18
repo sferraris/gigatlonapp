@@ -1,11 +1,13 @@
 package com.example.gigatlon.db.entity;
 
 import androidx.annotation.NonNull;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 
 import java.util.Date;
+
 
 @Entity(tableName = "User", indices = {@Index("id")}, primaryKeys = {"id"})
 public class UserEntity {
@@ -23,7 +25,7 @@ public class UserEntity {
     public String gender;
 
     @ColumnInfo(name="birthdate")
-    public Date birthdate;
+    public String birthdate;
 
     @ColumnInfo(name="email")
     public String email;
@@ -38,8 +40,9 @@ public class UserEntity {
         this.username = username;
         this.fullName = fullName;
         this.gender = gender;
-        this.birthdate = birthdate;
+        this.birthdate = birthdate.toString();
         this.email = email;
         this.avatarUrl = avatarUrl;
+
     }
 }

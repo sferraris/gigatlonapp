@@ -61,10 +61,10 @@ public class HomeFragment extends Fragment {
         Spinner spinner = root.findViewById(R.id.planets_spinner);
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
                 .createFromResource(getContext(), R.array.brew_array,
-                        android.R.layout.simple_spinner_item);
+                        R.layout.spinner_item);
 
         staticAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                .setDropDownViewResource( R.layout.spinner_item);
         spinner.setAdapter(staticAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:text="RoutineName"
         android:textAppearance="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
-        android:textSize="30sp"
+        android:textSize="@dimen/routine_name_text_size"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:text="@string/RoutineCreator"
-        android:textSize="20sp"
+        android:textSize="@dimen/routine_data_text_size"
         app:layout_constraintStart_toEndOf="@+id/routine_duration"
         app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
 
@@ -40,7 +40,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:text="@string/routine_duration"
-        android:textSize="20sp"
+        android:textSize="@dimen/routine_data_text_size"
         app:layout_constraintStart_toEndOf="@+id/routine_diff"
         app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
 
@@ -52,7 +52,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:text="@string/routine_diff"
-        android:textSize="20sp"
+        android:textSize="@dimen/routine_data_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
 
@@ -60,8 +60,8 @@
         android:id="@+id/favButton"
         style="?android:attr/borderlessButtonStyle"
 
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:background="@android:color/transparent"
@@ -74,8 +74,8 @@
         android:id="@+id/shareButton"
         style="?android:attr/borderlessButtonStyle"
 
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:background="@android:color/transparent"
@@ -105,6 +105,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="25dp"
         android:text="@string/ExecuteRoutine"
+        android:textSize="@dimen/button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

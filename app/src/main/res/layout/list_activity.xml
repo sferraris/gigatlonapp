@@ -13,9 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:elevation="3dp"
+        android:prompt="@string/order_by"
         android:spinnerMode="dropdown"
-        android:theme="@style/Widget.AppCompat.DropDownItem.Spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
