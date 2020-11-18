@@ -1,35 +1,13 @@
-package com.example.gigatlon.api.model;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.example.gigatlon.domain;
 
 import java.util.Date;
+import java.util.Objects;
 
-public class WeightingWithDateModel {
-
-    @SerializedName("id")
-    @Expose
+public class Weighting {
     private Integer id;
-    @SerializedName("date")
-    @Expose
     private Date date;
-    @SerializedName("weight")
-    @Expose
     private Double weight;
-    @SerializedName("height")
-    @Expose
     private Double height;
-
-    public WeightingWithDateModel() {
-    }
-
-    public WeightingWithDateModel(Integer id, Date date, Double weight, Double height) {
-        super();
-        this.id = id;
-        this.date = date;
-        this.weight = weight;
-        this.height = height;
-    }
 
     public Integer getId() {
         return id;
@@ -63,4 +41,23 @@ public class WeightingWithDateModel {
         this.height = height;
     }
 
+    public Weighting(Integer id, Date date, Double weight, Double height) {
+        this.id = id;
+        this.date = date;
+        this.weight = weight;
+        this.height = height;
+    }
+
+    public Weighting(Double weight, Double height) {
+        this.weight = weight;
+        this.height = height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Weighting weighting = (Weighting) o;
+        return Objects.equals(getId(), weighting.getId());
+    }
 }

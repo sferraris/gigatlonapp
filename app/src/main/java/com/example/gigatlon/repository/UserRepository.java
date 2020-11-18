@@ -9,18 +9,26 @@ import androidx.lifecycle.LiveData;
 import com.example.gigatlon.api.ApiResponse;
 import com.example.gigatlon.api.ApiUserService;
 import com.example.gigatlon.api.model.CredentialsModel;
+import com.example.gigatlon.api.model.PagedListModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;
 import com.example.gigatlon.api.model.UserWithoutPasswordModel;
+import com.example.gigatlon.api.model.WeightingModel;
+import com.example.gigatlon.api.model.WeightingWithDateModel;
 import com.example.gigatlon.db.MyDatabase;
 import com.example.gigatlon.db.entity.UserEntity;
+import com.example.gigatlon.db.entity.WeightingEntity;
 import com.example.gigatlon.domain.User;
+import com.example.gigatlon.domain.Weighting;
 import com.example.gigatlon.vo.AbsentLiveData;
 import com.example.gigatlon.vo.Resource;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.stream.Collectors.toList;
 
 public class UserRepository {
 
@@ -38,7 +46,7 @@ public class UserRepository {
     }
 
     private User mapUserEntityToDomain (UserEntity entity) {
-        Date d = new Date("11/12/99");
+        Date d = new Date("11/12/99"); //TODO ARREGLARLO
         return new User(entity.id, entity.username, entity.fullName, entity.gender, d, entity.email, entity.avatarUrl);
     }
 
@@ -52,6 +60,19 @@ public class UserRepository {
 
     private UserWithPasswordModel mapUserDomainToUserWithPassword(User user) {
         return new UserWithPasswordModel(user.getUsername(), user.getPassword(), user.getFullName(), user.getGender(), user.getBirthdate(), user.getEmail(), user.getPhone(), user.getAvatarUrl());
+    }
+
+    private Weighting mapWeightingEntityToDomain(WeightingEntity entity) {
+        Date d = new Date("11/12/99"); //TODO ARREGLARLO
+        return new Weighting(entity.id, d, entity.weight, entity.height);
+    }
+
+    private WeightingEntity mapWeightingModelToEntity(WeightingWithDateModel model) {
+        return new WeightingEntity(model.getId(), model.getDate(), model.getWeight(), model.getHeight());
+    }
+
+    private Weighting mapWeightingModelToDomain(WeightingWithDateModel model) {
+        return new Weighting(model.getId(), model.getDate(), model.getWeight(), model.getHeight());
     }
 
     public LiveData<Resource<User>> createUser(User user) {
@@ -215,40 +236,125 @@ public class UserRepository {
             }
         }.asLiveData();
     }
-/*
-    public LiveData<Resource<WeightingWithDateModel>> createWeighting(WeightingModel weightingModel) {
-        return new NetworkBoundResource<WeightingWithDateModel, WeightingWithDateModel>()
+
+    public LiveData<Resource<Weighting>> createWeighting(Weighting weighting) {
+        return new NetworkBoundResource<Weighting, WeightingEntity, WeightingWithDateModel>(executors, this::mapWeightingEntityToDomain, this::mapWeightingModelToEntity, this::mapWeightingModelToDomain)
         {
+            int weightingId = 0;
+
+            @Override
+            protected void saveCallResult(@NonNull WeightingEntity entity) {
+                weightingId = entity.id;
+                database.weightingDao().insert(entity);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable WeightingEntity entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable WeightingWithDateModel model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<WeightingEntity> loadFromDb() {
+                if (weightingId == 0)
+                    return AbsentLiveData.create();
+                else
+                    return database.weightingDao().findById(weightingId);
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<WeightingWithDateModel>> createCall() {
-                return apiService.createWeighting(weightingModel);
+                WeightingModel model = new WeightingModel(weighting.getWeight(), weighting.getHeight());
+                return service.createWeighting(model);
             }
         }.asLiveData();
     }
 
-    public LiveData<Resource<PagedListModel<WeightingWithDateModel>>> getWeightings() {
-        return new NetworkBoundResource<PagedListModel<WeightingWithDateModel>, PagedListModel<WeightingWithDateModel>>()
+    public LiveData<Resource<List<Weighting>>> getWeightings(int page, int size, String orderBy) {
+        return new NetworkBoundResource<List<Weighting>, List<WeightingEntity>, PagedListModel<WeightingWithDateModel>>(executors, entities -> {
+            return entities.stream()
+                    .map(weightingEntity -> new Weighting(weightingEntity.id, new Date("11/12/99"), weightingEntity.weight, weightingEntity.height)) //TODO ARREGLAR
+                    .collect(toList());
+        },
+                model -> {
+                    return model.getResults().stream()
+                            .map(weightingModel -> new WeightingEntity(weightingModel.getId(), weightingModel.getDate(), weightingModel.getWeight(), weightingModel.getHeight()))
+                            .collect(toList());
+                },
+                model -> {
+                    return model.getResults().stream()
+                            .map(weightingModel -> new Weighting(weightingModel.getId(), weightingModel.getDate(), weightingModel.getWeight(), weightingModel.getHeight()))
+                            .collect(toList());
+                })
         {
+            @Override
+            protected void saveCallResult(@NonNull List<WeightingEntity> entities) {
+                database.weightingDao().delete(size, page * size);
+                database.weightingDao().insert(entities);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<WeightingEntity> entities) {
+                return ((entities == null) || (entities.size() == 0));
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable PagedListModel<WeightingWithDateModel> model) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<WeightingEntity>> loadFromDb() {
+                return database.weightingDao().findAll(size, page * size);
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedListModel<WeightingWithDateModel>>> createCall() {
-                return apiService.getWeightings();
+                return service.getWeightings(page, size, orderBy);
             }
         }.asLiveData();
     }
 
     public LiveData<Resource<Void>> setFavourite(int routineId) {
-        return new NetworkBoundResource<Void, Void>()
+        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, null)
         {
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Void model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
             @NonNull
             @Override
             protected LiveData<ApiResponse<Void>> createCall() {
-                return apiService.setFavourite(routineId);
+                return service.setFavourite(routineId);
             }
         }.asLiveData();
     }
-
+/*
     public LiveData<Resource<PagedListModel<RoutineModel>>> getFavourites() {
         return new NetworkBoundResource<PagedListModel<RoutineModel>, PagedListModel<RoutineModel>>()
         {

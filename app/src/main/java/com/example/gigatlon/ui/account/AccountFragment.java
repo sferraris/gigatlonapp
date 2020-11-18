@@ -51,6 +51,7 @@ public class AccountFragment extends Fragment {
         binding = FragmentAccountBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
