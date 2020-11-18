@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.MyPreferences;
 import com.example.gigatlon.R;
+
 import com.example.gigatlon.databinding.FragmentAccountBinding;
 import com.example.gigatlon.repository.UserRepository;
 import com.example.gigatlon.ui.MainActivity;
@@ -31,6 +32,7 @@ import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
 import com.example.gigatlon.vo.Status;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class AccountFragment extends Fragment {
 
@@ -92,6 +94,13 @@ public class AccountFragment extends Fragment {
                         case SUCCESS:
                             binding.login.setEnabled(true);
                             binding.textAccount.setText(resource.data.getFullName());
+                            Date birthdate = resource.data.getBirthdate();
+                            String s = birthdate.getDate() + "/" + birthdate.getMonth() + "/" + birthdate.getYear();
+                            binding.textDate.setText(s);
+                            binding.textMail.setText(resource.data.getEmail());
+                            binding.textSex.setText(resource.data.getGender());
+
+
                             //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
                             //callback.onLoggedIn();
                             break;

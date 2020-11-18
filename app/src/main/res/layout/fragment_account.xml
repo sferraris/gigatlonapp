@@ -8,17 +8,17 @@
 
     <TextView
         android:id="@+id/text_account"
-        android:layout_width="167dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
-        android:layout_marginTop="124dp"
         android:hint="Name"
         android:textAlignment="center"
         android:textSize="@dimen/account_title_size"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/avatar_account"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/avatar_account" />
 
     <ImageView
         android:id="@+id/avatar_account"

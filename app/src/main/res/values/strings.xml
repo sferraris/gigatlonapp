@@ -45,7 +45,11 @@
     <string name="execute">Execute</string>
     <string name="order_by">"Order by: "</string>
     <string name="log_in">Log In</string>
-
+    <string name="full_name">Full Name</string>
+    <string name="create_account">Don\'t have an account? <a href="to_somewher" >Register now!</a></string>
+    <string name="have_account">Already have an account? <a href="to_somewher" >Log in now!</a></string>
+    <string name="confirm_message">"Thank you for choosing Gigatlon. Press Confirm Email to confirm your email "</string>
+    <string name="cofirm">Confirm email</string>
     <string-array name="brew_array">
         <item>Newest Date</item>
         <item>Oldest Date</item>
