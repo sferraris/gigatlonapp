@@ -77,6 +77,7 @@ public class UserRepository {
         return new User(model.getId(), model.getUsername(), model.getFullName(), model.getGender(), model.getBirthdate(), model.getEmail(), model.getAvatarUrl());
     }
 
+
     private UserWithPasswordModel mapUserDomainToUserWithPassword(User user) {
         return new UserWithPasswordModel(user.getUsername(), user.getPassword(), user.getFullName(), user.getGender(), user.getBirthdate(), user.getEmail(), user.getPhone(), user.getAvatarUrl());
     }
@@ -92,6 +93,11 @@ public class UserRepository {
 
     private Weighting mapWeightingModelToDomain(WeightingWithDateModel model) {
         return new Weighting(model.getId(), model.getDate(), model.getWeight(), model.getHeight());
+    }
+
+
+    private Void mapModelToDomailLogOut (Void aVoid) {
+        return aVoid;
     }
 
     public LiveData<Resource<User>> createUser(User user) {
@@ -161,7 +167,7 @@ public class UserRepository {
     public LiveData<Resource<Void>> logout() {
 
         return new NetworkBoundResource<Void, Void, Void>
-                (executors, null, null, null) {
+                (executors, null, null, this::mapModelToDomailLogOut  ) {
 
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -190,6 +196,8 @@ public class UserRepository {
             }
         }.asLiveData();
     }
+
+
 
     public LiveData<Resource<User>> getCurrentUser() {
         return new NetworkBoundResource<User, UserEntity, UserModel>(executors, this::mapUserEntityToDomain, this::mapUserModelToEntity, this::mapUserModelToDomain)

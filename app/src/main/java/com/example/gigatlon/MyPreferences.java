@@ -18,6 +18,13 @@ public class MyPreferences {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(AUTH_TOKEN, token);
         editor.apply();
+
+    }
+    public void removeToken(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AUTH_TOKEN, null);
+        editor.apply();
+
     }
 
     public String getAuthToken() {

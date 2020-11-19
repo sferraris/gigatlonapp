@@ -56,6 +56,8 @@ public class AccountFragment extends Fragment {
     private AlertDialog dialog;
     private FragmentAccountBinding binding;
     private PopupEditBinding popup_binding;
+    String username;
+
 
 
     public static AccountFragment create() {
@@ -86,56 +88,32 @@ public class AccountFragment extends Fragment {
         RepositoryViewModelFactory viewModelFactory = new RepositoryViewModelFactory(UserRepository.class, application.getUserRepository());
         accountViewModel = new ViewModelProvider(this, viewModelFactory).get(AccountViewModel.class);
 
-        binding.login.setOnClickListener(v -> accountViewModel
-                .login("johndoe", "1234567890")
-                .observe(getViewLifecycleOwner(), resource -> {
-                    switch (resource.status) {
-                        case LOADING:
-                            binding.login.setEnabled(false);
-                            //activity.showProgressBar();
-                            break;
-                        case SUCCESS:
-                            binding.login.setEnabled(true);
-                            application.getPreferences().setAuthToken(resource.data);
-                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                            //callback.onLoggedIn();
-                            break;
-                        case ERROR:
-                            binding.login.setEnabled(true);
-                            //activity.hideProgressBar();
-                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }));
-
-        binding.get.setOnClickListener(v ->
-        {accountViewModel
+        accountViewModel
                 .getCurrentUser()
                 .observe(getViewLifecycleOwner(), resource -> {
                     switch (resource.status) {
                         case LOADING:
-                            binding.login.setEnabled(false);
-                            //activity.showProgressBar();
                             break;
                         case SUCCESS:
-                            binding.login.setEnabled(true);
-                            binding.textAccount.setText(resource.data.getFullName());
-                            Date birthdate = resource.data.getBirthdate();
-                            java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
-                            String s = form.format(birthdate);
-                            binding.textDate.setText(String.format("%s %s", getString(R.string.birthdate), s));
+                            if(resource.data.getFullName() != null) {
+                                binding.textAccount.setText(resource.data.getFullName());
+                            }
+                            if(!resource.data.getBirthdate().equals(new Date(0))) {
+                                Date birthdate = resource.data.getBirthdate();
+                                java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                                String s = form.format(birthdate);
+                                binding.textDate.setText(String.format("%s %s", getString(R.string.birthdate), s));
+                            }else{
+                                binding.textDate.setText(String.format("%s %s", getString(R.string.birthdate), "---"));
+                            }
                             binding.textMail.setText(String.format("%s %s",getString(R.string.mail), resource.data.getEmail()));
+                           username = resource.data.getUsername();
                             int index = getPos(resource.data.getGender());
-
                             binding.textSex.setText(String.format("%s %s",getString(R.string.gender), getResources().getStringArray(R.array.gender)[index]));
                            binding.avatarAccount.setImageResource(Integer.parseInt(resource.data.getAvatarUrl()));
 
-                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                            //callback.onLoggedIn();
                             break;
                         case ERROR:
-                            binding.login.setEnabled(true);
-                            //activity.hideProgressBar();
                             Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
                             break;
                     }
@@ -143,25 +121,27 @@ public class AccountFragment extends Fragment {
     accountViewModel.getCurrentWeighting().observe(getViewLifecycleOwner(), resource -> {
         switch (resource.status) {
             case LOADING:
-                binding.login.setEnabled(false);
-                //activity.showProgressBar();
+
                 break;
             case SUCCESS:
-                binding.login.setEnabled(true);
 
-                binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), resource.data.get(0).getWeight().toString()));
-                binding.textHeight.setText(String.format("%s %s", getString(R.string.height), resource.data.get(0).getHeight().toString()));
-                //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                //callback.onLoggedIn();
+                if(resource.data != null) {
+                    binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), resource.data.get(0).getWeight().toString()));
+                    binding.textHeight.setText(String.format("%s %s", getString(R.string.height), resource.data.get(0).getHeight().toString()));
+                }else{
+                    binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), "---"));
+                    binding.textHeight.setText(String.format("%s %s", getString(R.string.height), "---"));
+                }
                 break;
             case ERROR:
-                binding.login.setEnabled(true);
-                //activity.hideProgressBar();
+
                 Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
                 break;
         }
     });
-        });
+
+
+
 
         binding.editProfile.setOnClickListener(
 
@@ -169,22 +149,12 @@ public class AccountFragment extends Fragment {
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(getContext());
                     popup_binding = PopupEditBinding.inflate(getLayoutInflater());
-                    accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), resource -> {
-                    switch (resource.status) {
-                        case LOADING:
-                            binding.login.setEnabled(false);
-                            //activity.showProgressBar();
-                            break;
-                        case SUCCESS:
+
                             DatePickerDialog.OnDateSetListener onDateSetListener;
 
+                            popup_binding.Name.setText(binding.textAccount.getText().toString());
 
-                            binding.login.setEnabled(true);
-                            popup_binding.Name.setText(resource.data.getFullName());
-                            java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
-                            Date birthdate = resource.data.getBirthdate();
-                            String s = form.format(birthdate);
-                            popup_binding.date.setText(s);
+                            popup_binding.date.setText(binding.textDate.getText().toString().split(": ")[1]);
                             onDateSetListener = new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
@@ -196,7 +166,13 @@ public class AccountFragment extends Fragment {
                             };
                             popup_binding.date.setOnClickListener(g -> {
                                 Calendar cal = Calendar.getInstance();
-                                cal.setTime(birthdate);
+                                Date d = new Date(0);
+                                try {
+                                     d = new SimpleDateFormat("dd/MM/yyyy").parse(binding.textDate.getText().toString().split(": ")[1]);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                cal.setTime(d);
                                 int year = cal.get(Calendar.YEAR);
                                 int month = cal.get(Calendar.MONTH);
                                 int day = cal.get(Calendar.DATE);
@@ -213,8 +189,11 @@ public class AccountFragment extends Fragment {
                             staticAdapter
                                     .setDropDownViewResource(R.layout.spinner_item);
 
+                            String eng = translateToEnglish(binding.textSex.getText().toString().split(" ")[1]);
+
+
                             popup_binding.spinnerGender.setAdapter(staticAdapter);
-                            popup_binding.spinnerGender.setSelection(getPos(resource.data.getGender()));
+                            popup_binding.spinnerGender.setSelection(getPos(eng));
                             popup_binding.spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view,
@@ -230,27 +209,13 @@ public class AccountFragment extends Fragment {
 
                             mViewPager = new ViewPagerAdapter(getContext(), images);
                             popup_binding.viewPager.setAdapter(mViewPager);
-                            accountViewModel.getCurrentWeighting().observe(getViewLifecycleOwner(), r ->{
-                                switch (r.status) {
-                                    case LOADING:
-                                        popup_binding.submitButton.setEnabled(false);
-                                        // Activity.showProgressBar();
-                                        break;
-                                    case SUCCESS:
-                                          popup_binding.submitButton.setEnabled(true);
-                                        popup_binding.height.setText(r.data.get(0).getHeight().toString());
-                                        popup_binding.weight.setText(r.data.get(0).getWeight().toString());
-                                        //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                                        //callback.onLoggedIn();
-                                        break;
-                                    case ERROR:
-                                        binding.login.setEnabled(true);
-                                        //activity.hideProgressBar();
-                                        Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
-                                        break;
-                                }
 
-                            });
+                            popup_binding.submitButton.setEnabled(true);
+                            popup_binding.height.setText(binding.textHeight.getText().toString().split(" ")[1]);
+                            popup_binding.weight.setText(binding.textWeight.getText().toString().split(" ")[1]);
+                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
+                            //callback.onLoggedIn();
+
                             popup_binding.submitButton.setOnClickListener(g -> {
                                 String gender = popup_binding.spinnerGender.getSelectedItem().toString();
                                 String eng_gender = translateToEnglish(gender);
@@ -263,56 +228,41 @@ public class AccountFragment extends Fragment {
                                 }
                                 Log.d("UI_frag", sDate1 + "           " + real_date);
                                 Toast.makeText(application, real_date.toString(), Toast.LENGTH_SHORT).show();
-                                User new_user = new User(resource.data.getUsername(), popup_binding.Name.getText().toString(), eng_gender, real_date, resource.data.getEmail(), String.valueOf(images[popup_binding.viewPager.getCurrentItem()]));
-                                accountViewModel.updateCurrentUser(new_user).observe(getViewLifecycleOwner(), r -> {
-                                    switch (r.status) {
+                                User new_user = new User(username, popup_binding.Name.getText().toString(), eng_gender, real_date, binding.textMail.getText().toString().split(" ")[1], String.valueOf(images[popup_binding.viewPager.getCurrentItem()]));
+                                accountViewModel.updateCurrentUser(new_user).observe(getViewLifecycleOwner(), resource -> {
+                                    switch (resource.status) {
                                         case LOADING:
-                                            //popup_binding.submitButton.setEnabled(false);
-                                            // Activity.showProgressBar();
+                                            // binding.login.setEnabled(false);
+                                            //activity.showProgressBar()
                                             break;
                                         case SUCCESS:
-                                            //  popup_binding.submitButton.setEnabled(true);
-                                            binding.textAccount.setText(r.data.getFullName());
-                                            Date d2 = resource.data.getBirthdate();
-                                            String s2 = form.format(d2);
-                                            binding.textDate.setText(s2);
-                                            binding.textMail.setText(r.data.getEmail());
-                                            binding.textSex.setText(r.data.getGender());
-                                           binding.avatarAccount.setImageResource(Integer.parseInt(r.data.getAvatarUrl()));
+                                           Toast.makeText(application, "SUCCESS!!", Toast.LENGTH_SHORT).show();
 
-                                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                                            //callback.onLoggedIn();
                                             break;
                                         case ERROR:
-                                            binding.login.setEnabled(true);
+                                            // binding.login.setEnabled(true);
                                             //activity.hideProgressBar();
-                                            Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 });
-
                                 Weighting w = new Weighting(Double.valueOf(popup_binding.weight.getText().toString()), Double.valueOf(popup_binding.height.getText().toString()));
-                                accountViewModel.updateWeighting(w).observe(getViewLifecycleOwner(), r -> {
-                                    switch (r.status) {
+                                accountViewModel.updateWeighting(w).observe(getViewLifecycleOwner(), resource ->{
+                                    switch (resource.status) {
                                         case LOADING:
-                                           // popup_binding.submitButton.setEnabled(false);
-                                            // Activity.showProgressBar();
+                                            // binding.login.setEnabled(false);
+                                            //activity.showProgressBar()
                                             break;
                                         case SUCCESS:
-                                            //  popup_binding.submitButton.setEnabled(true);
-                                            binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), r.data.getWeight()));
-                                            binding.textHeight.setText(String.format("%s %s", getString(R.string.height), r.data.getHeight()));
+                                            Toast.makeText(application, "SUCCESS!!", Toast.LENGTH_SHORT).show();
 
-                                            //callback.onLoggedIn();
                                             break;
                                         case ERROR:
-                                            binding.login.setEnabled(true);
+                                            // binding.login.setEnabled(true);
                                             //activity.hideProgressBar();
-                                            Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
                                             break;
                                     }
-
-
                                 });
                                 dialog.dismiss();
 
@@ -324,20 +274,12 @@ public class AccountFragment extends Fragment {
 
 
                             //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                            //callback.onLoggedIn();
-                            break;
-                        case ERROR:
-                            binding.login.setEnabled(true);
-                            dialog.dismiss();
-                            //activity.hideProgressBar();
-                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
-                            break;
-                    }
 
 
 
 
-                });
+
+
 
                     builder.setView(popup_binding.getRoot());
 

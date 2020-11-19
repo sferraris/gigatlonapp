@@ -30,5 +30,7 @@
             android:actionLayout="@layout/fragment_progress"
             android:icon="@drawable/ic_baseline_show_chart_24"
             android:title="@string/menu_progress" />
+
     </group>
+
 </menu>

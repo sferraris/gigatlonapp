@@ -28,6 +28,8 @@ public class RoutineEntity {
     @ColumnInfo(name = "creator")
     public int creator;
 
+    public RoutineEntity(){}
+
     public RoutineEntity(int id, String name, String detail, Date dateCreated, double averageRating, Boolean isPublic, String difficulty, int creator) {
         this.id = id;
         this.name = name;

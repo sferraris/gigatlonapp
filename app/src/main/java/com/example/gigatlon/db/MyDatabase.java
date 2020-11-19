@@ -9,13 +9,14 @@ import com.example.gigatlon.db.dao.MyRoutineDao;
 import com.example.gigatlon.db.dao.RoutineDao;
 import com.example.gigatlon.db.dao.UserDao;
 import com.example.gigatlon.db.dao.WeightingDao;
+import com.example.gigatlon.db.entity.CreatorEntity;
 import com.example.gigatlon.db.entity.FavouriteRoutineEntity;
 import com.example.gigatlon.db.entity.MyRoutineEntity;
 import com.example.gigatlon.db.entity.RoutineEntity;
 import com.example.gigatlon.db.entity.UserEntity;
 import com.example.gigatlon.db.entity.WeightingEntity;
 
-@Database(entities = {UserEntity.class, WeightingEntity.class, RoutineEntity.class, MyRoutineEntity.class, FavouriteRoutineEntity.class, CreatorDao.class}, version = 1)
+@Database(entities = {UserEntity.class, WeightingEntity.class, RoutineEntity.class, MyRoutineEntity.class, FavouriteRoutineEntity.class, CreatorEntity.class}, version = 1)
 public abstract class MyDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract WeightingDao weightingDao();
