@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 
 import com.example.gigatlon.api.model.CredentialsModel;
 import com.example.gigatlon.api.model.PagedListModel;
-import com.example.gigatlon.api.model.RoutineModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;

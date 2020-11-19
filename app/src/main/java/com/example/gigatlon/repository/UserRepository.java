@@ -10,8 +10,10 @@ import androidx.lifecycle.LiveData;
 
 import com.example.gigatlon.api.ApiResponse;
 import com.example.gigatlon.api.ApiUserService;
+import com.example.gigatlon.api.model.CreatorModel;
 import com.example.gigatlon.api.model.CredentialsModel;
 import com.example.gigatlon.api.model.PagedListModel;
+import com.example.gigatlon.api.model.RoutineModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;
@@ -19,8 +21,12 @@ import com.example.gigatlon.api.model.UserWithoutPasswordModel;
 import com.example.gigatlon.api.model.WeightingModel;
 import com.example.gigatlon.api.model.WeightingWithDateModel;
 import com.example.gigatlon.db.MyDatabase;
+import com.example.gigatlon.db.entity.CreatorEntity;
+import com.example.gigatlon.db.entity.FavouriteRoutineEntity;
 import com.example.gigatlon.db.entity.UserEntity;
 import com.example.gigatlon.db.entity.WeightingEntity;
+import com.example.gigatlon.domain.Creator;
+import com.example.gigatlon.domain.Routine;
 import com.example.gigatlon.domain.User;
 import com.example.gigatlon.domain.Weighting;
 import com.example.gigatlon.vo.AbsentLiveData;
@@ -342,60 +348,4 @@ public class UserRepository {
             }
         }.asLiveData();
     }
-
-    public LiveData<Resource<Void>> setFavourite(int routineId) {
-        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, null)
-        {
-            @Override
-            protected void saveCallResult(@NonNull Void entity) {
-
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable Void entity) {
-                return true;
-            }
-
-            @Override
-            protected boolean shouldPersist(@Nullable Void model) {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<Void> loadFromDb() {
-                return AbsentLiveData.create();
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<Void>> createCall() {
-                return service.setFavourite(routineId);
-            }
-        }.asLiveData();
-    }
-/*
-    public LiveData<Resource<PagedListModel<RoutineModel>>> getFavourites() {
-        return new NetworkBoundResource<PagedListModel<RoutineModel>, PagedListModel<RoutineModel>>()
-        {
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<PagedListModel<RoutineModel>>> createCall() {
-                return apiService.getFavourites();
-            }
-        }.asLiveData();
-    }
-
-    public LiveData<Resource<Void>> deleteFavourite(int routineId) {
-        return new NetworkBoundResource<Void, Void>()
-        {
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<Void>> createCall() {
-                return apiService.deleteFavourite(routineId);
-            }
-        }.asLiveData();
-    }
-
- */
 }

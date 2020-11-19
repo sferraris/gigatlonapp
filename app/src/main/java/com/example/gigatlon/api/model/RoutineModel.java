@@ -3,6 +3,8 @@ package com.example.gigatlon.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class RoutineModel {
 
     @SerializedName("id")
@@ -16,7 +18,7 @@ public class RoutineModel {
     private String detail;
     @SerializedName("dateCreated")
     @Expose
-    private Integer dateCreated;
+    private Date dateCreated;
     @SerializedName("averageRating")
     @Expose
     private Integer averageRating;
@@ -36,7 +38,7 @@ public class RoutineModel {
     public RoutineModel() {
     }
 
-    public RoutineModel(Integer id, String name, String detail, Integer dateCreated, Integer averageRating, Boolean isPublic, String difficulty, CreatorModel creatorModel, CategoryModel category) {
+    public RoutineModel(Integer id, String name, String detail, Date dateCreated, Integer averageRating, Boolean isPublic, String difficulty, CreatorModel creatorModel, CategoryModel category) {
         super();
         this.id = id;
         this.name = name;
@@ -73,11 +75,11 @@ public class RoutineModel {
         this.detail = detail;
     }
 
-    public Integer getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Integer dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
