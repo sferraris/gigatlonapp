@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.MyPreferences;
 import com.example.gigatlon.R;
+
 
 import com.example.gigatlon.databinding.FragmentAccountBinding;
 import com.example.gigatlon.databinding.PopupEditBinding;
@@ -53,9 +56,19 @@ public class AccountFragment extends Fragment {
     private AlertDialog dialog;
     private FragmentAccountBinding binding;
     private PopupEditBinding popup_binding;
+
+
     public static AccountFragment create() {
         return new AccountFragment();
     }
+
+    int images[] = {
+            R.mipmap.avatar_pic_1,   R.mipmap.avatar_pic_2, R.mipmap.avatar_pic_3,   R.mipmap.avatar_pic_4,
+            R.mipmap.avatar_pic_5,   R.mipmap.avatar_pic_6, R.mipmap.avatar_pic_7,   R.mipmap.avatar_pic_8,
+            R.mipmap.avatar_pic_9,   R.mipmap.avatar_pic_10, R.mipmap.avatar_pic_11,   R.mipmap.avatar_pic_12,
+
+    };
+    ViewPagerAdapter mViewPager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -115,7 +128,7 @@ public class AccountFragment extends Fragment {
                             int index = getPos(resource.data.getGender());
 
                             binding.textSex.setText(String.format("%s %s",getString(R.string.gender), getResources().getStringArray(R.array.gender)[index]));
-
+                           binding.avatarAccount.setImageResource(Integer.parseInt(resource.data.getAvatarUrl()));
 
                             //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
                             //callback.onLoggedIn();
@@ -135,6 +148,7 @@ public class AccountFragment extends Fragment {
                 break;
             case SUCCESS:
                 binding.login.setEnabled(true);
+
                 binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), resource.data.get(0).getWeight().toString()));
                 binding.textHeight.setText(String.format("%s %s", getString(R.string.height), resource.data.get(0).getHeight().toString()));
                 //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
@@ -152,6 +166,9 @@ public class AccountFragment extends Fragment {
         binding.editProfile.setOnClickListener(
 
                 v ->{
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(getContext());
+                    popup_binding = PopupEditBinding.inflate(getLayoutInflater());
                     accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), resource -> {
                     switch (resource.status) {
                         case LOADING:
@@ -160,9 +177,8 @@ public class AccountFragment extends Fragment {
                             break;
                         case SUCCESS:
                             DatePickerDialog.OnDateSetListener onDateSetListener;
-                            AlertDialog.Builder builder;
-                            builder = new AlertDialog.Builder(getContext());
-                            popup_binding = PopupEditBinding.inflate(getLayoutInflater());
+
+
                             binding.login.setEnabled(true);
                             popup_binding.Name.setText(resource.data.getFullName());
                             java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -184,11 +200,10 @@ public class AccountFragment extends Fragment {
                                 int year = cal.get(Calendar.YEAR);
                                 int month = cal.get(Calendar.MONTH);
                                 int day = cal.get(Calendar.DATE);
-                                DatePickerDialog dialog = new DatePickerDialog(popup_binding.getRoot().getContext(), R.style.My_Date_Picker, onDateSetListener, year, month, day);
+                                DatePickerDialog cal_popup = new DatePickerDialog(popup_binding.getRoot().getContext(), R.style.My_Date_Picker, onDateSetListener, year, month, day);
 
-                                dialog.show();
+                                cal_popup.show();
                             });
-
 
                             ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
                                     .createFromResource(getContext(), R.array.gender,
@@ -213,10 +228,8 @@ public class AccountFragment extends Fragment {
                                 }
                             });
 
-                            builder.setView(popup_binding.getRoot());
-                            dialog = builder.create();
-                            dialog.show();
-
+                            mViewPager = new ViewPagerAdapter(getContext(), images);
+                            popup_binding.viewPager.setAdapter(mViewPager);
                             accountViewModel.getCurrentWeighting().observe(getViewLifecycleOwner(), r ->{
                                 switch (r.status) {
                                     case LOADING:
@@ -250,7 +263,7 @@ public class AccountFragment extends Fragment {
                                 }
                                 Log.d("UI_frag", sDate1 + "           " + real_date);
                                 Toast.makeText(application, real_date.toString(), Toast.LENGTH_SHORT).show();
-                                User new_user = new User(resource.data.getUsername(), popup_binding.Name.getText().toString(), eng_gender, real_date, resource.data.getEmail(), resource.data.getAvatarUrl());
+                                User new_user = new User(resource.data.getUsername(), popup_binding.Name.getText().toString(), eng_gender, real_date, resource.data.getEmail(), String.valueOf(images[popup_binding.viewPager.getCurrentItem()]));
                                 accountViewModel.updateCurrentUser(new_user).observe(getViewLifecycleOwner(), r -> {
                                     switch (r.status) {
                                         case LOADING:
@@ -265,7 +278,8 @@ public class AccountFragment extends Fragment {
                                             binding.textDate.setText(s2);
                                             binding.textMail.setText(r.data.getEmail());
                                             binding.textSex.setText(r.data.getGender());
-                                            dialog.dismiss();
+                                           binding.avatarAccount.setImageResource(Integer.parseInt(r.data.getAvatarUrl()));
+
                                             //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
                                             //callback.onLoggedIn();
                                             break;
@@ -288,6 +302,7 @@ public class AccountFragment extends Fragment {
                                             //  popup_binding.submitButton.setEnabled(true);
                                             binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), r.data.getWeight()));
                                             binding.textHeight.setText(String.format("%s %s", getString(R.string.height), r.data.getHeight()));
+
                                             //callback.onLoggedIn();
                                             break;
                                         case ERROR:
@@ -297,9 +312,15 @@ public class AccountFragment extends Fragment {
                                             break;
                                     }
 
+
                                 });
                                 dialog.dismiss();
+
+
                             });
+
+
+
 
 
                             //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
@@ -318,13 +339,19 @@ public class AccountFragment extends Fragment {
 
                 });
 
-        }
+                    builder.setView(popup_binding.getRoot());
+
+                    dialog = builder.create();
+
+                    dialog.show();
+                }
 
         );
 
 
 
     }
+
 
     private int getPos(String gender){
         Resources res = getResources();

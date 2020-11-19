@@ -88,8 +88,16 @@
             android:id="@+id/action_nav_extended_routine_to_nav_second_execute"
             app:destination="@id/nav_second_execute" />
     </fragment>
+    <fragment
+        android:id="@+id/log_in"
+        android:name="com.example.gigatlon.ui.progress.ProgressFragment"
+        android:label="@string/menu_progress"
+        tools:layout="@layout/activity_login" />
+
     <action
         android:id="@+id/action_global_nav_extended_routine"
         app:destination="@id/nav_extended_routine" />
+
+
 
 </navigation>

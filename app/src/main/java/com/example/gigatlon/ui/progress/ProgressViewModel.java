@@ -1,36 +1,42 @@
 package com.example.gigatlon.ui.progress;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.gigatlon.domain.User;
+import com.example.gigatlon.domain.Weighting;
+import com.example.gigatlon.repository.UserRepository;
+import com.example.gigatlon.viewmodel.RepositoryViewModel;
+import com.example.gigatlon.vo.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgressViewModel extends ViewModel {
+public class ProgressViewModel extends RepositoryViewModel<UserRepository> {
 
-    private MutableLiveData<String> mText;
-    private List<Double> list;
-    private MutableLiveData<List<Double>> mlist;
+    private final LiveData<Resource<User>> user;
 
-    public ProgressViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is progress fragment");
-        list = new ArrayList<>();
-        mlist = new MutableLiveData<>();
-        mlist.setValue(list);
+    public ProgressViewModel(UserRepository userRepository) {
+        super(userRepository);
+        user = getCurrentUser();
+
+
+    }
+    public LiveData<Resource<User>> getCurrentUser() {
+        repository.getCurrentUser();
+        return user;
+    }
+
+    public LiveData<Resource<List<Weighting>>> getCurrentWeighting() {
+        LiveData<Resource<List<Weighting>>> r = repository.getWeightings(0, 5000, "date", "asc");
+        return r;
 
     }
 
-    public void addElement(Double el){
-        list.add(el);
-    }
-
-    public LiveData<List<Double>> getListData(){
-        return mlist;
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<Resource<Weighting>> updateWeighting(Weighting weighting) {
+        return repository.createWeighting(weighting);
     }
 }

@@ -20,8 +20,11 @@ public abstract class WeightingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(List<WeightingEntity> sports);
 
-    @Query("SELECT * FROM Weighting LIMIT :limit OFFSET :offset")
-    public abstract LiveData<List<WeightingEntity>> findAll(int limit, int offset);
+    @Query("SELECT * FROM Weighting ORDER BY id DESC LIMIT :limit OFFSET :offset  " )
+    public abstract LiveData<List<WeightingEntity>> findAllDESC(int limit, int offset);
+
+    @Query("SELECT * FROM Weighting ORDER BY id ASC LIMIT :limit OFFSET :offset  " )
+    public abstract LiveData<List<WeightingEntity>> findAllASC(int limit, int offset);
 
     @Query("SELECT * FROM Weighting WHERE id = :id")
     public abstract LiveData<WeightingEntity> findById(int id);

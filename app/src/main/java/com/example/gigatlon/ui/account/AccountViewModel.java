@@ -1,5 +1,7 @@
 package com.example.gigatlon.ui.account;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -37,7 +39,9 @@ public class AccountViewModel extends RepositoryViewModel<UserRepository> {
     }
 
     public LiveData<Resource<List<Weighting>>> getCurrentWeighting() {
-        return repository.getWeightings(0, 1, "date", "desc");
+        LiveData<Resource<List<Weighting>>> r = repository.getWeightings(0, 1, "date", "desc");
+        //Log.d("UI", r.getValue().data.get(0).getWeight().toString());
+        return r;
     }
 
     public LiveData<Resource<Weighting>> updateWeighting(Weighting weighting) {

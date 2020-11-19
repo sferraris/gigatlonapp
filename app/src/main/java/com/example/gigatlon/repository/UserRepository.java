@@ -36,12 +36,15 @@ import static java.util.stream.Collectors.toList;
 public class UserRepository {
 
     private static final String RATE_LIMITER_GETUSER_KEY = "@@getuser@@";
+    private static final String RATE_LIMITER_GET_WEIGHTING = "@@getweighting@@";
 
     private AppExecutors executors;
     private ApiUserService service;
     private MyDatabase database;
-    private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
-    boolean should_fetch_weight = true;
+    private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.SECONDS);
+    private RateLimiter<String> should_fetch = new RateLimiter<>(10, TimeUnit.SECONDS);
+    boolean shouldFetch = true;
+
 
     public UserRepository(AppExecutors executors, ApiUserService service, MyDatabase database) {
         this.executors = executors;
@@ -248,7 +251,7 @@ public class UserRepository {
     }
 
     public LiveData<Resource<Weighting>> createWeighting(Weighting weighting) {
-        should_fetch_weight = true;
+        shouldFetch = true;
         return new NetworkBoundResource<Weighting, WeightingEntity, WeightingWithDateModel>(executors, this::mapWeightingEntityToDomain, this::mapWeightingModelToEntity, this::mapWeightingModelToDomain)
         {
             int weightingId = 0;
@@ -290,9 +293,10 @@ public class UserRepository {
     }
 
     public LiveData<Resource<List<Weighting>>> getWeightings(int page, int size, String orderBy, String direction) {
+
         return new NetworkBoundResource<List<Weighting>, List<WeightingEntity>, PagedListModel<WeightingWithDateModel>>(executors, entities -> {
             return entities.stream()
-                    .map(weightingEntity -> new Weighting(weightingEntity.id, new Date("11/12/99"), weightingEntity.weight, weightingEntity.height)) //TODO ARREGLAR
+                    .map(weightingEntity -> new Weighting(weightingEntity.id, new Date(), weightingEntity.weight, weightingEntity.height)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {
@@ -314,9 +318,10 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<WeightingEntity> entities) {
-                boolean fetch = ((entities == null) || (entities.size() == 0) || should_fetch_weight);
-                should_fetch_weight = false;
-                return fetch;
+                boolean r = ((entities == null) || (entities.size() == 0) || true);
+                shouldFetch = false;
+                return r;
+
             }
 
             @Override
@@ -327,7 +332,7 @@ public class UserRepository {
             @NonNull
             @Override
             protected LiveData<List<WeightingEntity>> loadFromDb() {
-                return database.weightingDao().findAll(size, page * size);
+                return (direction.equals("asc")) ? database.weightingDao().findAllASC(size, page * size) : database.weightingDao().findAllDESC(size, page * size);
             }
 
             @NonNull
