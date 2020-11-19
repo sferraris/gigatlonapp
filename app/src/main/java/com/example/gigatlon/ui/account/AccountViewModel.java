@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.gigatlon.domain.User;
+import com.example.gigatlon.domain.Weighting;
 import com.example.gigatlon.repository.UserRepository;
 import com.example.gigatlon.viewmodel.RepositoryViewModel;
 import com.example.gigatlon.vo.AbsentLiveData;
@@ -33,5 +34,13 @@ public class AccountViewModel extends RepositoryViewModel<UserRepository> {
 
     public LiveData<Resource<User>> updateCurrentUser(User user) {
         return repository.updateCurrentUser(user);
+    }
+
+    public LiveData<Resource<List<Weighting>>> getCurrentWeighting() {
+        return repository.getWeightings(0, 1, "date", "desc");
+    }
+
+    public LiveData<Resource<Weighting>> updateWeighting(Weighting weighting) {
+        return repository.createWeighting(weighting);
     }
 }

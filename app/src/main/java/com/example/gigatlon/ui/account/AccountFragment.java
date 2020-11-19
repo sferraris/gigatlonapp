@@ -32,6 +32,7 @@ import com.example.gigatlon.R;
 import com.example.gigatlon.databinding.FragmentAccountBinding;
 import com.example.gigatlon.databinding.PopupEditBinding;
 import com.example.gigatlon.domain.User;
+import com.example.gigatlon.domain.Weighting;
 import com.example.gigatlon.repository.UserRepository;
 import com.example.gigatlon.ui.MainActivity;
 import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
@@ -94,7 +95,8 @@ public class AccountFragment extends Fragment {
                     }
                 }));
 
-        binding.get.setOnClickListener(v -> accountViewModel
+        binding.get.setOnClickListener(v ->
+        {accountViewModel
                 .getCurrentUser()
                 .observe(getViewLifecycleOwner(), resource -> {
                     switch (resource.status) {
@@ -124,10 +126,33 @@ public class AccountFragment extends Fragment {
                             Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
                             break;
                     }
-                }));
+                });
+    accountViewModel.getCurrentWeighting().observe(getViewLifecycleOwner(), resource -> {
+        switch (resource.status) {
+            case LOADING:
+                binding.login.setEnabled(false);
+                //activity.showProgressBar();
+                break;
+            case SUCCESS:
+                binding.login.setEnabled(true);
+                binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), resource.data.get(0).getWeight().toString()));
+                binding.textHeight.setText(String.format("%s %s", getString(R.string.height), resource.data.get(0).getHeight().toString()));
+                //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
+                //callback.onLoggedIn();
+                break;
+            case ERROR:
+                binding.login.setEnabled(true);
+                //activity.hideProgressBar();
+                Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                break;
+        }
+    });
+        });
 
         binding.editProfile.setOnClickListener(
-                v->accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), resource -> {
+
+                v ->{
+                    accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), resource -> {
                     switch (resource.status) {
                         case LOADING:
                             binding.login.setEnabled(false);
@@ -143,11 +168,11 @@ public class AccountFragment extends Fragment {
                             java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
                             Date birthdate = resource.data.getBirthdate();
                             String s = form.format(birthdate);
-                           popup_binding.date.setText(s);
+                            popup_binding.date.setText(s);
                             onDateSetListener = new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                                    Log.d("UI", "OnDateSet" + i +"/" + (i1 + 1) + "/" +i2 );
+                                    Log.d("UI", "OnDateSet" + i + "/" + (i1 + 1) + "/" + i2);
                                     String d = i2 + "/" + (i1 + 1) + "/" + i;
                                     popup_binding.date.setText(d);
 
@@ -159,7 +184,7 @@ public class AccountFragment extends Fragment {
                                 int year = cal.get(Calendar.YEAR);
                                 int month = cal.get(Calendar.MONTH);
                                 int day = cal.get(Calendar.DATE);
-                                DatePickerDialog dialog = new DatePickerDialog(popup_binding.getRoot().getContext(), R.style.My_Date_Picker, onDateSetListener, year, month, day );
+                                DatePickerDialog dialog = new DatePickerDialog(popup_binding.getRoot().getContext(), R.style.My_Date_Picker, onDateSetListener, year, month, day);
 
                                 dialog.show();
                             });
@@ -188,50 +213,93 @@ public class AccountFragment extends Fragment {
                                 }
                             });
 
-                           builder.setView(popup_binding.getRoot());
-                           dialog = builder.create();
-                           dialog.show();
-                           popup_binding.submitButton.setOnClickListener(g -> {
-                               String gender = popup_binding.spinnerGender.getSelectedItem().toString();
-                               String eng_gender = translateToEnglish(gender);
-                               String sDate1=popup_binding.date.getText().toString();
-                               Date real_date = new Date();
-                               try {
-                                    real_date=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
-                               } catch (ParseException e) {
-                                  Toast.makeText(application, sDate1,Toast.LENGTH_SHORT).show();
-                               }
-                               Log.d("UI_frag", sDate1 + "           " + real_date);
-                               Toast.makeText(application, real_date.toString(),Toast.LENGTH_SHORT).show();
-                               User new_user = new User( resource.data.getUsername(), popup_binding.Name.getText().toString(), eng_gender, real_date, resource.data.getEmail(), resource.data.getAvatarUrl());
-                               accountViewModel.updateCurrentUser(new_user).observe(getViewLifecycleOwner(), r -> {
-                                   switch (r.status) {
-                                       case LOADING:
-                                           popup_binding.submitButton.setEnabled(false);
-                                          // Activity.showProgressBar();
-                                           break;
-                                       case SUCCESS:
-                                         //  popup_binding.submitButton.setEnabled(true);
-                                           binding.textAccount.setText(r.data.getFullName());
-                                           Date d2 = resource.data.getBirthdate();
-                                           String s2 = form.format(d2);
-                                           binding.textDate.setText(s2);
-                                           binding.textMail.setText(r.data.getEmail());
-                                           binding.textSex.setText(r.data.getGender());
-                                           dialog.dismiss();
-                                           //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-                                           //callback.onLoggedIn();
-                                           break;
-                                       case ERROR:
-                                           binding.login.setEnabled(true);
-                                           //activity.hideProgressBar();
-                                           Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
-                                           break;
-                                   }
-                               });
+                            builder.setView(popup_binding.getRoot());
+                            dialog = builder.create();
+                            dialog.show();
 
-                           });
+                            accountViewModel.getCurrentWeighting().observe(getViewLifecycleOwner(), r ->{
+                                switch (r.status) {
+                                    case LOADING:
+                                        popup_binding.submitButton.setEnabled(false);
+                                        // Activity.showProgressBar();
+                                        break;
+                                    case SUCCESS:
+                                          popup_binding.submitButton.setEnabled(true);
+                                        popup_binding.height.setText(r.data.get(0).getHeight().toString());
+                                        popup_binding.weight.setText(r.data.get(0).getWeight().toString());
+                                        //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
+                                        //callback.onLoggedIn();
+                                        break;
+                                    case ERROR:
+                                        binding.login.setEnabled(true);
+                                        //activity.hideProgressBar();
+                                        Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
 
+                            });
+                            popup_binding.submitButton.setOnClickListener(g -> {
+                                String gender = popup_binding.spinnerGender.getSelectedItem().toString();
+                                String eng_gender = translateToEnglish(gender);
+                                String sDate1 = popup_binding.date.getText().toString();
+                                Date real_date = new Date();
+                                try {
+                                    real_date = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+                                } catch (ParseException e) {
+                                    Toast.makeText(application, sDate1, Toast.LENGTH_SHORT).show();
+                                }
+                                Log.d("UI_frag", sDate1 + "           " + real_date);
+                                Toast.makeText(application, real_date.toString(), Toast.LENGTH_SHORT).show();
+                                User new_user = new User(resource.data.getUsername(), popup_binding.Name.getText().toString(), eng_gender, real_date, resource.data.getEmail(), resource.data.getAvatarUrl());
+                                accountViewModel.updateCurrentUser(new_user).observe(getViewLifecycleOwner(), r -> {
+                                    switch (r.status) {
+                                        case LOADING:
+                                            //popup_binding.submitButton.setEnabled(false);
+                                            // Activity.showProgressBar();
+                                            break;
+                                        case SUCCESS:
+                                            //  popup_binding.submitButton.setEnabled(true);
+                                            binding.textAccount.setText(r.data.getFullName());
+                                            Date d2 = resource.data.getBirthdate();
+                                            String s2 = form.format(d2);
+                                            binding.textDate.setText(s2);
+                                            binding.textMail.setText(r.data.getEmail());
+                                            binding.textSex.setText(r.data.getGender());
+                                            dialog.dismiss();
+                                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
+                                            //callback.onLoggedIn();
+                                            break;
+                                        case ERROR:
+                                            binding.login.setEnabled(true);
+                                            //activity.hideProgressBar();
+                                            Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                });
+
+                                Weighting w = new Weighting(Double.valueOf(popup_binding.weight.getText().toString()), Double.valueOf(popup_binding.height.getText().toString()));
+                                accountViewModel.updateWeighting(w).observe(getViewLifecycleOwner(), r -> {
+                                    switch (r.status) {
+                                        case LOADING:
+                                           // popup_binding.submitButton.setEnabled(false);
+                                            // Activity.showProgressBar();
+                                            break;
+                                        case SUCCESS:
+                                            //  popup_binding.submitButton.setEnabled(true);
+                                            binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), r.data.getWeight()));
+                                            binding.textHeight.setText(String.format("%s %s", getString(R.string.height), r.data.getHeight()));
+                                            //callback.onLoggedIn();
+                                            break;
+                                        case ERROR:
+                                            binding.login.setEnabled(true);
+                                            //activity.hideProgressBar();
+                                            Toast.makeText(application, r.message, Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+
+                                });
+                                dialog.dismiss();
+                            });
 
 
                             //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
@@ -239,13 +307,21 @@ public class AccountFragment extends Fragment {
                             break;
                         case ERROR:
                             binding.login.setEnabled(true);
+                            dialog.dismiss();
                             //activity.hideProgressBar();
                             Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
                             break;
                     }
 
 
-                }));
+
+
+                });
+
+        }
+
+        );
+
 
 
     }

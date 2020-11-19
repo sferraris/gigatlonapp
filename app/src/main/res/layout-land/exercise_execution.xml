@@ -64,6 +64,7 @@
 
     <Button
         android:id="@+id/exer_prev"
+        style="@style/button_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -74,6 +75,7 @@
 
     <Button
         android:id="@+id/exer_next"
+        style="@style/button_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"

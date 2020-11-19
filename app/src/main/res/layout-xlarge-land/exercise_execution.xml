@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="bu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.execute.Execute"
-    >
+    tools:context=".ui.execute.Execute">
 
     <ImageButton
         android:id="@+id/pauseTimer"
@@ -70,6 +69,7 @@
 
     <Button
         android:id="@+id/exer_prev"
+        style="@style/button_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -81,6 +81,7 @@
 
     <Button
         android:id="@+id/exer_next"
+        style="@style/button_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"

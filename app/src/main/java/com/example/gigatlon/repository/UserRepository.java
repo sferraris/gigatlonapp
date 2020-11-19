@@ -41,6 +41,7 @@ public class UserRepository {
     private ApiUserService service;
     private MyDatabase database;
     private RateLimiter<String> rateLimit = new RateLimiter<>(10, TimeUnit.MINUTES);
+    boolean should_fetch_weight = true;
 
     public UserRepository(AppExecutors executors, ApiUserService service, MyDatabase database) {
         this.executors = executors;
@@ -247,9 +248,12 @@ public class UserRepository {
     }
 
     public LiveData<Resource<Weighting>> createWeighting(Weighting weighting) {
+        should_fetch_weight = true;
         return new NetworkBoundResource<Weighting, WeightingEntity, WeightingWithDateModel>(executors, this::mapWeightingEntityToDomain, this::mapWeightingModelToEntity, this::mapWeightingModelToDomain)
         {
             int weightingId = 0;
+
+
 
             @Override
             protected void saveCallResult(@NonNull WeightingEntity entity) {
@@ -285,7 +289,7 @@ public class UserRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<List<Weighting>>> getWeightings(int page, int size, String orderBy) {
+    public LiveData<Resource<List<Weighting>>> getWeightings(int page, int size, String orderBy, String direction) {
         return new NetworkBoundResource<List<Weighting>, List<WeightingEntity>, PagedListModel<WeightingWithDateModel>>(executors, entities -> {
             return entities.stream()
                     .map(weightingEntity -> new Weighting(weightingEntity.id, new Date("11/12/99"), weightingEntity.weight, weightingEntity.height)) //TODO ARREGLAR
@@ -310,7 +314,9 @@ public class UserRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<WeightingEntity> entities) {
-                return ((entities == null) || (entities.size() == 0));
+                boolean fetch = ((entities == null) || (entities.size() == 0) || should_fetch_weight);
+                should_fetch_weight = false;
+                return fetch;
             }
 
             @Override
@@ -327,7 +333,7 @@ public class UserRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<PagedListModel<WeightingWithDateModel>>> createCall() {
-                return service.getWeightings(page, size, orderBy);
+                return service.getWeightings(page, size, orderBy, direction);
             }
         }.asLiveData();
     }

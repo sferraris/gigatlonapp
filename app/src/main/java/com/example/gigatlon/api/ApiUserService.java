@@ -40,7 +40,7 @@ public interface ApiUserService {
     LiveData<ApiResponse<WeightingWithDateModel>> createWeighting(@Body WeightingModel weightingModel);
 
     @GET("user/current/weightings")
-    LiveData<ApiResponse<PagedListModel<WeightingWithDateModel>>> getWeightings(@Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy);
+    LiveData<ApiResponse<PagedListModel<WeightingWithDateModel>>> getWeightings(@Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @POST("user/current/routines/{routineId}/favourites")
     LiveData<ApiResponse<Void>> setFavourite(@Path("routineId") int routineId);

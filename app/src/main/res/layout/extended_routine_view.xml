@@ -89,7 +89,7 @@
     <Button
         android:id="@+id/execute_exer"
         style="@style/button_orange"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/ExecuteRoutine"
