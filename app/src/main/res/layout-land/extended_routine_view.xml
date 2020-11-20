@@ -86,7 +86,7 @@
 
     <RatingBar
         android:id="@+id/ratingRoutine"
-        style="?android:attr/ratingBarStyleIndicator"
+        style="@style/RatingBarSmall"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

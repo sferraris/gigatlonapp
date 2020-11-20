@@ -1,10 +1,8 @@
 package com.example.gigatlon.ui.execute;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.gigatlon.R;
-import com.example.gigatlon.ui.extended_routine.Cycle;
-import com.example.gigatlon.ui.extended_routine.ExtendedRoutineViewModel;
+import com.example.gigatlon.domain.Cycle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +56,9 @@ public class Execute extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         mViewModel =  new ViewModelProvider(this).get(ExecuteViewModel.class);
+        root= inflater.inflate(R.layout.exercise_execution, container, false);
         //Set Data
+        /*
         if(mViewModel.getList().isEmpty()){
             List<String> l = new ArrayList<>();
             l.add("Ex1");
@@ -182,7 +180,7 @@ public class Execute extends Fragment {
 
 
 
-
+*/
         return root;
     }
 
@@ -191,7 +189,7 @@ public class Execute extends Fragment {
         timerRunning = false;
     }
 
-    private void startTimer(){
+    private void startTimer(){ /*
         timer = new CountDownTimer(timeLeft, 1000) {
             @Override
             public void onTick(long l) {
@@ -227,7 +225,7 @@ public class Execute extends Fragment {
                 }
             }
         }.start();
-        timerRunning = true;
+        timerRunning = true;*/
     }
 
     private void finish(){

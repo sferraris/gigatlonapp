@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.gigatlon.ui.extended_routine.Cycle;
+import com.example.gigatlon.domain.Cycle;
 
 import java.util.ArrayList;
 import java.util.List;

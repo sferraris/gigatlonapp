@@ -1,14 +1,12 @@
 package com.example.gigatlon.ui.execute;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,8 +21,7 @@ import android.widget.TextView;
 
 
 import com.example.gigatlon.R;
-
-import com.example.gigatlon.ui.extended_routine.Cycle;
+import com.example.gigatlon.domain.Cycle;
 
 
 import java.util.ArrayList;
@@ -70,7 +67,7 @@ public class second_execute extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
          root = inflater.inflate(R.layout.fragment_second_execute_list, container, false);
-        mViewModel =  new ViewModelProvider(this).get(ExecuteViewModel.class);
+        mViewModel =  new ViewModelProvider(this).get(ExecuteViewModel.class);/*
         if(mViewModel.getList().isEmpty()) {
             List<String> list= new ArrayList<String>();
             list.add("Exer1");
@@ -175,7 +172,7 @@ public class second_execute extends Fragment {
             Navigation.findNavController(root).navigate(R.id.nav_second_execute, bundle);
         });
 
-
+*/
         return root;
     }
 
