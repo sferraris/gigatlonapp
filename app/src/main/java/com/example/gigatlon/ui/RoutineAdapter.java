@@ -90,7 +90,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         public void bindTo(Routine r){
             routineId = r.getId();
             routineName.setText(r.getName());
-            routineCreator.setText(r.getCreator().getUsername());
+            routineCreator.setText(r.getCreator());
             routineDiff.setText(r.getDifficulty());
             itemView.findViewById(R.id.favButton).setOnClickListener(v -> {
                 Context context = routineName.getContext();

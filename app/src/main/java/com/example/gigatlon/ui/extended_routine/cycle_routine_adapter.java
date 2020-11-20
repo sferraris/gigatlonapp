@@ -12,15 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gigatlon.R;
+import com.example.gigatlon.domain.Exercise;
 
 import java.util.List;
 
 public class cycle_routine_adapter extends RecyclerView.Adapter<cycle_routine_adapter.CycleRoutineViewHolder>
 {
 
-    List<String> itemList;
 
-    cycle_routine_adapter(List<String> list){
+    List<Exercise> itemList;
+
+    cycle_routine_adapter(List<Exercise> list){
         this.itemList = list;
     }
 
@@ -40,7 +42,7 @@ public class cycle_routine_adapter extends RecyclerView.Adapter<cycle_routine_ad
     public void onBindViewHolder(@NonNull CycleRoutineViewHolder holder, int position) {
         // Create an instance of the ChildItem
         // class for the given position
-        String cycleName
+        Exercise child
                 = itemList.get(position);
 
         // For the created instance, set title.
@@ -48,12 +50,7 @@ public class cycle_routine_adapter extends RecyclerView.Adapter<cycle_routine_ad
         // the ImageViews because we have
         // provided the source for the images
         // in the layout file itself
-        holder
-                .exerciseName
-                .setText(cycleName);
-        holder.exerciseType.setText("Exercise");
-        holder.duration.setText("Duration: 15s");
-        holder.reps.setText("Repetitions: 2");
+        holder.bindExer(child);
 
     }
 
@@ -79,7 +76,12 @@ public class cycle_routine_adapter extends RecyclerView.Adapter<cycle_routine_ad
             reps = itemView.findViewById(R.id.Reps);
 
 
-
+        }
+        public void bindExer(Exercise exer){
+            exerciseName.setText(exer.getName());
+            exerciseType.setText(exer.getType());
+            duration.setText(String.valueOf(exer.getDuration()));
+            reps.setText(String.valueOf(exer.getRepetitions()));
         }
 
         @Override

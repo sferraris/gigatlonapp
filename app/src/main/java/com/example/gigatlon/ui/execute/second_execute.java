@@ -1,7 +1,6 @@
 package com.example.gigatlon.ui.execute;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
+<<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
 import com.example.gigatlon.databinding.FragmentSecondExecuteListBinding;
 import com.example.gigatlon.databinding.PopupRatingBinding;
 import com.example.gigatlon.domain.Cycle;
@@ -34,6 +33,9 @@ import com.example.gigatlon.ui.MainActivity;
 import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
 
 import com.example.gigatlon.ui.extended_routine.Cycle;
+=======
+import com.example.gigatlon.domain.Cycle;
+>>>>>>> Extended view!
 
 
 import java.util.ArrayList;
@@ -77,9 +79,47 @@ public class second_execute extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+<<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
         binding =  FragmentSecondExecuteListBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
+=======
+         root = inflater.inflate(R.layout.fragment_second_execute_list, container, false);
+        mViewModel =  new ViewModelProvider(this).get(ExecuteViewModel.class);/*
+        if(mViewModel.getList().isEmpty()) {
+            List<String> list= new ArrayList<String>();
+            list.add("Exer1");
+            list.add("Exer2");
+            list.add("exer3");
+            Cycle n = new Cycle("Cycle 1", list);
+            Cycle n1 = new Cycle("Cycle 2", list);
+            Cycle n2 = new Cycle("Cycle 3", list);
+            Cycle n3 = new Cycle("Cycle 4", list);
+            mViewModel.addElement(n);
+            mViewModel.addElement(n1);
+            mViewModel.addElement(n2);
+            mViewModel.addElement(n3);
+
+
+        }
+        mViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<Cycle>>() {
+            @Override
+            public void onChanged(List<Cycle> strings) {
+                adapter = new second_execute_item_adapter(strings.get(current_cycle).getChildItemList());
+                RecyclerView recyclerView = root.findViewById(R.id.second_execute);
+
+
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setNestedScrollingEnabled(false);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+
+                recyclerView.setAdapter(adapter);
+            }
+        });
+        //Get cycle list
+        cycles = mViewModel.getList();
+>>>>>>> Extended view!
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -178,8 +218,13 @@ public class second_execute extends Fragment {
 
 
 
+<<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
 
 
+=======
+*/
+        return root;
+>>>>>>> Extended view!
     }
 
 
