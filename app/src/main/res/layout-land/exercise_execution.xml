@@ -15,7 +15,7 @@
         android:background="@android:color/transparent"
         app:layout_constraintStart_toEndOf="@+id/text_bar"
         app:layout_constraintTop_toBottomOf="@+id/text_bar"
-        app:srcCompat="@drawable/ic_baseline_pause_circle_outline_24" />
+        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24" />
 
     <TextView
         android:id="@+id/ExerCycle"

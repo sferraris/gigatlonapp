@@ -22,16 +22,40 @@ public class ExtendedRoutineViewModel extends ViewModel {
 
 
 
-    public void addElement(Cycle el){
-        list.add(el);
+    public ExtendedRoutineViewModel(RoutineRepository repository) {
+        super(repository);
+        routine = Transformations.switchMap(routineId, routinId -> {
+            if (routinId == null) {
+                return AbsentLiveData.create();
+            } else {
+                return repository.getRoutine(routinId);
+            }
+
+        });
     }
 
-    public List<Cycle> getList(){
+        return routine;
+    }
+
+    public Integer getRoutinId(){
+        return routineId.getValue();
+    }
+
+    public LiveData<Resource<List<Cycle>>> getCycles(){
+        more();
         return list;
     }
     public LiveData<List<Cycle>> getListData(){
         return mlist;
     }
+
+
+
+
+
+
+
+
 
 
 
