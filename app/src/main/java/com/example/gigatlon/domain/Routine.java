@@ -10,7 +10,7 @@ public class Routine {
     private double averageRating;
     private boolean isPublic;
     private String difficulty;
-    private Creator creator;
+    private String creator;
 
     public int getId() {
         return id;
@@ -68,15 +68,15 @@ public class Routine {
         this.difficulty = difficulty;
     }
 
-    public Creator getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Creator creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
-    public Routine(int id, String name, String detail, Date dateCreated, double averageRating, boolean isPublic, String difficulty, Creator creator) {
+    public Routine(int id, String name, String detail, Date dateCreated, double averageRating, boolean isPublic, String difficulty, String creator) {
         this.id = id;
         this.name = name;
         this.detail = detail;

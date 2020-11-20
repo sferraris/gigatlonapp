@@ -65,6 +65,8 @@ public class fragment_logIn  extends Fragment {
                             break;
                     }
                 }));
+
+        binding.createAccount.setOnClickListener(v -> activity.toRegister());
     }
 
     public void setOnLoginListener(OnLoginListener callback) {

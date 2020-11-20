@@ -1,7 +1,5 @@
 package com.example.gigatlon.repository;
 
-import android.icu.text.SimpleDateFormat;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -12,13 +10,12 @@ import com.example.gigatlon.api.model.CreatorModel;
 import com.example.gigatlon.api.model.CycleModel;
 import com.example.gigatlon.api.model.ExerciseModel;
 import com.example.gigatlon.api.model.PagedListModel;
+import com.example.gigatlon.api.model.RatingModel;
 import com.example.gigatlon.api.model.RoutineModel;
 import com.example.gigatlon.db.MyDatabase;
-import com.example.gigatlon.db.entity.CreatorEntity;
 import com.example.gigatlon.db.entity.FavouriteRoutineEntity;
 import com.example.gigatlon.db.entity.MyRoutineEntity;
 import com.example.gigatlon.db.entity.RoutineEntity;
-import com.example.gigatlon.domain.Creator;
 import com.example.gigatlon.domain.Cycle;
 import com.example.gigatlon.domain.Exercise;
 import com.example.gigatlon.domain.Routine;
@@ -27,7 +24,6 @@ import com.example.gigatlon.vo.Resource;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
 
@@ -43,46 +39,32 @@ public class RoutineRepository {
         this.database = database;
     }
 
-    private Creator creatorEntityToDomain(int creatorId) {
-        CreatorEntity entity = database.creatorDao().getById(creatorId);
-        return new Creator(entity.id, entity.username, entity.gender, entity.avatarUrl);
-    }
-
-    private int creatorModelToEntity(CreatorModel model) {
-        database.creatorDao().insert(new CreatorEntity(model.getId(), model.getUsername(), model.getGender(), model.getAvatarUrl()));
-        return model.getId();
-    }
-
-    private Creator creatorModelToDomain(CreatorModel model) {
-        return new Creator(model.getId(), model.getUsername(), model.getGender(), model.getAvatarUrl());
-    }
-
     private Routine mapRoutineEntityToDomain(RoutineEntity entity) {
-        return new Routine(entity.id, entity.name, entity.detail, new Date("11/12/99"), entity.averageRating, entity.isPublic, entity.difficulty, creatorEntityToDomain(entity.creator));
+        return new Routine(entity.id, entity.name, entity.detail, new Date("11/12/99"), entity.averageRating, entity.isPublic, entity.difficulty, entity.creator);
     }
 
     private RoutineEntity mapRoutineModelToEntity(RoutineModel model) {
-        return new RoutineEntity(model.getId(), model.getName(), model.getDetail(), model.getDateCreated(), model.getAverageRating(), model.getIsPublic(), model.getDifficulty(), creatorModelToEntity(model.getCreatorModel()));
+        return new RoutineEntity(model.getId(), model.getName(), model.getDetail(), model.getDateCreated(), model.getAverageRating(), model.getIsPublic(), model.getDifficulty(), model.getCreatorModel().getUsername());
     }
 
     private Routine mapRoutineModelToDomain(RoutineModel model) {
-        return new Routine(model.getId(), model.getName(), model.getDetail(), model.getDateCreated(), model.getAverageRating(), model.getIsPublic(), model.getDifficulty(), creatorModelToDomain(model.getCreatorModel()));
+        return new Routine(model.getId(), model.getName(), model.getDetail(), model.getDateCreated(), model.getAverageRating(), model.getIsPublic(), model.getDifficulty(), model.getCreatorModel().getUsername());
     }
 
     public LiveData<Resource<List<Routine>>> getAll(int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Routine>, List<RoutineEntity>, PagedListModel<RoutineModel>>(executors, entities -> {
             return entities.stream()
-                    .map(routineEntity -> new Routine(routineEntity.id, routineEntity.name, routineEntity.detail, new Date("11/12/99"), routineEntity.averageRating, routineEntity.isPublic, routineEntity.difficulty, creatorEntityToDomain(routineEntity.creator))) //TODO ARREGLAR
+                    .map(routineEntity -> new Routine(routineEntity.id, routineEntity.name, routineEntity.detail, new Date("11/12/99"), routineEntity.averageRating, routineEntity.isPublic, routineEntity.difficulty, routineEntity.creator)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {
                     return model.getResults().stream()
-                            .map(routineModel -> new RoutineEntity(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), creatorModelToEntity(routineModel.getCreatorModel())))
+                            .map(routineModel -> new RoutineEntity(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), routineModel.getCreatorModel().getUsername()))
                             .collect(toList());
                 },
                 model -> {
                     return model.getResults().stream()
-                            .map(routineModel -> new Routine(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), creatorModelToDomain(routineModel.getCreatorModel())))
+                            .map(routineModel -> new Routine(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), routineModel.getCreatorModel().getUsername()))
                             .collect(toList());
                 })
         {
@@ -119,17 +101,17 @@ public class RoutineRepository {
     public LiveData<Resource<List<Routine>>> getMyRoutines(int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Routine>, List<MyRoutineEntity>, PagedListModel<RoutineModel>>(executors, entities -> {
             return entities.stream()
-                    .map(myRoutineEntity -> new Routine(myRoutineEntity.id, myRoutineEntity.name, myRoutineEntity.detail, new Date("11/12/99"), myRoutineEntity.averageRating, myRoutineEntity.isPublic, myRoutineEntity.difficulty, creatorEntityToDomain(myRoutineEntity.creator))) //TODO ARREGLAR
+                    .map(myRoutineEntity -> new Routine(myRoutineEntity.id, myRoutineEntity.name, myRoutineEntity.detail, new Date("11/12/99"), myRoutineEntity.averageRating, myRoutineEntity.isPublic, myRoutineEntity.difficulty, myRoutineEntity.creator)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {
                     return model.getResults().stream()
-                            .map(routineModel -> new MyRoutineEntity(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), creatorModelToEntity(routineModel.getCreatorModel())))
+                            .map(routineModel -> new MyRoutineEntity(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), routineModel.getCreatorModel().getUsername()))
                             .collect(toList());
                 },
                 model -> {
                     return model.getResults().stream()
-                            .map(routineModel -> new Routine(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), creatorModelToDomain(routineModel.getCreatorModel())))
+                            .map(routineModel -> new Routine(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), routineModel.getCreatorModel().getUsername()))
                             .collect(toList());
                 })
         {
@@ -198,17 +180,17 @@ public class RoutineRepository {
     public LiveData<Resource<List<Routine>>> getFavourites(int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Routine>, List<FavouriteRoutineEntity>, PagedListModel<RoutineModel>>(executors, entities -> {
             return entities.stream()
-                    .map(favouriteRoutineEntity -> new Routine(favouriteRoutineEntity.id, favouriteRoutineEntity.name, favouriteRoutineEntity.detail, new Date("11/12/99"), favouriteRoutineEntity.averageRating, favouriteRoutineEntity.isPublic, favouriteRoutineEntity.difficulty, creatorEntityToDomain(favouriteRoutineEntity.creator))) //TODO ARREGLAR
+                    .map(favouriteRoutineEntity -> new Routine(favouriteRoutineEntity.id, favouriteRoutineEntity.name, favouriteRoutineEntity.detail, new Date("11/12/99"), favouriteRoutineEntity.averageRating, favouriteRoutineEntity.isPublic, favouriteRoutineEntity.difficulty, favouriteRoutineEntity.creator)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {
                     return model.getResults().stream()
-                            .map(routineModel -> new FavouriteRoutineEntity(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), creatorModelToEntity(routineModel.getCreatorModel())))
+                            .map(routineModel -> new FavouriteRoutineEntity(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), routineModel.getCreatorModel().getUsername()))
                             .collect(toList());
                 },
                 model -> {
                     return model.getResults().stream()
-                            .map(routineModel -> new Routine(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), creatorModelToDomain(routineModel.getCreatorModel())))
+                            .map(routineModel -> new Routine(routineModel.getId(), routineModel.getName(), routineModel.getDetail(), routineModel.getDateCreated(), routineModel.getAverageRating(), routineModel.getIsPublic(), routineModel.getDifficulty(), routineModel.getCreatorModel().getUsername()))
                             .collect(toList());
                 })
         {
@@ -343,7 +325,7 @@ public class RoutineRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<List<Exercise>>> getCycles(int routineId, int cycleId, int size, int page, String orderBy, String direction) {
+    public LiveData<Resource<List<Exercise>>> getExercises(int routineId, int cycleId, int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Exercise>, Void, PagedListModel<ExerciseModel>>(executors, null, null,
                 model -> {
                     return model.getResults().stream()
@@ -376,6 +358,38 @@ public class RoutineRepository {
             @Override
             protected LiveData<ApiResponse<PagedListModel<ExerciseModel>>> createCall() {
                 return service.getExercises(routineId, cycleId, page, size, orderBy, direction);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<Routine>> setRating(int rating, int routineId) {
+        return new NetworkBoundResource<Routine, Void, RoutineModel>(executors, null, null, this::mapRoutineModelToDomain)
+        {
+            @Override
+            protected void saveCallResult(@NonNull Void entities) {
+
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entities) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable RoutineModel model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<RoutineModel>> createCall() {
+                return service.setRating(routineId, new RatingModel(rating, ""));
             }
         }.asLiveData();
     }

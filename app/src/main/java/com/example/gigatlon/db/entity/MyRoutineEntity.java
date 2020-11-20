@@ -26,11 +26,11 @@ public class MyRoutineEntity {
     @ColumnInfo(name = "difficulty")
     public String difficulty;
     @ColumnInfo(name = "creator")
-    public int creator;
+    public String creator;
 
     public MyRoutineEntity(){}
 
-    public MyRoutineEntity(int id, String name, String detail, Date dateCreated, double averageRating, Boolean isPublic, String difficulty, int creator) {
+    public MyRoutineEntity(int id, String name, String detail, Date dateCreated, double averageRating, Boolean isPublic, String difficulty, String creator) {
         this.id = id;
         this.name = name;
         this.detail = detail;

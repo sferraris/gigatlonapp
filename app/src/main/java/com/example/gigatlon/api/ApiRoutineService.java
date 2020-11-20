@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.example.gigatlon.api.model.CycleModel;
 import com.example.gigatlon.api.model.ExerciseModel;
 import com.example.gigatlon.api.model.PagedListModel;
+import com.example.gigatlon.api.model.RatingModel;
 import com.example.gigatlon.api.model.RoutineModel;
 
 import retrofit2.http.Body;
@@ -39,4 +40,7 @@ public interface ApiRoutineService {
 
     @GET("routines/{routineId}/cycles/{cycleId}/exercises")
     LiveData<ApiResponse<PagedListModel<ExerciseModel>>> getExercises(@Path("routineId") int routineId, @Path("cycleId") int cycleId, @Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy, @Query("direction") String direction);
+
+    @POST("routines/{routineId}/ratings")
+    LiveData<ApiResponse<RoutineModel>> setRating(@Path("routineId") int routineId, @Body RatingModel ratingModel);
 }

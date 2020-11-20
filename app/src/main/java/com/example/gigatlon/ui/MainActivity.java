@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity   {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         build();
-
-
     }
 
     private void onLoggedOut(){
@@ -97,6 +95,12 @@ public class MainActivity extends AppCompatActivity   {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);*/
+    }
+
+    public void toRegister() {
+        setContentView(R.layout.register_account);
+        Toolbar toolbar = findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
     }
 
     private void build(){

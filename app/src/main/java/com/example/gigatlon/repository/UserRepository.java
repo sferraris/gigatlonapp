@@ -1,8 +1,6 @@
 package com.example.gigatlon.repository;
 
 import android.icu.text.SimpleDateFormat;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,10 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.gigatlon.api.ApiResponse;
 import com.example.gigatlon.api.ApiUserService;
-import com.example.gigatlon.api.model.CreatorModel;
 import com.example.gigatlon.api.model.CredentialsModel;
 import com.example.gigatlon.api.model.PagedListModel;
-import com.example.gigatlon.api.model.RoutineModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;
@@ -21,12 +17,8 @@ import com.example.gigatlon.api.model.UserWithoutPasswordModel;
 import com.example.gigatlon.api.model.WeightingModel;
 import com.example.gigatlon.api.model.WeightingWithDateModel;
 import com.example.gigatlon.db.MyDatabase;
-import com.example.gigatlon.db.entity.CreatorEntity;
-import com.example.gigatlon.db.entity.FavouriteRoutineEntity;
 import com.example.gigatlon.db.entity.UserEntity;
 import com.example.gigatlon.db.entity.WeightingEntity;
-import com.example.gigatlon.domain.Creator;
-import com.example.gigatlon.domain.Routine;
 import com.example.gigatlon.domain.User;
 import com.example.gigatlon.domain.Weighting;
 import com.example.gigatlon.vo.AbsentLiveData;
