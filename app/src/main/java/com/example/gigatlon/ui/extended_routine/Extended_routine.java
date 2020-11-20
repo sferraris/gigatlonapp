@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
 import com.example.gigatlon.databinding.ExtendedRoutineViewBinding;
+import com.example.gigatlon.databinding.PopupExecuteBinding;
 import com.example.gigatlon.domain.Cycle;
 import com.example.gigatlon.domain.Routine;
 import com.example.gigatlon.repository.RoutineRepository;
@@ -54,76 +55,7 @@ public class Extended_routine extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = ExtendedRoutineViewBinding.inflate(getLayoutInflater());
         return binding.getRoot();
-    /*
-        mViewModel = new ViewModelProvider(this).get(ExtendedRoutineViewModel.class);
 
-        View root = inflater.inflate(R.layout.extended_routine_view, container, false);
-
-        adapter = new extended_routine_adapter(mViewModel.getList(), getArguments().getInt("id"));
-        Log.d("UI",String.valueOf( getArguments().getInt("id")));
-        mViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<Cycle>>() {
-            @Override
-            public void onChanged(List<Cycle> strings) {
-                adapter = new extended_routine_adapter(strings, getArguments().getInt("id"));
-                RecyclerView recyclerView = root.findViewById(R.id.cycleList);
-
-
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setNestedScrollingEnabled(false);
-
-                recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-
-                recyclerView.setAdapter(adapter);
-            }
-        });
-        if(mViewModel.getList().isEmpty()) {
-            List<String> list= new ArrayList<String>();
-            list.add("Exer1");
-            list.add("Exer2");
-            list.add("exer3");
-            Cycle n = new Cycle("Cycle 1", list);
-            Cycle n1 = new Cycle("Cycle 2", list);
-            Cycle n2 = new Cycle("Cycle 3", list);
-            Cycle n3 = new Cycle("Cycle 4", list);
-            mViewModel.addElement(n);
-            mViewModel.addElement(n1);
-            mViewModel.addElement(n2);
-            mViewModel.addElement(n3);
-
-
-        }
-
-        Bundle bundle = new Bundle();
-        bundle.putInt("RoutineId", 1);
-        bundle.putInt("CycleID", 0);
-        bundle.putInt("ExerId", 0);
-        Button execute =(Button) root.findViewById(R.id.execute_exer);
-        execute.setOnClickListener(v ->{
-
-            AlertDialog.Builder builder;
-            builder = new AlertDialog.Builder(getContext());
-            View popUp = getLayoutInflater().inflate(R.layout.popup_execute, null);
-            builder.setView(popUp);
-            dialog = builder.create();
-
-            dialog.show();
-            Button simple = popUp.findViewById(R.id.simple);
-            Button detailed = popUp.findViewById(R.id.detailed);
-            simple.setOnClickListener(g -> {
-                dialog.dismiss();
-                Navigation.findNavController(v).navigate(R.id.nav_second_execute, bundle);
-            });
-            detailed.setOnClickListener(g -> {
-                dialog.dismiss();
-                Navigation.findNavController(v).navigate(R.id.nav_execute, bundle);
-            });
-
-
-
-        });
-
-
-        return root;*/
 
     }
     @Override
@@ -181,8 +113,34 @@ public class Extended_routine extends Fragment {
 
         binding.cycleList.setAdapter(adapter);
 
+        binding.executeExer.setOnClickListener(v -> {
+
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(getContext());
+            PopupExecuteBinding bindingPopup = PopupExecuteBinding.inflate(getLayoutInflater());
+            builder.setView(bindingPopup.getRoot());
+
+            dialog = builder.create();
+
+            dialog.show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("RoutineId", ViewModel.getRoutinId());
+            bundle.putInt("CycleID", 0);
+            bundle.putInt("ExerId", 0);
+
+            bindingPopup.simple.setOnClickListener(g -> {
+                dialog.dismiss();
+                Navigation.findNavController(v).navigate(R.id.nav_second_execute, bundle);
+            });
+            bindingPopup.detailed.setOnClickListener(g -> {
+                dialog.dismiss();
+                Navigation.findNavController(v).navigate(R.id.nav_execute, bundle);
+            });
+        });
+
 
     }
+
 
 
 

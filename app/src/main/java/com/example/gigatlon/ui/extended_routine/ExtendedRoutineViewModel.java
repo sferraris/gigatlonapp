@@ -37,12 +37,16 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
             } else {
                 return repository.getRoutine(routinId);
             }
+
         });
     }
     public LiveData<Resource<Routine>> getRoutine() {
 
-
         return routine;
+    }
+
+    public Integer getRoutinId(){
+        return routineId.getValue();
     }
 
     public LiveData<Resource<List<Cycle>>> getCycles(){
@@ -74,6 +78,8 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
 
         this.routineId.setValue(routineId);
     }
+
+
 
 
 
