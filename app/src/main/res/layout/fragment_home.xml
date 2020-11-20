@@ -10,7 +10,7 @@
 
 
     <include
-        android:id="@+id/routine_list_id"
+        android:id="@+id/home_list"
         layout="@layout/list_activity"
         android:layout_width="match_parent"
 

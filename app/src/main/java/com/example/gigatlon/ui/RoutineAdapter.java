@@ -6,29 +6,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
+import com.example.gigatlon.domain.Routine;
 
 import java.util.List;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineViewHolder> {
 
 
-    List<String> data;
-    public RoutineAdapter(List<String> data){
+
+    List<Routine> data;
+
+    public RoutineAdapter(List<Routine> data){
         this.data = data;
     }
     ViewGroup parent;
@@ -47,17 +44,13 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
 
 
 
+
+
+
     @Override
     public void onBindViewHolder(@NonNull RoutineViewHolder holder, int position) {
-        String name =data.get(position);
-        holder.routineName.setText(name);
-        holder.routineCreator.setText("By: Micus");
-        holder.routineDiff.setText("Difficulty: Rookie");
-        holder.routineDuration.setText("Duration: 15:05s");
-
-
-
-
+        Routine r =data.get(position);
+        holder.bindTo(r);
 
     }
 
@@ -74,30 +67,42 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         TextView routineDuration;
         TextView routineDiff;
         ImageButton imageButton;
+        private int routineId;
+        RatingBar ratingBar;
+
 
         public RoutineViewHolder(@NonNull View itemView) {
             super(itemView);
-            routineName = itemView.findViewById(R.id.routine_list_item_id);
             itemView.setOnClickListener(this);
+            routineName = itemView.findViewById(R.id.routine_list_item_id);
             routineCreator = itemView.findViewById(R.id.routine_creator);
             routineDuration = itemView.findViewById(R.id.routine_duration);
             routineDiff = itemView.findViewById(R.id.routine_diff);
             imageButton = itemView.findViewWithTag(R.id.favButton);
+            ratingBar = itemView.findViewById(R.id.ratingRoutine);
+
+
+
+
+
+        }
+
+        public void bindTo(Routine r){
+            routineId = r.getId();
+            routineName.setText(r.getName());
+            routineCreator.setText(r.getCreator().getUsername());
+            routineDiff.setText(r.getDifficulty());
             itemView.findViewById(R.id.favButton).setOnClickListener(v -> {
                 Context context = routineName.getContext();
                 String message = context.getResources().getString(R.string.Fav, getAdapterPosition());
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-
-
             });
             itemView.findViewById(R.id.shareButton).setOnClickListener(v -> {
                 Context context = routineName.getContext();
                 Toast.makeText(context, "Clicked Share!!", Toast.LENGTH_SHORT).show();
             });
-
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", getAdapterPosition());
-            itemView.setOnClickListener( Navigation.createNavigateOnClickListener(R.id.nav_extended_routine, bundle));
+            ratingBar.setNumStars(5);
+            ratingBar.setRating((float)r.getAverageRating());
 
 
 
@@ -105,10 +110,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
 
         @Override
         public void onClick(View view) {
-            Context context = routineName.getContext();
-            String message = context.getResources().getString(R.string.Message, getAdapterPosition());
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", routineId);
+           Navigation.findNavController(view).navigate(R.id.nav_extended_routine, bundle);
 
 
         }

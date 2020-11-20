@@ -19,7 +19,7 @@ public interface ApiRoutineService {
     @GET("routines")
     LiveData<ApiResponse<PagedListModel<RoutineModel>>> getAll(@Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
-    @GET("user/current/routines")
+    @GET("user/current/routines/")
     LiveData<ApiResponse<PagedListModel<RoutineModel>>> getMyRoutines(@Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
     @POST("user/current/routines/{routineId}/favourites")
@@ -37,6 +37,6 @@ public interface ApiRoutineService {
     @GET("routines/{routineId}/cycles")
     LiveData<ApiResponse<PagedListModel<CycleModel>>> getCycles(@Path("routineId") int routineId, @Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 
-    @GET("routine/{routineId}/cycles/{cycleId}/exercises")
+    @GET("routines/{routineId}/cycles/{cycleId}/exercises")
     LiveData<ApiResponse<PagedListModel<ExerciseModel>>> getExercises(@Path("routineId") int routineId, @Path("cycleId") int cycleId, @Query("page") int page, @Query("size") int size, @Query("orderBy") String orderBy, @Query("direction") String direction);
 }

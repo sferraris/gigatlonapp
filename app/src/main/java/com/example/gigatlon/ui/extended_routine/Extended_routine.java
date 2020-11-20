@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class Extended_routine extends Fragment {
         View root = inflater.inflate(R.layout.extended_routine_view, container, false);
 
         adapter = new extended_routine_adapter(mViewModel.getList(), getArguments().getInt("id"));
+        Log.d("UI",String.valueOf( getArguments().getInt("id")));
         mViewModel.getListData().observe(getViewLifecycleOwner(), new Observer<List<Cycle>>() {
             @Override
             public void onChanged(List<Cycle> strings) {

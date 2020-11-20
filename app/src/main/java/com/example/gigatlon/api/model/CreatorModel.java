@@ -3,6 +3,8 @@ package com.example.gigatlon.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class CreatorModel {
 
     @SerializedName("id")
@@ -19,15 +21,15 @@ public class CreatorModel {
     private String avatarUrl;
     @SerializedName("dateCreated")
     @Expose
-    private Integer dateCreated;
+    private Date dateCreated;
     @SerializedName("dateLastActive")
     @Expose
-    private Integer dateLastActive;
+    private Date dateLastActive;
 
     public CreatorModel() {
     }
 
-    public CreatorModel(Integer id, String username, String gender, String avatarUrl, Integer dateCreated, Integer dateLastActive) {
+    public CreatorModel(Integer id, String username, String gender, String avatarUrl, Date dateCreated, Date dateLastActive) {
         super();
         this.id = id;
         this.username = username;
@@ -69,19 +71,19 @@ public class CreatorModel {
         this.avatarUrl = avatarUrl;
     }
 
-    public Integer getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Integer dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public Integer getDateLastActive() {
+    public Date getDateLastActive() {
         return dateLastActive;
     }
 
-    public void setDateLastActive(Integer dateLastActive) {
+    public void setDateLastActive(Date dateLastActive) {
         this.dateLastActive = dateLastActive;
     }
 

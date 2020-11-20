@@ -28,7 +28,7 @@
         android:text="@string/RoutineCreator"
         android:textSize="@dimen/routine_data_text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingRoutine" />
 
     <TextView
         android:id="@+id/routine_duration"
@@ -77,7 +77,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RatingBar
-        android:id="@+id/ratingBar2"
+        android:id="@+id/ratingRoutine"
         style="?android:attr/ratingBarStyleIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

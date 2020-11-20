@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.routines.RoutinesFragment"
-    android:id="@+id/list_activity_id3">
+    tools:context=".ui.home.HomeFragment"
+    android:id="@+id/fragment_routine"
+    >
 
 
     <include
-        android:id="@+id/routine_list_id"
+        android:id="@+id/f_routine_list"
         layout="@layout/list_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
