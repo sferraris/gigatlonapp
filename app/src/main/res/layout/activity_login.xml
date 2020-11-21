@@ -7,20 +7,6 @@
     android:id="@+id/drawer_layout"
     >
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Gigatlon.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar2"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-
-            app:popupTheme="@style/Theme.Gigatlon.PopupOverlay" />
-    </com.google.android.material.appbar.AppBarLayout>
-
     <fragment
         android:id="@+id/nav_log_in2"
         android:name="com.example.gigatlon.ui.logIn.fragment_logIn"

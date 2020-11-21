@@ -29,18 +29,6 @@
         android:layout_marginTop="20dp"
         android:text="@string/RoutineCreator"
         android:textSize="@dimen/routine_data_text_size"
-        app:layout_constraintStart_toEndOf="@+id/routine_duration"
-        app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
-
-    <TextView
-        android:id="@+id/routine_duration"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/routine_duration"
-        android:textSize="@dimen/routine_data_text_size"
         app:layout_constraintStart_toEndOf="@+id/routine_diff"
         app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
 

@@ -24,6 +24,9 @@
     <dimen name="account_title_size">40sp</dimen>
     <dimen name="popup_text_size">25sp</dimen>
     <dimen name="progress_height">400dp</dimen>
-    <dimen name="app_name_size">100sp</dimen>
+    <dimen name="app_name_size">50sp</dimen>
     <dimen name="huge_icon_size">200dp</dimen>
+    <dimen name="Gigatlon_login">250dp</dimen>
+    <dimen name="Gigatlon_icon_left">150dp</dimen>
+    <dimen name="Gigatlon_icon_bottom">0dp</dimen>
 </resources>
