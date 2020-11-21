@@ -1,5 +1,6 @@
 package com.example.gigatlon.ui.execute;
 
+import androidx.appcompat.view.menu.MenuView;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +52,7 @@ public class second_execute_item_adapter extends RecyclerView.Adapter<second_exe
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView exerName;
-        public final TextView exerType;
+
         public final TextView exerRep;
         public final TextView exerDur;
 
@@ -59,15 +60,15 @@ public class second_execute_item_adapter extends RecyclerView.Adapter<second_exe
         public ViewHolder(View view) {
             super(view);
             exerName = (TextView) view.findViewById(R.id.exerciseName);
-            exerType = (TextView) view.findViewById(R.id.exerciseType);
+
             exerRep= (TextView) view.findViewById(R.id.Reps);
             exerDur =(TextView) view.findViewById(R.id.Duration);
         }
 
         public void bindata(Exercise exercise){
-            exerName.setText(exercise.getName());
-            exerType.setVisibility(View.INVISIBLE);
-            exerRep.setText(String.valueOf(exercise.getRepetitions()));
+            exerName.setText(String.format("%s %s", itemView.getResources().getString(R.string.exerName),  exercise.getName()));
+
+            exerRep.setText(String.format("%s %s", itemView.getResources().getString(R.string.exerName),String.valueOf(exercise.getRepetitions())));
             exerDur.setVisibility(View.INVISIBLE);
         }
 

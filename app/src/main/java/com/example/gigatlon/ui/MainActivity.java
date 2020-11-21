@@ -15,6 +15,7 @@ import com.example.gigatlon.R;
 import com.example.gigatlon.databinding.ActivityLoginBinding;
 import com.example.gigatlon.databinding.ActivityMainBinding;
 import com.example.gigatlon.repository.UserRepository;
+import com.example.gigatlon.ui.await_confirm.FragmentAwaitConfirm;
 import com.example.gigatlon.ui.home.HomeFragment;
 import com.example.gigatlon.ui.logIn.fragment_logIn;
 import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
@@ -25,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -41,12 +43,15 @@ public class MainActivity extends AppCompatActivity   {
     private AppBarConfiguration mAppBarConfiguration;
     private UserRepository repository;
     private MyApplication application;
+    private ConfrimViewModel model;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          application = (MyApplication)getApplication();
+         model = new ViewModelProvider(this).get(ConfrimViewModel.class);
+
         if(application.getPreferences().getAuthToken() != null){
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -57,19 +62,35 @@ public class MainActivity extends AppCompatActivity   {
         }
         else{
             setContentView(R.layout.activity_login);
-            Toolbar toolbar = findViewById(R.id.toolbar2);
-            setSupportActionBar(toolbar);
+
 
         }
         Intent intent = getIntent();
+
         String action = intent.getAction();
         Uri data = intent.getData();
 
-        if(application.getPreferences().getAuthToken() != null && data != null){
+        if( data != null){
             List<String> path = data.getPathSegments();
             Bundle b= new Bundle();
-            b.putInt("id", Integer.parseInt(path.get(path.size()-1)));
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(Integer.parseInt(path.get(path.size()-2)), b);
+            // .com/confirm/codigo/mail
+            if(path.get(path.size()-3).equals("id")) {
+                if (application.getPreferences().getAuthToken() != null) {
+                    b.putInt("id", Integer.parseInt(path.get(path.size() - 1)));
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(Integer.parseInt(path.get(path.size() - 2)), b);
+                }
+            }else{
+
+                    if(!model.getGood()) {
+                        model.setValues(path.get(path.size() - 2), path.get(path.size() - 1));
+
+                        setContentView(R.layout.activity_confirm);
+
+                }
+
+
+            }
+
         }
 
 
@@ -110,9 +131,20 @@ public class MainActivity extends AppCompatActivity   {
     }
 
     public void toRegister() {
-        setContentView(R.layout.register_account);
-        Toolbar toolbar = findViewById(R.id.toolbar2);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_register);
+
+    }
+
+    public void  toLogIn(){
+       recreate();
+    }
+
+
+
+    public void toAwaitConfirm(){
+
+        setContentView(R.layout.activity_await_confirm);
+
     }
 
     private void build(){

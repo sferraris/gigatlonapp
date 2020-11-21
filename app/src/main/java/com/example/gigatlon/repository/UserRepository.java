@@ -9,11 +9,13 @@ import androidx.lifecycle.LiveData;
 import com.example.gigatlon.api.ApiResponse;
 import com.example.gigatlon.api.ApiUserService;
 import com.example.gigatlon.api.model.CredentialsModel;
+import com.example.gigatlon.api.model.EmailModel;
 import com.example.gigatlon.api.model.PagedListModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;
 import com.example.gigatlon.api.model.UserWithoutPasswordModel;
+import com.example.gigatlon.api.model.VerifyEmailModel;
 import com.example.gigatlon.api.model.WeightingModel;
 import com.example.gigatlon.api.model.WeightingWithDateModel;
 import com.example.gigatlon.db.MyDatabase;
@@ -73,9 +75,19 @@ public class UserRepository {
     private UserWithPasswordModel mapUserDomainToUserWithPassword(User user) {
         return new UserWithPasswordModel(user.getUsername(), user.getPassword(), user.getFullName(), user.getGender(), user.getBirthdate(), user.getEmail(), user.getPhone(), user.getAvatarUrl());
     }
+    private Void mapVoidModelToDomain (Void aVoid) {
+        return aVoid;
+    }
 
     private Weighting mapWeightingEntityToDomain(WeightingEntity entity) {
-        Date d = new Date("11/12/99"); //TODO ARREGLARLO
+        java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        Date d = new Date("11/12/99");
+        try {
+             d = form.parse(entity.date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return new Weighting(entity.id, d, entity.weight, entity.height);
     }
 
@@ -86,6 +98,7 @@ public class UserRepository {
     private Weighting mapWeightingModelToDomain(WeightingWithDateModel model) {
         return new Weighting(model.getId(), model.getDate(), model.getWeight(), model.getHeight());
     }
+
 
 
     private Void mapModelToDomailLogOut (Void aVoid) {
@@ -298,11 +311,86 @@ public class UserRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<Void>> verifyEmail(String email, String code) {
+        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, this::mapVoidModelToDomain)
+        {
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Void model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Void>> createCall() {
+                VerifyEmailModel model = new VerifyEmailModel(email, code);
+                return service.verifyEmail(model);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<Void>> resendEmail(String email) {
+        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, this::mapVoidModelToDomain)
+        {
+            @Override
+            protected void saveCallResult(@NonNull Void entity) {
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Void entity) {
+                return true;
+            }
+
+            @Override
+            protected boolean shouldPersist(@Nullable Void model) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Void> loadFromDb() {
+                return AbsentLiveData.create();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Void>> createCall() {
+                EmailModel model = new EmailModel(email);
+                return service.resendEmail(model);
+            }
+        }.asLiveData();
+    }
+
+    private Date getDate(String da){
+        java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        Date d = new Date("11/12/99");
+        try {
+            d = form.parse(da);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
+
     public LiveData<Resource<List<Weighting>>> getWeightings(int page, int size, String orderBy, String direction) {
 
         return new NetworkBoundResource<List<Weighting>, List<WeightingEntity>, PagedListModel<WeightingWithDateModel>>(executors, entities -> {
             return entities.stream()
-                    .map(weightingEntity -> new Weighting(weightingEntity.id, new Date(), weightingEntity.weight, weightingEntity.height)) //TODO ARREGLAR
+                    .map(weightingEntity -> new Weighting(weightingEntity.id, getDate(weightingEntity.date), weightingEntity.weight, weightingEntity.height)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {

@@ -63,7 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imageView5_l"
         android:layout_width="@dimen/huge_icon_size"
         android:layout_height="@dimen/huge_icon_size"
         android:layout_marginStart="@dimen/Gigatlon_icon_left"

@@ -3,12 +3,14 @@ package com.example.gigatlon.api;
 import androidx.lifecycle.LiveData;
 
 import com.example.gigatlon.api.model.CredentialsModel;
+import com.example.gigatlon.api.model.EmailModel;
 import com.example.gigatlon.api.model.PagedListModel;
 import com.example.gigatlon.api.model.RoutineModel;
 import com.example.gigatlon.api.model.TokenModel;
 import com.example.gigatlon.api.model.UserModel;
 import com.example.gigatlon.api.model.UserWithPasswordModel;
 import com.example.gigatlon.api.model.UserWithoutPasswordModel;
+import com.example.gigatlon.api.model.VerifyEmailModel;
 import com.example.gigatlon.api.model.WeightingModel;
 import com.example.gigatlon.api.model.WeightingWithDateModel;
 
@@ -50,4 +52,11 @@ public interface ApiUserService {
 
     @DELETE("user/current/routines/{routineId}/favourites")
     LiveData<ApiResponse<Void>> deleteFavourite(@Path("routineId") int routineId);
+
+    @POST("user/verify_email")
+    LiveData<ApiResponse<Void>> verifyEmail(@Body VerifyEmailModel verifyEmailModel);
+
+    @POST("user/resend_verification")
+    LiveData<ApiResponse<Void>> resendEmail(@Body EmailModel emailModel);
+
 }

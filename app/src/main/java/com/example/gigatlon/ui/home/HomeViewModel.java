@@ -63,6 +63,28 @@ public class HomeViewModel extends RepositoryViewModel<RoutineRepository> {
 
     }
 
+    public LiveData<Resource<List<Routine>>> filterRoutines(String f, String dir){
+        Filter(f, dir);
+        return routines;
+    }
+    public void Filter(String s, String dir){
+        routinePage = 0;
+
+        routines.addSource(repository.getAll(PAGE_SIZE, routinePage, s, dir), resource -> {
+            if (resource.status == Status.SUCCESS) {
+                if ((resource.data.size() == 0) || (resource.data.size() < PAGE_SIZE))
+                    isLastRutinePage = true;
+
+                routinePage++;
+                allRoutines.clear();
+                allRoutines.addAll(resource.data);
+                routines.setValue(Resource.success(allRoutines));
+            } else if (resource.status == Status.LOADING) {
+                routines.setValue(resource);
+            }
+        });
+    }
+
     public  LiveData<Resource<Routine>> getR(){
         return repository.getRoutine(1);
     }

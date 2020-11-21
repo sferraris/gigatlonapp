@@ -1,5 +1,7 @@
 package com.example.gigatlon.domain;
 
+import com.example.gigatlon.R;
+
 import java.util.Date;
 
 public class User {
@@ -108,7 +110,7 @@ public class User {
         this.birthdate = birthdate;
         this.email = email;
         this.phone = "000000000";
-        this.avatarUrl = "STRING RANDOM"; //TODO STRING RANDOM
+        this.avatarUrl = String.valueOf(R.mipmap.avatar_pic_1); //TODO STRING RANDOM
     }
 
     @Override

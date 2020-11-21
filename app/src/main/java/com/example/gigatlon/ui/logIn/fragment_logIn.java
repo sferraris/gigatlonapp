@@ -18,7 +18,7 @@ import com.example.gigatlon.repository.UserRepository;
 import com.example.gigatlon.ui.MainActivity;
 
 public class fragment_logIn  extends Fragment {
-    private OnLoginListener callback;
+
     private MyApplication application;
     private MainActivity activity;
     private UserRepository userRepository;
@@ -69,11 +69,5 @@ public class fragment_logIn  extends Fragment {
         binding.createAccount.setOnClickListener(v -> activity.toRegister());
     }
 
-    public void setOnLoginListener(OnLoginListener callback) {
-        this.callback = callback;
-    }
 
-    public interface OnLoginListener {
-        void onLoggedIn();
-    }
 }

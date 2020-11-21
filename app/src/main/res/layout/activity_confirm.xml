@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout2"
+    android:id="@+id/drawer_layout"
     >
 
     <fragment
-        android:id="@+id/nav_log_in2"
-        android:name="com.example.gigatlon.ui.logIn.fragment_logIn"
+        android:id="@+id/confirm"
+        android:name="com.example.gigatlon.ui.confirm_email.FragmentConfirmEmail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:label="@string/menu_progress"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/confirm_email" />
 
 </LinearLayout>

@@ -178,7 +178,7 @@ RoutineRepository repository;
             exerciceRecyclerView.setRecycledViewPool(viewPool);
         }
         public void bindCycle(Cycle cycle){
-            cycleName.setText(cycle.getName());
+            cycleName.setText(String.format("%s %s", itemView.getResources().getString(R.string.cycleName),cycle.getName()));
         }
 
         @Override

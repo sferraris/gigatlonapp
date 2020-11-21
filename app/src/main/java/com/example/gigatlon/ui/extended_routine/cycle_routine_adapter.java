@@ -62,7 +62,7 @@ public class cycle_routine_adapter extends RecyclerView.Adapter<cycle_routine_ad
     public class CycleRoutineViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView exerciseName;
-        TextView exerciseType;
+
         TextView duration;
         TextView reps;
 
@@ -71,17 +71,17 @@ public class cycle_routine_adapter extends RecyclerView.Adapter<cycle_routine_ad
         public CycleRoutineViewHolder(@NonNull View itemView) {
             super(itemView);
             exerciseName = itemView.findViewById(R.id.exerciseName);
-            exerciseType = itemView.findViewById(R.id.exerciseType);
+
             duration = itemView.findViewById(R.id.Duration);
             reps = itemView.findViewById(R.id.Reps);
 
 
         }
         public void bindExer(Exercise exer){
-            exerciseName.setText(exer.getName());
-            exerciseType.setText(exer.getType());
-            duration.setText(String.valueOf(exer.getDuration()));
-            reps.setText(String.valueOf(exer.getRepetitions()));
+            exerciseName.setText(String.format("%s %s", itemView.getResources().getString(R.string.exerName),exer.getName()));
+
+            duration.setText(String.format("%s %s", itemView.getResources().getString(R.string.routine_duration),String.valueOf(exer.getDuration())));
+            reps.setText(String.format("%s %s", itemView.getResources().getString(R.string.exerReps), String.valueOf(exer.getRepetitions())));
         }
 
         @Override

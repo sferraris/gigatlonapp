@@ -20,6 +20,7 @@ import android.widget.Button;
 
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.gigatlon.MyApplication;
@@ -89,14 +90,13 @@ public class second_execute extends Fragment {
         routineId = getArguments().getInt("RoutineId");
         //get cycle number from argument
         current_cycle = getArguments().getInt("CycleId");
-        Log.d("UI", String.valueOf(current_cycle));
         mViewModel.setRoutine(routineId);
 
         mViewModel.getCycles().observe(getViewLifecycleOwner(), listResource -> {
             switch (listResource.status){
                 case LOADING:break;
                 case SUCCESS:
-                    binding.ExerCycle.setText(listResource.data.get(current_cycle).getName());
+                    binding.ExerCycle.setText(String.format("%s %s", getResources().getString(R.string.cycleName), listResource.data.get(current_cycle).getName()));
                     mViewModel.getChild(listResource.data.get(current_cycle).getId()).observe(getViewLifecycleOwner(), exer ->{
                         switch (exer.status){
                             case LOADING:break;
@@ -115,9 +115,9 @@ public class second_execute extends Fragment {
                                 }
 
                                 if(current_cycle == listResource.data.size()-1 ){
-                                    binding.exerNext.setText("Exit");
+                                    binding.exerNext.setText(getResources().getString(R.string.exit));
                                 }else{
-                                    binding.exerNext.setText("Next");
+                                    binding.exerNext.setText(getResources().getString(R.string.next));
                                 }
 
                                 binding.exerNext.setOnClickListener(v -> {
@@ -144,7 +144,20 @@ public class second_execute extends Fragment {
                                             finish();
                                         });
                                         binding_pop.exitRate.setOnClickListener(g ->{
-                                            //rate
+
+                                            Integer r = (int) binding_pop.ratingBar.getRating();
+                                            application.getRoutineRepository().setRating(r, routineId).observe(getViewLifecycleOwner(), resource->{
+                                                switch (resource.status){
+                                                    case ERROR:break;
+                                                    case SUCCESS:
+                                                        Toast.makeText(getContext(), getResources().getString(R.string.rating_not_sent), Toast.LENGTH_SHORT);
+                                                        break;
+                                                    case LOADING:
+                                                        Toast.makeText(getContext(), getResources().getString(R.string.rating_sent), Toast.LENGTH_SHORT);
+                                                        break;
+                                                }
+                                            });
+                                            finish();
                                             finish();
                                         });
 

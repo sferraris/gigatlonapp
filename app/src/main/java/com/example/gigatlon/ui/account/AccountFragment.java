@@ -110,11 +110,12 @@ public class AccountFragment extends Fragment {
                            username = resource.data.getUsername();
                             int index = getPos(resource.data.getGender());
                             binding.textSex.setText(String.format("%s %s",getString(R.string.gender), getResources().getStringArray(R.array.gender)[index]));
+
                            binding.avatarAccount.setImageResource(Integer.parseInt(resource.data.getAvatarUrl()));
 
                             break;
                         case ERROR:
-                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(application, getResources().getString(R.string.Error), Toast.LENGTH_SHORT).show();
                             break;
                     }
                 });
@@ -125,7 +126,7 @@ public class AccountFragment extends Fragment {
                 break;
             case SUCCESS:
 
-                if(resource.data != null) {
+                if(!resource.data.isEmpty()) {
                     binding.textWeight.setText(String.format("%s %s", getString(R.string.weight), resource.data.get(0).getWeight().toString()));
                     binding.textHeight.setText(String.format("%s %s", getString(R.string.height), resource.data.get(0).getHeight().toString()));
                 }else{
@@ -135,7 +136,7 @@ public class AccountFragment extends Fragment {
                 break;
             case ERROR:
 
-                Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(application, getResources().getString(R.string.Error), Toast.LENGTH_SHORT).show();
                 break;
         }
     });
@@ -198,7 +199,7 @@ public class AccountFragment extends Fragment {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view,
                                                            int position, long id) {
-                                    Log.v("item", (String) parent.getItemAtPosition(position));
+
                                 }
 
                                 @Override
@@ -236,16 +237,17 @@ public class AccountFragment extends Fragment {
                                             //activity.showProgressBar()
                                             break;
                                         case SUCCESS:
-                                           Toast.makeText(application, "SUCCESS!!", Toast.LENGTH_SHORT).show();
+                                           Toast.makeText(application, getResources().getString(R.string.succes), Toast.LENGTH_SHORT).show();
 
                                             break;
                                         case ERROR:
                                             // binding.login.setEnabled(true);
                                             //activity.hideProgressBar();
-                                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(application, getResources().getString(R.string.errorN), Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 });
+
                                 Weighting w = new Weighting(Double.valueOf(popup_binding.weight.getText().toString()), Double.valueOf(popup_binding.height.getText().toString()));
                                 accountViewModel.updateWeighting(w).observe(getViewLifecycleOwner(), resource ->{
                                     switch (resource.status) {
@@ -254,13 +256,13 @@ public class AccountFragment extends Fragment {
                                             //activity.showProgressBar()
                                             break;
                                         case SUCCESS:
-                                            Toast.makeText(application, "SUCCESS!!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(application,  getResources().getString(R.string.succes), Toast.LENGTH_SHORT).show();
 
                                             break;
                                         case ERROR:
                                             // binding.login.setEnabled(true);
                                             //activity.hideProgressBar();
-                                            Toast.makeText(application, resource.message, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(application,  getResources().getString(R.string.errorN), Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 });
@@ -268,17 +270,6 @@ public class AccountFragment extends Fragment {
 
 
                             });
-
-
-
-
-
-                            //Toast.makeText(application, getString(R.string.operation_success), Toast.LENGTH_SHORT).show();
-
-
-
-
-
 
 
                     builder.setView(popup_binding.getRoot());

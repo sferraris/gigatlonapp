@@ -88,7 +88,7 @@ public class ProgressFragment extends Fragment {
                             binding.graphView.getViewport().setXAxisBoundsManual(true);
                             binding.graphView.getViewport().setMinX(0);
                             binding.graphView.getViewport().setMaxX(listResource.data.size());
-                            binding.graphView.setTitle("Progress");
+                            binding.graphView.setTitle(getResources().getString(R.string.progress));
                             binding.graphView.setTitleTextSize(100);
                             binding.graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
                             binding.graphView.getGridLabelRenderer().setHighlightZeroLines(false);

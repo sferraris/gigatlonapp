@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(tableName = "Routine", indices = {@Index("id")}, primaryKeys = {"id"})
@@ -34,7 +35,9 @@ public class RoutineEntity {
         this.id = id;
         this.name = name;
         this.detail = detail;
-        this.dateCreated = dateCreated.toString();
+        SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+        String s = form.format(dateCreated);
+        this.dateCreated =s;
         this.averageRating = averageRating;
         this.isPublic = isPublic;
         this.difficulty = difficulty;

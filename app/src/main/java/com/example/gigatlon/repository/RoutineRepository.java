@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
 
@@ -34,7 +35,10 @@ public class RoutineRepository {
     private AppExecutors executors;
     private ApiRoutineService service;
     private MyDatabase database;
-
+    private static final String RATE_LIMITER_GETUSER_KEY = "@@getRoutine@@";
+    private RateLimiter<String> should_get = new RateLimiter<>(1, TimeUnit.MINUTES);
+    private static final String RATE_LIMITER_GETUSER_KEY2 = "@@getRoutine2@@";
+    private RateLimiter<String> should_fetch = new RateLimiter<>(1, TimeUnit.MINUTES);
     public RoutineRepository(AppExecutors executors, ApiRoutineService service, MyDatabase database) {
         this.executors = executors;
         this.service = service;
@@ -42,7 +46,7 @@ public class RoutineRepository {
     }
 
     private Routine mapRoutineEntityToDomain(RoutineEntity entity) {
-        return new Routine(entity.id, entity.name, entity.detail, new Date("11/12/99"), entity.averageRating, entity.isPublic, entity.difficulty, entity.creator);
+        return new Routine(entity.id, entity.name, entity.detail, getDate(entity.dateCreated), entity.averageRating, entity.isPublic, entity.difficulty, entity.creator);
     }
 
     private RoutineEntity mapRoutineModelToEntity(RoutineModel model) {
@@ -60,7 +64,7 @@ public class RoutineRepository {
     public LiveData<Resource<List<Routine>>> getAll(int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Routine>, List<RoutineEntity>, PagedListModel<RoutineModel>>(executors, entities -> {
             return entities.stream()
-                    .map(routineEntity -> new Routine(routineEntity.id, routineEntity.name, routineEntity.detail, new Date("11/12/99"), routineEntity.averageRating, routineEntity.isPublic, routineEntity.difficulty, routineEntity.creator)) //TODO ARREGLAR
+                    .map(routineEntity -> new Routine(routineEntity.id, routineEntity.name, routineEntity.detail, getDate(routineEntity.dateCreated), routineEntity.averageRating, routineEntity.isPublic, routineEntity.difficulty, routineEntity.creator)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {
@@ -82,7 +86,7 @@ public class RoutineRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<RoutineEntity> entities) {
-                return ((entities == null) || (entities.size() == 0));
+                return ((entities == null) || (entities.size() == 0)||should_get.shouldFetch(RATE_LIMITER_GETUSER_KEY));
             }
 
             @Override
@@ -93,7 +97,20 @@ public class RoutineRepository {
             @NonNull
             @Override
             protected LiveData<List<RoutineEntity>> loadFromDb() {
-                return database.routineDao().findAll(size, page * size);
+                if(orderBy.equals("averageRating") && direction.equals("asc")){
+                    return database.routineDao().findAvgASC(size, page * size);
+                }
+                if(orderBy.equals("averageRating") && direction.equals("desc")){
+                    return database.routineDao().findAvgDESC(size, page * size);
+                }
+                if(orderBy.equals("date") && direction.equals("asc")){
+                    return database.routineDao().findDateASC(size, page * size);
+                }
+
+                if(orderBy.equals("difficulty") && direction.equals("asc")){
+                    return database.routineDao().findDiffASC(size, page * size);
+                }
+                return database.routineDao().findDateDESC(size, page * size);
             }
 
             @NonNull
@@ -104,10 +121,20 @@ public class RoutineRepository {
         }.asLiveData();
     }
 
+    private Date getDate(String da){
+        java.text.SimpleDateFormat form = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        Date d = new Date("11/12/99");
+        try {
+            d = form.parse(da);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
     public LiveData<Resource<List<Routine>>> getMyRoutines(int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Routine>, List<MyRoutineEntity>, PagedListModel<RoutineModel>>(executors, entities -> {
             return entities.stream()
-                    .map(myRoutineEntity -> new Routine(myRoutineEntity.id, myRoutineEntity.name, myRoutineEntity.detail, new Date("11/12/99"), myRoutineEntity.averageRating, myRoutineEntity.isPublic, myRoutineEntity.difficulty, myRoutineEntity.creator)) //TODO ARREGLAR
+                    .map(myRoutineEntity -> new Routine(myRoutineEntity.id, myRoutineEntity.name, myRoutineEntity.detail, getDate(myRoutineEntity.dateCreated), myRoutineEntity.averageRating, myRoutineEntity.isPublic, myRoutineEntity.difficulty, myRoutineEntity.creator)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {
@@ -129,7 +156,8 @@ public class RoutineRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<MyRoutineEntity> entities) {
-                return ((entities == null) || (entities.size() == 0));
+                return ((entities == null) || (entities.size() == 0) || should_fetch.shouldFetch(RATE_LIMITER_GETUSER_KEY2));
+
             }
 
             @Override
@@ -140,7 +168,22 @@ public class RoutineRepository {
             @NonNull
             @Override
             protected LiveData<List<MyRoutineEntity>> loadFromDb() {
-                return database.myRoutineDao().findAll(size, page * size);
+
+                if(orderBy.equals("averageRating") && direction.equals("asc")){
+                    return database.myRoutineDao().findAvgASC(size, page * size);
+                }
+                if(orderBy.equals("averageRating") && direction.equals("desc")){
+                    return database.myRoutineDao().findAvgDESC(size, page * size);
+                }
+                if(orderBy.equals("date") && direction.equals("asc")){
+                    return database.myRoutineDao().findDateASC(size, page * size);
+                }
+
+                if(orderBy.equals("difficulty") && direction.equals("asc")){
+                    return database.myRoutineDao().findDiffASC(size, page * size);
+                }
+                return database.myRoutineDao().findDateDESC(size, page * size);
+
             }
 
             @NonNull
@@ -186,7 +229,7 @@ public class RoutineRepository {
     public LiveData<Resource<List<Routine>>> getFavourites(int size, int page, String orderBy, String direction) {
         return new NetworkBoundResource<List<Routine>, List<FavouriteRoutineEntity>, PagedListModel<RoutineModel>>(executors, entities -> {
             return entities.stream()
-                    .map(favouriteRoutineEntity -> new Routine(favouriteRoutineEntity.id, favouriteRoutineEntity.name, favouriteRoutineEntity.detail, new Date("11/12/99"), favouriteRoutineEntity.averageRating, favouriteRoutineEntity.isPublic, favouriteRoutineEntity.difficulty, favouriteRoutineEntity.creator)) //TODO ARREGLAR
+                    .map(favouriteRoutineEntity -> new Routine(favouriteRoutineEntity.id, favouriteRoutineEntity.name, favouriteRoutineEntity.detail, getDate(favouriteRoutineEntity.dateCreated), favouriteRoutineEntity.averageRating, favouriteRoutineEntity.isPublic, favouriteRoutineEntity.difficulty, favouriteRoutineEntity.creator)) //TODO ARREGLAR
                     .collect(toList());
         },
                 model -> {

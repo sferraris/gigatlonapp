@@ -110,7 +110,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                                switch (res.status){
                                    case LOADING:break;
                                    case SUCCESS:
-                                       Toast.makeText(parent.getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                                       Toast.makeText(parent.getContext(), holder.itemView.getResources().getString(R.string.fave_bye), Toast.LENGTH_SHORT).show();
                                        holder.setFav(false);
                                             break;
                                    case ERROR:break;
@@ -121,7 +121,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
                                switch (res.status){
                                    case LOADING:break;
                                    case SUCCESS:
-                                       Toast.makeText(parent.getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                                       Toast.makeText(parent.getContext(), holder.itemView.getResources().getString(R.string.fave_good) , Toast.LENGTH_SHORT).show();
                                        holder.setFav(true);
                                        break;
                                    case ERROR:break;
@@ -151,7 +151,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
 
         TextView routineName;
         TextView routineCreator;
-        TextView routineDuration;
+
         TextView routineDiff;
         ImageButton fav;
         ImageButton share;
@@ -164,7 +164,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
             itemView.setOnClickListener(this);
             routineName = itemView.findViewById(R.id.routine_list_item_id);
             routineCreator = itemView.findViewById(R.id.routine_creator);
-            routineDuration = itemView.findViewById(R.id.routine_duration);
+
             routineDiff = itemView.findViewById(R.id.routine_diff);
             this.fav = (ImageButton) itemView.findViewById(R.id.favButton);
             share = itemView.findViewById(R.id.shareButton);
@@ -187,8 +187,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         public void bindTo(Routine r){
             routineId = r.getId();
             routineName.setText(r.getName());
-            routineCreator.setText(r.getCreator());
-            routineDiff.setText(r.getDifficulty());
+            routineCreator.setText(String.format("%s %s", itemView.getResources().getString(R.string.creator),r.getCreator()));
+            routineDiff.setText(String.format("%s %s", itemView.getResources().getString(R.string.routine_diff),r.getDifficulty()));
 
             ratingBar.setNumStars(5);
             ratingBar.setRating((float)r.getAverageRating());

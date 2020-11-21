@@ -76,12 +76,12 @@
         android:textColor="?android:attr/textColorLink"
         android:textSize="@dimen/app_name_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5_l"
+        app:layout_constraintStart_toStartOf="@+id/imageView5_l"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imageView5_l"
         android:layout_width="@dimen/huge_icon_size"
         android:layout_height="@dimen/huge_icon_size"
         android:src="@mipmap/gigatlon_icon_2_foreground"

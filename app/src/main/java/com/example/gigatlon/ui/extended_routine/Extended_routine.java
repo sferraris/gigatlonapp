@@ -75,8 +75,8 @@ public class Extended_routine extends Fragment {
                 case LOADING:break;
                 case SUCCESS:
                     binding.RoutineName.setText(routineResource.data.getName());
-                    binding.routineCreator.setText(routineResource.data.getCreator());
-                    binding.routineDiff.setText(routineResource.data.getDifficulty());
+                    binding.routineCreator.setText(String.format("%s %s", getResources().getString(R.string.creator),routineResource.data.getCreator()));
+                    binding.routineDiff.setText(String.format("%s %s", getResources().getString(R.string.routine_diff),routineResource.data.getDifficulty()));
                     binding.ratingRoutine.setNumStars(5);
                     binding.share.setOnClickListener(v->{
                         Intent sendIntent = new Intent();
@@ -109,7 +109,7 @@ public class Extended_routine extends Fragment {
                                             switch (res.status){
                                                 case LOADING:break;
                                                 case SUCCESS:
-                                                    Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), getResources().getString(R.string.fave_bye), Toast.LENGTH_SHORT).show();
                                                     setFav(false);
                                                     break;
                                                 case ERROR:break;
@@ -120,7 +120,7 @@ public class Extended_routine extends Fragment {
                                             switch (res.status){
                                                 case LOADING:break;
                                                 case SUCCESS:
-                                                    Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), getResources().getString(R.string.fave_good), Toast.LENGTH_SHORT).show();
                                                     setFav(true);
                                                     break;
                                                 case ERROR:break;
@@ -163,7 +163,7 @@ public class Extended_routine extends Fragment {
 
                     break;
                 case ERROR:
-                    Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getResources().getString(R.string.Error), Toast.LENGTH_SHORT).show();
                     break;
             }
         });

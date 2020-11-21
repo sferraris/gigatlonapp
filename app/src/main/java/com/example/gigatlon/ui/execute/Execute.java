@@ -106,12 +106,25 @@ public class Execute extends Fragment {
                        dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
 
-                        //RatingBar ratingBar = popUp.findViewById(R.id.ratingBar);
+
                         binding_pop.exit.setOnClickListener(v -> {
                             finish();
                         });
                         binding_pop.exitRate.setOnClickListener(v ->{
-                            //rate
+                            MyApplication application = (MyApplication) getActivity().getApplication();
+                            Integer r = (int) binding_pop.ratingBar.getRating();
+                            application.getRoutineRepository().setRating(r, routineId).observe(getViewLifecycleOwner(), resource->{
+                                switch (resource.status){
+                                    case ERROR:
+                                        Toast.makeText(getContext(), getResources().getString(R.string.rating_not_sent), Toast.LENGTH_SHORT);
+                                        break;
+                                    case SUCCESS:
+                                        Toast.makeText(getContext(), getResources().getString(R.string.rating_sent), Toast.LENGTH_SHORT);
+                                        break;
+                                    case LOADING:
+                                        break;
+                                }
+                            });
                             finish();
                         });
 
@@ -163,7 +176,7 @@ public class Execute extends Fragment {
             switch (listResource.status){
                 case LOADING:break;
                 case SUCCESS:
-                    binding.ExerCycle.setText(listResource.data.get(cycle).getName());
+                    binding.ExerCycle.setText(String.format("%s %s", getResources().getString(R.string.cycleName), listResource.data.get(cycle).getName()));
                     cantCycles = listResource.data.size()-1;
                     mViewModel.getChild(listResource.data.get(cycle).getId()).observe(getViewLifecycleOwner(), exerResource ->{
                         switch (exerResource.status){
@@ -175,9 +188,9 @@ public class Execute extends Fragment {
                                 if(cycle == cantCycles){
                                     cantLastCycle = exerResource.data.size()-1;
                                 }
-                                binding.Exercise.setText(exerResource.data.get(exerIncycle).getName());
+                                binding.Exercise.setText(String.format("%s %s", getResources().getString(R.string.exerName), exerResource.data.get(exerIncycle).getName()));
                                 binding.exerDetail.setText(exerResource.data.get(exerIncycle).getDetail());
-                                binding.exerReps.setText(String.valueOf(exerResource.data.get(exerIncycle).getRepetitions()));
+                                binding.exerReps.setText(String.format("%s %s", getResources().getString(R.string.exerReps), String.valueOf(exerResource.data.get(exerIncycle).getRepetitions())));
 
                                 mViewModel.setTimerLeft( exerResource.data.get(exerIncycle).getDuration() * 1000, true);
                                timeLeft = mViewModel.getTimerLeft();
@@ -191,10 +204,10 @@ public class Execute extends Fragment {
                                     String s = "Next exer: ";
                                     if(exerIncycle <exerResource.data.size()-1){
 
-                                        binding.nextExer.setText(String.format("%s %s", s, exerResource.data.get(exerIncycle+1).getName()));
+                                        binding.nextExer.setText(String.format("%s %s", getResources().getString(R.string.next_exer), exerResource.data.get(exerIncycle+1).getName()));
                                     }
                                     else {
-                                        binding.nextExer.setText(String.format("%s %s", "Next Cycle", listResource.data.get(cycle+1).getName()));
+                                        binding.nextExer.setText(String.format("%s %s", getResources().getString(R.string.next_cycle), listResource.data.get(cycle+1).getName()));
                                     }
 
                                 }
@@ -257,12 +270,16 @@ public class Execute extends Fragment {
 
 
                                 break;
-                            case ERROR:break;
+                            case ERROR:
+                                Toast.makeText(application, getResources().getString(R.string.Error), Toast.LENGTH_SHORT).show();
+                                break;
                         }
                     });
 
                     break;
-                case ERROR:break;
+                case ERROR:
+                    Toast.makeText(application, getResources().getString(R.string.Error), Toast.LENGTH_SHORT).show();
+                    break;
             }
         });
 

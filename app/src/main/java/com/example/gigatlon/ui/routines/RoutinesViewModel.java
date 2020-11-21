@@ -27,6 +27,7 @@ public class RoutinesViewModel extends RepositoryViewModel<RoutineRepository> {
     private boolean isLastRutinePage = false;
     private final List<Routine> allRoutines = new ArrayList<>();
     private final MediatorLiveData<Resource<List<Routine>>> routines = new MediatorLiveData<>();
+    private final MediatorLiveData<Resource<List<Routine>>> filterR = new MediatorLiveData<>();
     private final MutableLiveData<Integer> routineId = new MutableLiveData<>();
     private final LiveData<Resource<Routine>> routine = null;
     private final MediatorLiveData<Resource<Routine>> addRoutine = new MediatorLiveData<>();
@@ -58,6 +59,29 @@ public class RoutinesViewModel extends RepositoryViewModel<RoutineRepository> {
 
                 allRoutines.addAll(resource.data);
                 routines.setValue(Resource.success(allRoutines));
+            } else if (resource.status == Status.LOADING) {
+                routines.setValue(resource);
+            }
+        });
+    }
+
+
+    public LiveData<Resource<List<Routine>>> filterRoutines(String f, String dir){
+        Filter(f, dir);
+        return routines;
+    }
+    public void Filter(String s, String dir){
+        routinePage = 0;
+
+        routines.addSource(repository.getMyRoutines(PAGE_SIZE, routinePage, s, dir), resource -> {
+            if (resource.status == Status.SUCCESS) {
+                if ((resource.data.size() == 0) || (resource.data.size() < PAGE_SIZE))
+                    isLastRutinePage = true;
+
+                routinePage++;
+                allRoutines.clear();
+                allRoutines.addAll(resource.data);
+                filterR.setValue(Resource.success(allRoutines));
             } else if (resource.status == Status.LOADING) {
                 routines.setValue(resource);
             }

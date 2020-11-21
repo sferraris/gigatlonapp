@@ -24,10 +24,10 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="add">Add</string>
-    <string name="routine_name">Routine Name</string>
+    <string name="routine_name">Routine Name: </string>
     <string name="RoutineCreator">RoutineCreator</string>
-    <string name="routine_duration">Duraiton: 15:05</string>
-    <string name="routine_diff">Difficulty: Rookie</string>
+    <string name="routine_duration">Duraiton: </string>
+    <string name="routine_diff">Difficulty: </string>
     <string name="Message">Clicked Item %1$d!!!</string>
     <string name="Fav">Clicked fave %1$d!!!</string>
     <string name="favebutton">faveButton</string>
@@ -49,6 +49,8 @@
     <string name="create_account">Don\'t have an account? <a href="to_somewher" >Register now!</a></string>
     <string name="have_account">Already have an account? <a href="to_somewher" >Log in now!</a></string>
     <string name="confirm_message">Thank you for choosing Gigatlon. Press Confirm Email to confirm your email</string>
+   <string name="onRegisterd">Thank you for choosing Gigatlon. We have sent you an email to verify your account. If have already confirmed your acount go to Log in or resed verification code</string>
+
     <string name="cofirm">Confirm email</string>
     <string name="full_name_account">\"Full Name: \"</string>
     <string name="birthdate">Birthdate: </string>
@@ -57,6 +59,31 @@
     <string name="weight">Weight: </string>
     <string name="height">Height: </string>
     <string name="swipe_text">Swipe to see more avatars</string>
+    <string name="progress">Progress</string>
+
+    <string name="cycleName">Cycle: </string>
+    <string name="exerName">Exercise: </string>
+    <string name="exerReps">Repetition: </string>
+    <string name="next_exer">Next Exercise: </string>
+    <string name="next_cycle">Next Cycle: </string>
+    <string name="exit">Exit</string>
+    <string name="exAndRate">Exit and Rate</string>
+    <string name="next">Next</string>
+    <string name="creator">Creator: </string>
+
+    <string name="Error">Error while loading data, try again later</string>
+    <string name="errorN">Error while inserting new data</string>
+    <string name="succes">Success</string>
+    <string name="code_sent">Verification code sent</string>
+    <string name="code_not_set">Error sending verification code</string>
+    <string name="account_confirmed">Confirmation successful</string>
+    <string name="account_confirmed_error">Error while verifying your account</string>
+    <string name="rating_sent">Rated</string>
+    <string name="rating_not_sent">Error while rating routine, try again later</string>
+    <string name="fave_good">Added To Favorites</string>
+    <string name="fave_bye">Removed from Favorites</string>
+    <string name="errorReg">Error while registering, check data or try again later</string>
+
 
 
     <string-array name="brew_array">
