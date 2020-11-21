@@ -31,14 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingRoutine" />
 
-        <TextView
-            android:id="@+id/routine_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/routine_duration"
-            android:textSize="@dimen/routine_data_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/routine_creator" />
 
         <TextView
             android:id="@+id/routine_diff"
@@ -46,9 +38,8 @@
             android:layout_height="wrap_content"
             android:text="@string/routine_diff"
             android:textSize="@dimen/routine_data_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/routine_duration" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/routine_creator" />
 
         <ImageButton
             android:id="@+id/favButton"
@@ -58,7 +49,7 @@
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/favebutton"
-            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:src="@drawable/ic_baseline_favorite_24"
             app:layout_constraintBottom_toBottomOf="@+id/routine_list_item_id"
             app:layout_constraintEnd_toStartOf="@+id/shareButton"
             app:layout_constraintTop_toTopOf="@+id/routine_list_item_id" />

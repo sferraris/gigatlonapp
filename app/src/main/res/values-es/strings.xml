@@ -7,7 +7,7 @@
     <string name="menu_favorites">Favoritas</string>
     <string name="menu_progress">Progreso</string>
     <string name="edit_profile">Editar Perfil</string>
-    <string name="prompt_email">Mail</string>
+    <string name="prompt_email">Usuario</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in_short">Iniciar Sesión</string>
     <string name="action_sign_in">Inicia Sesión o Registrate</string>

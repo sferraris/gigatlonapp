@@ -31,17 +31,6 @@
         app:layout_constraintTop_toBottomOf="@+id/ratingRoutine" />
 
     <TextView
-        android:id="@+id/routine_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/routine_duration"
-        android:textSize="@dimen/routine_data_text_size"
-        app:layout_constraintStart_toEndOf="@+id/routine_diff"
-        app:layout_constraintTop_toBottomOf="@+id/routine_creator" />
-
-    <TextView
         android:id="@+id/routine_diff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
