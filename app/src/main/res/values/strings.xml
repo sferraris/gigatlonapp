@@ -13,6 +13,7 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_progress">Progress</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="extended_routine">Extended Routine</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -38,6 +39,25 @@
     <string name="edit_date">Edit Date</string>
     <string name="edit_height">Edit height</string>
     <string name="AddWeight">Add Weight</string>
+    <string name="ExecuteRoutine">Execute</string>
+    <string name="current_cycle">Current Cycle</string>
+    <string name="bar">-</string>
+    <string name="execute">Execute</string>
+    <string name="order_by">"Order by: "</string>
+    <string name="log_in">Log In</string>
+    <string name="full_name">Full Name</string>
+    <string name="create_account">Don\'t have an account? <a href="to_somewher" >Register now!</a></string>
+    <string name="have_account">Already have an account? <a href="to_somewher" >Log in now!</a></string>
+    <string name="confirm_message">Thank you for choosing Gigatlon. Press Confirm Email to confirm your email</string>
+    <string name="cofirm">Confirm email</string>
+    <string name="full_name_account">\"Full Name: \"</string>
+    <string name="birthdate">Birthdate: </string>
+    <string name="gender">Gender: </string>
+    <string name="mail">Email: </string>
+    <string name="weight">Weight: </string>
+    <string name="height">Height: </string>
+    <string name="swipe_text">Swipe to see more avatars</string>
+
 
     <string-array name="brew_array">
         <item>Newest Date</item>
@@ -46,6 +66,12 @@
         <item>Highest Difficulty</item>
         <item>Lowest Rating</item>
         <item>Highest Rating</item>
+    </string-array>
+
+    <string-array name="gender">
+        <item>female</item>
+        <item>male</item>
+        <item>other</item>
     </string-array>
 
 </resources>

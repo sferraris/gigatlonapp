@@ -8,26 +8,28 @@
 
     <TextView
         android:id="@+id/text_account"
-        android:layout_width="167dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
-        android:layout_marginTop="124dp"
+        android:hint="Name"
         android:textAlignment="center"
-        android:textSize="28sp"
+        android:textSize="@dimen/account_title_size"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/avatar_account"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/avatar_account" />
 
     <ImageView
         android:id="@+id/avatar_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="76dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+
+        app:srcCompat="@mipmap/gigatlon_icon_foreground" />
 
     <TextView
         android:id="@+id/text_sex"
@@ -35,6 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
         android:layout_marginTop="60dp"
+        android:hint="Gender"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatar_account" />
 
@@ -43,7 +47,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
+        android:hint="Mail"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_sex" />
 
@@ -52,7 +58,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
+        android:hint="Birthdate"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_mail" />
 
@@ -61,7 +69,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
+        android:hint="weight"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_date" />
 
@@ -70,18 +80,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
+        android:hint="Height"
+        android:textSize="@dimen/standard_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_weight" />
 
     <Button
         android:id="@+id/edit_profile"
+        style="@style/button_orange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/edit_profile"
+        android:textSize="@dimen/button_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_height"
-        app:layout_constraintVertical_bias="0.486"
-        tools:layout_editor_absoluteX="84dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

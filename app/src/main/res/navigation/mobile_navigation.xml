@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.gigatlon.ui.home.HomeFragment"
@@ -34,5 +35,76 @@
         android:name="com.example.gigatlon.ui.progress.ProgressFragment"
         android:label="@string/menu_progress"
         tools:layout="@layout/fragment_progress" />
+
+    <fragment
+        android:id="@+id/nav_second_execute"
+        android:name="com.example.gigatlon.ui.execute.second_execute"
+        android:label="@string/execute"
+        tools:layout="@layout/fragment_second_execute_list" >
+        <action
+            android:id="@+id/action_nav_second_execute_self"
+            app:destination="@id/nav_second_execute" />
+        <argument android:name="cycleId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_execute"
+        android:name="com.example.gigatlon.ui.execute.Execute"
+        android:label="@string/execute"
+        tools:layout="@layout/exercise_execution" >
+        <action
+            android:id="@+id/action_nav_execute_self"
+            app:destination="@id/nav_execute"
+            app:popUpTo="@id/nav_extended_routine"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="RoutineId"
+            app:argType="integer" />
+        <argument
+            android:name="CycleID"
+            app:argType="integer" />
+        <argument
+            android:name="ExerId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_extended_routine"
+        android:name="com.example.gigatlon.ui.extended_routine.Extended_routine"
+        android:label="@string/extended_routine"
+        tools:layout="@layout/extended_routine_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    >
+        <argument
+            android:name="RoutineID"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_nav_extended_routine_to_nav_execute2"
+            app:destination="@id/nav_execute" />
+        <action
+            android:id="@+id/action_nav_extended_routine_to_nav_second_execute"
+            app:destination="@id/nav_second_execute" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_log_in"
+        android:name="com.example.gigatlon.ui.logIn.fragment_logIn"
+        android:label="@string/menu_progress"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="com.example.gigatlon.ui.register.RegisterFragment"
+        android:label="@string/menu_progress"
+        tools:layout="@layout/register_account" />
+
+    <action
+        android:id="@+id/action_global_nav_extended_routine"
+        app:destination="@id/nav_extended_routine" />
+
+
 
 </navigation>

@@ -15,4 +15,28 @@
     <string name="invalid_username">Nombre de usuario inválido</string>
     <string name="invalid_password">La contraseña debe tener más de 5 caracteres</string>
     <string name="login_failed">El inicio de sesión falló</string>
+
+    <string-array name="gender">
+        <item>mujer</item>
+        <item>hombre</item>
+        <item>otro</item>
+    </string-array>
+    <string-array name="brew_array">
+        <item>Fecha Mas Reciente</item>
+        <item>Fecha Mas Antigua </item>
+        <item>Menor Difficultad</item>
+        <item>Mayor Dificultad</item>
+        <item>Menor Putuacion</item>
+        <item>Mayor Puntuacion</item>
+    </string-array>
+
+    <string name="execute">Ejecutar</string>
+    <string name="add">Añadir</string>
+    <string name="routine_name">Nombre Rutina</string>
+    <string name="RoutineCreator">Creador Rutina</string>
+    <string name="Submit">Aplicar cambios</string>
+    <string name="ExecuteRoutine">Ejecutar</string>
+    <string name="birthdate">Fecha de Nacimiento: </string>
+    <string name="gender">Genero: </string>
+    <string name="mail">Correo: </string>
 </resources>

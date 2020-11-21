@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.extended_routine.Extended_routine"
+    >
+
+    <TextView
+        android:id="@+id/RoutineName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RoutineName"
+        android:textAppearance="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+        android:textSize="@dimen/routine_name_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/favButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/routine_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/RoutineCreator"
+        android:textSize="@dimen/routine_data_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingRoutine" />
+
+    <TextView
+        android:id="@+id/routine_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/routine_duration"
+        android:textSize="@dimen/routine_data_text_size"
+        app:layout_constraintStart_toEndOf="@+id/routine_diff"
+        app:layout_constraintTop_toBottomOf="@+id/routine_creator" />
+
+    <TextView
+        android:id="@+id/routine_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/routine_diff"
+        android:textSize="@dimen/routine_data_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/routine_creator" />
+
+    <ImageButton
+        android:id="@+id/favButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/favebutton"
+        android:src="@drawable/ic_baseline_favorite_24"
+        app:layout_constraintBottom_toBottomOf="@+id/RoutineName"
+        app:layout_constraintEnd_toStartOf="@+id/shareButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/shareButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/sharebutton"
+        android:src="@drawable/ic_baseline_share_24"
+        app:layout_constraintBottom_toBottomOf="@+id/RoutineName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RatingBar
+        android:id="@+id/ratingRoutine"
+        style="@style/RatingBarSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:isIndicator="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RoutineName" />
+
+    <Button
+        android:id="@+id/execute_exer"
+        style="@style/button_orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/ExecuteRoutine"
+        android:textSize="@dimen/button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cycleList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:paddingBottom="200dp"
+        android:scrollbars="vertical"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/routine_diff" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
