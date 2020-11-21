@@ -23,7 +23,15 @@ import android.widget.Toast;
 
 import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
+import com.example.gigatlon.databinding.ExerciseExecutionBinding;
+import com.example.gigatlon.databinding.PopupRatingBinding;
 import com.example.gigatlon.domain.Cycle;
+import com.example.gigatlon.domain.Exercise;
+import com.example.gigatlon.repository.RoutineRepository;
+import com.example.gigatlon.ui.MainActivity;
+import com.example.gigatlon.ui.extended_routine.ExtendedRoutineViewModel;
+import com.example.gigatlon.ui.extended_routine.extended_routine_adapter;
+import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,133 +66,8 @@ public class Execute extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = ExerciseExecutionBinding.inflate(getLayoutInflater());
 
-        mViewModel =  new ViewModelProvider(this).get(ExecuteViewModel.class);
-        root= inflater.inflate(R.layout.exercise_execution, container, false);
-        //Set Data
-        /*
-        if(mViewModel.getList().isEmpty()){
-            List<String> l = new ArrayList<>();
-            l.add("Ex1");
-            l.add("EX2");
-            l.add("EX3");
-            Cycle n = new Cycle("n1", l);
-            Cycle n1 = new Cycle("n2", l);
-            Cycle n2 = new Cycle("n3", l);
-            mViewModel.addElement(n);
-            mViewModel.addElement(n1);
-            mViewModel.addElement(n2);
 
-        }
-        //Get cycle list
-        cycles = mViewModel.getList();
-        //Get exer number from argument
-        exerIncycle = getArguments().getInt("ExerId");
-        //get cycle number from argument
-        cycle = getArguments().getInt("CycleId");
-
-
-        //root
-         root= inflater.inflate(R.layout.exercise_execution, container, false);
-
-        //get buttons
-        prev = root.findViewById(R.id.exer_prev);
-        next = root.findViewById(R.id.exer_next);
-        stop = root.findViewById(R.id.pauseTimer);
-        counter = root.findViewById(R.id.exer_remaining_time);
-        //get current cycle
-        Cycle current = cycles.get(cycle);
-        //edit text view
-        TextView cycleName, exerName, reps, nextExer, detail;
-        cycleName = root.findViewById(R.id.ExerCycle);
-        exerName = root.findViewById(R.id.Exercise);
-        reps = root.findViewById(R.id.exer_reps);
-        detail = root.findViewById(R.id.exer_detail);
-        nextExer = root.findViewById(R.id.next_exer);
-        cycleName.setText(current.getParentItemTitle());
-        exerName.setText(current.getChildItemList().get(exerIncycle));
-        reps.setText("Repetition: 10");
-        detail.setText("Este es el detalle de el ejercicio que se esta ejecutando en el momento");
-
-        //check button visibility
-        if(cycle == 0 && exerIncycle==0){
-            prev.setVisibility(View.INVISIBLE);
-        }
-        if(cycle == cycles.size()-1 && exerIncycle == current.getChildItemList().size()-1 ){
-            next.setVisibility(View.INVISIBLE);
-            nextExer.setVisibility(View.INVISIBLE);
-        }else{
-            String s = "Next exer: ";
-            if(exerIncycle < current.getChildItemList().size()-1){
-
-                nextExer.setText(String.format("%s%s", s, current.getChildItemList().get(exerIncycle + 1)));
-            }
-            else {
-                nextExer.setText(String.format("%s%s", s, cycles.get(cycle + 1).getChildItemList().get(0)));
-            }
-
-        }
-
-        //pause action
-        stop.setOnClickListener(v -> {
-            if(timerRunning){
-                pauseTimer();
-                stop.setImageResource(R.drawable.ic_baseline_play_circle_outline_24);
-
-
-            }else {
-                startTimer();
-                stop.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
-            }
-        });
-
-        //next action
-        next.setOnClickListener(v -> {
-            if(exerIncycle < current.getChildItemList().size()-1){
-                exerIncycle++;
-            }
-            else {
-                exerIncycle = 0;
-                cycle++;
-            }
-            timer.cancel();
-
-
-            Bundle bundle = new Bundle();
-            bundle.putInt("ExerId", exerIncycle);
-            bundle.putInt("CycleId", cycle);
-            Navigation.findNavController(root).popBackStack();
-            Navigation.findNavController(root).navigate(R.id.nav_execute, bundle);
-        });
-
-        prev.setOnClickListener(v -> {
-            if(exerIncycle > 0){
-                exerIncycle--;
-            }
-            else {
-                cycle--;
-                exerIncycle = cycles.get(cycle).getChildItemList().size()-1;
-
-            }
-            timer.cancel();
-
-            Bundle bundle = new Bundle();
-            bundle.putInt("ExerId", exerIncycle);
-            bundle.putInt("CycleId", cycle);
-            Navigation.findNavController(root).popBackStack();
-            Navigation.findNavController(root).navigate(R.id.nav_execute, bundle);
-        });
-
-
-
-
-        startTimer();
-
-        updateCountdownText();
-
-
-
-*/
-        return root;
+        return binding.getRoot();
     }
 
     private void pauseTimer(){
@@ -192,7 +75,15 @@ public class Execute extends Fragment {
         timerRunning = false;
     }
 
-    private void startTimer(){ /*
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+        timerRunning = false;
+        mViewModel.setTimerLeft(timeLeft, false);
+    }
+
+    private void startTimer(){
         timer = new CountDownTimer(timeLeft, 1000) {
             @Override
             public void onTick(long l) {

@@ -24,18 +24,24 @@ import android.widget.TextView;
 
 import com.example.gigatlon.MyApplication;
 import com.example.gigatlon.R;
+<<<<<<< HEAD
 <<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
+=======
+>>>>>>> main
 import com.example.gigatlon.databinding.FragmentSecondExecuteListBinding;
 import com.example.gigatlon.databinding.PopupRatingBinding;
 import com.example.gigatlon.domain.Cycle;
 import com.example.gigatlon.repository.RoutineRepository;
 import com.example.gigatlon.ui.MainActivity;
 import com.example.gigatlon.viewmodel.RepositoryViewModelFactory;
+<<<<<<< HEAD
 
 import com.example.gigatlon.ui.extended_routine.Cycle;
 =======
 import com.example.gigatlon.domain.Cycle;
 >>>>>>> Extended view!
+=======
+>>>>>>> main
 
 
 import java.util.ArrayList;
@@ -79,6 +85,7 @@ public class second_execute extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+<<<<<<< HEAD
 <<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
         binding =  FragmentSecondExecuteListBinding.inflate(getLayoutInflater());
         return binding.getRoot();
@@ -120,6 +127,11 @@ public class second_execute extends Fragment {
         //Get cycle list
         cycles = mViewModel.getList();
 >>>>>>> Extended view!
+=======
+        binding =  FragmentSecondExecuteListBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
+    }
+>>>>>>> main
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -221,10 +233,13 @@ public class second_execute extends Fragment {
 <<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
 
 
+<<<<<<< HEAD
 =======
 */
         return root;
 >>>>>>> Extended view!
+=======
+>>>>>>> main
     }
 
 
