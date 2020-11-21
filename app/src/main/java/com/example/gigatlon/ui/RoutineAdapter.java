@@ -1,7 +1,9 @@
 package com.example.gigatlon.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gigatlon.R;
 import com.example.gigatlon.domain.Routine;
+import com.example.gigatlon.repository.RoutineRepository;
+import com.example.gigatlon.vo.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineViewHolder> {
@@ -24,11 +32,44 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
 
 
     List<Routine> data;
-
-    public RoutineAdapter(List<Routine> data){
-        this.data = data;
-    }
+    RoutineRepository repository;
     ViewGroup parent;
+    MediatorLiveData<Resource<List<Routine>>> listFav = new MediatorLiveData<>();
+    List<Routine> favData = new ArrayList<>();
+    private final static int PAGE_SIZE = 500;
+
+
+    public RoutineAdapter(List<Routine> data, RoutineRepository r){
+
+        this.data = data;
+        this.repository = r;
+    }
+
+    public LiveData<Resource<List<Routine>>> getFav(){
+        moreFav();
+        return  listFav;
+    }
+    public void moreFav(){
+        listFav.addSource( repository.getFavourites( PAGE_SIZE, 0, "id", "asc"), r ->{
+            switch (r.status){
+                case LOADING:
+                    //Log.d("UI", "");
+                    break;
+                case SUCCESS:
+                    favData.clear();
+                    favData.addAll(r.data);
+                    listFav.setValue(Resource.success(favData));
+                    break;
+
+                case ERROR:
+                    Log.d("UI", r.message);
+
+            }
+        });
+    }
+
+
+
 
 
     @NonNull
@@ -52,6 +93,52 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         Routine r =data.get(position);
         holder.bindTo(r);
 
+        getFav().observe((LifecycleOwner) parent.getContext(), resource ->{
+            switch (resource.status){
+                case LOADING:
+                    //  Log.d("UI", r.message);
+                    break;
+                case SUCCESS:
+                    if(resource.data.contains(r)){
+                        holder.setFav(true);
+                    }else{
+                       holder.setFav(false);
+                    }
+                    holder.fav.setOnClickListener(v ->{
+                       if( resource.data.contains(r)){
+                           repository.deleteFavourite(r.getId()).observe((LifecycleOwner) parent.getContext(), res ->{
+                               switch (res.status){
+                                   case LOADING:break;
+                                   case SUCCESS:
+                                       Toast.makeText(parent.getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                                       holder.setFav(false);
+                                            break;
+                                   case ERROR:break;
+                               }
+                           });
+                       }else{
+                           repository.setFavourite(r.getId()).observe((LifecycleOwner) parent.getContext(), res ->{
+                               switch (res.status){
+                                   case LOADING:break;
+                                   case SUCCESS:
+                                       Toast.makeText(parent.getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                                       holder.setFav(true);
+                                       break;
+                                   case ERROR:break;
+                               }
+                           });
+                       }
+
+                    });
+
+
+                    break;
+
+                case ERROR:
+                    Log.d("UI", resource.message);
+            }
+        });
+
     }
 
     @Override
@@ -66,7 +153,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         TextView routineCreator;
         TextView routineDuration;
         TextView routineDiff;
-        ImageButton imageButton;
+        ImageButton fav;
+        ImageButton share;
         private int routineId;
         RatingBar ratingBar;
 
@@ -78,35 +166,50 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
             routineCreator = itemView.findViewById(R.id.routine_creator);
             routineDuration = itemView.findViewById(R.id.routine_duration);
             routineDiff = itemView.findViewById(R.id.routine_diff);
-            imageButton = itemView.findViewWithTag(R.id.favButton);
+            this.fav = (ImageButton) itemView.findViewById(R.id.favButton);
+            share = itemView.findViewById(R.id.shareButton);
             ratingBar = itemView.findViewById(R.id.ratingRoutine);
 
 
 
 
-
         }
+        public void setFav(boolean isFav){
+            if(isFav) {
+                fav.setImageResource(R.drawable.ic_baseline_favorite_24);
+            }else{
+                fav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            }
+        }
+
+
 
         public void bindTo(Routine r){
             routineId = r.getId();
             routineName.setText(r.getName());
             routineCreator.setText(r.getCreator());
             routineDiff.setText(r.getDifficulty());
-            itemView.findViewById(R.id.favButton).setOnClickListener(v -> {
-                Context context = routineName.getContext();
-                String message = context.getResources().getString(R.string.Fav, getAdapterPosition());
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-            });
-            itemView.findViewById(R.id.shareButton).setOnClickListener(v -> {
-                Context context = routineName.getContext();
-                Toast.makeText(context, "Clicked Share!!", Toast.LENGTH_SHORT).show();
-            });
+
             ratingBar.setNumStars(5);
             ratingBar.setRating((float)r.getAverageRating());
+            share.setOnClickListener(v->{
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                String id = String.valueOf(R.id.nav_extended_routine);
+                StringBuilder s = new StringBuilder();
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Shared routine");
+                s.append("http://www.example.com/id/").append(id).append("/").append(r.getId());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, s.toString());
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                parent.getContext().startActivity(shareIntent);
+            });
 
 
 
         }
+
 
         @Override
         public void onClick(View view) {

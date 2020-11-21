@@ -55,7 +55,7 @@ public class RoutinesFragment extends Fragment {
         routinesViewModel = new ViewModelProvider(this, viewModelFactory).get(RoutinesViewModel.class);
 
         List<Routine> routines = new ArrayList<>();
-        adapter = new RoutineAdapter(routines);
+        adapter = new RoutineAdapter(routines, application.getRoutineRepository());
         routinesViewModel.getRoutines().observe(getViewLifecycleOwner(), listResource -> {
             switch (listResource.status) {
                 case LOADING:

@@ -15,7 +15,7 @@
         android:textAppearance="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
         android:textSize="@dimen/routine_name_text_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/favButton"
+        app:layout_constraintEnd_toStartOf="@+id/fav"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/routine_creator" />
 
     <ImageButton
-        android:id="@+id/favButton"
+        android:id="@+id/fav"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
@@ -50,11 +50,12 @@
         android:contentDescription="@string/favebutton"
         android:src="@drawable/ic_baseline_favorite_24"
         app:layout_constraintBottom_toBottomOf="@+id/RoutineName"
-        app:layout_constraintEnd_toStartOf="@+id/shareButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/share"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
-        android:id="@+id/shareButton"
+        android:id="@+id/share"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"

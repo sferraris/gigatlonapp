@@ -1,11 +1,13 @@
 package com.example.gigatlon.ui.extended_routine;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -76,8 +78,66 @@ public class Extended_routine extends Fragment {
                     binding.routineCreator.setText(routineResource.data.getCreator());
                     binding.routineDiff.setText(routineResource.data.getDifficulty());
                     binding.ratingRoutine.setNumStars(5);
+                    binding.share.setOnClickListener(v->{
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        String id = String.valueOf(R.id.nav_extended_routine);
+                        StringBuilder s = new StringBuilder();
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Shared routine");
+                        s.append("http://www.example.com/id/").append(id).append("/").append(routineResource.data.getId());
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, s.toString());
+                        sendIntent.setType("text/plain");
 
+                        Intent shareIntent = Intent.createChooser(sendIntent, null);
+                        startActivity(shareIntent);
+                    });
                     binding.ratingRoutine.setRating((float) routineResource.data.getAverageRating());
+                    ViewModel.getFav().observe( getViewLifecycleOwner(), resource ->{
+                        switch (resource.status){
+                            case LOADING:
+                                //  Log.d("UI", r.message);
+                                break;
+                            case SUCCESS:
+                                if(resource.data.contains(routineResource.data)){
+                                    setFav(true);
+                                }else{
+                                    setFav(false);
+                                }
+                                binding.fav.setOnClickListener(v ->{
+                                    if( resource.data.contains(routineResource.data)){
+                                        application.getRoutineRepository().deleteFavourite(routineResource.data.getId()).observe(getViewLifecycleOwner(), res ->{
+                                            switch (res.status){
+                                                case LOADING:break;
+                                                case SUCCESS:
+                                                    Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                                                    setFav(false);
+                                                    break;
+                                                case ERROR:break;
+                                            }
+                                        });
+                                    }else{
+                                        application.getRoutineRepository().setFavourite(routineResource.data.getId()).observe(getViewLifecycleOwner(), res ->{
+                                            switch (res.status){
+                                                case LOADING:break;
+                                                case SUCCESS:
+                                                    Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                                                    setFav(true);
+                                                    break;
+                                                case ERROR:break;
+                                            }
+                                        });
+                                    }
+
+                                });
+
+
+                                break;
+
+                            case ERROR:
+                                Log.d("UI", resource.message);
+                        }
+                    });
+
                     break;
                 case ERROR:break;
             }
@@ -85,6 +145,7 @@ public class Extended_routine extends Fragment {
         List<Cycle> cycles = new ArrayList<>();
         adapter = new extended_routine_adapter(cycles, getArguments().getInt("id"), application.getRoutineRepository());
         ViewModel.setRoutine(getArguments().getInt("id"));
+
         ViewModel.getCycles().observe(getViewLifecycleOwner(), listResource -> {
             switch (listResource.status) {
                 case LOADING:
@@ -139,6 +200,15 @@ public class Extended_routine extends Fragment {
         });
 
 
+
+    }
+
+    private void setFav(boolean isFav){
+        if(isFav){
+            binding.fav.setImageResource(R.drawable.ic_baseline_favorite_24);
+        }else{
+            binding.fav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        }
     }
 
 
