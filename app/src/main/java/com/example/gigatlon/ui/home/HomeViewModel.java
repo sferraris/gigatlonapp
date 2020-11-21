@@ -44,7 +44,7 @@ public class HomeViewModel extends RepositoryViewModel<RoutineRepository> {
         if (isLastRutinePage)
             return;
 
-        routines.addSource(repository.getMyRoutines(PAGE_SIZE, routinePage, "dateCreated", "asc"), resource -> {
+        routines.addSource(repository.getAll(PAGE_SIZE, routinePage, "dateCreated", "asc"), resource -> {
             if (resource.status == Status.SUCCESS) {
                 if ((resource.data.size() == 0) || (resource.data.size() < PAGE_SIZE))
                     isLastRutinePage = true;

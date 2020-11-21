@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 
 
         List<Routine> routines = new ArrayList<>();
-        adapter = new RoutineAdapter(routines);
+        adapter = new RoutineAdapter(routines, application.getRoutineRepository());
         homeViewModel.getRoutines().observe(getViewLifecycleOwner(), listResource -> {
             switch (listResource.status) {
                 case LOADING:

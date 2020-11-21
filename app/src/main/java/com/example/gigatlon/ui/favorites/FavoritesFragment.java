@@ -59,7 +59,7 @@ public class FavoritesFragment extends Fragment {
         favoritesViewModel = new ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel.class);
 
         List<Routine> routines = new ArrayList<>();
-        adapter = new RoutineAdapter(routines);
+        adapter = new RoutineAdapter(routines, application.getRoutineRepository());
         favoritesViewModel.getRoutines().observe(getViewLifecycleOwner(), listResource -> {
             switch (listResource.status) {
                 case LOADING:

@@ -22,6 +22,8 @@ import com.example.gigatlon.domain.Routine;
 import com.example.gigatlon.vo.AbsentLiveData;
 import com.example.gigatlon.vo.Resource;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +51,10 @@ public class RoutineRepository {
 
     private Routine mapRoutineModelToDomain(RoutineModel model) {
         return new Routine(model.getId(), model.getName(), model.getDetail(), model.getDateCreated(), model.getAverageRating(), model.getIsPublic(), model.getDifficulty(), model.getCreatorModel().getUsername());
+    }
+
+    private Void mapModelToDomainVoid(Void avoid){
+        return avoid;
     }
 
     public LiveData<Resource<List<Routine>>> getAll(int size, int page, String orderBy, String direction) {
@@ -146,7 +152,7 @@ public class RoutineRepository {
     }
 
     public LiveData<Resource<Void>> setFavourite(int routineId) {
-        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, null)
+        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, this::mapModelToDomainVoid)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
@@ -202,12 +208,13 @@ public class RoutineRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<FavouriteRoutineEntity> entities) {
-                return ((entities == null) || (entities.size() == 0));
+               // return ((entities == null) || (entities.size() == 0));
+                return true;
             }
 
             @Override
             protected boolean shouldPersist(@Nullable PagedListModel<RoutineModel> model) {
-                return true;
+                return false;
             }
 
             @NonNull
@@ -225,11 +232,11 @@ public class RoutineRepository {
     }
 
     public LiveData<Resource<Void>> deleteFavourite(int routineId) {
-        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, null)
+        return new NetworkBoundResource<Void, Void, Void>(executors, null, null, this::mapModelToDomainVoid)
         {
             @Override
             protected void saveCallResult(@NonNull Void entity) {
-
+                  //  database.myRoutineDao().delete();
             }
 
             @Override

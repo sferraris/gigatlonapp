@@ -1,5 +1,7 @@
 package com.example.gigatlon.ui.extended_routine;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -27,6 +29,9 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
     private  LiveData<Resource<Routine>> routine = null;
     MediatorLiveData<Resource<List<Cycle>>> list = new MediatorLiveData<>();
     List<Cycle> all = new ArrayList<>();
+    MediatorLiveData<Resource<List<Routine>>> listFav = new MediatorLiveData<>();
+    List<Routine> favData = new ArrayList<>();
+
 
 
     public ExtendedRoutineViewModel(RoutineRepository repository) {
@@ -78,6 +83,30 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
 
         this.routineId.setValue(routineId);
     }
+
+    public LiveData<Resource<List<Routine>>> getFav(){
+        moreFav();
+        return  listFav;
+    }
+    public void moreFav(){
+        listFav.addSource( repository.getFavourites( PAGE_SIZE, 0, "id", "asc"), r ->{
+            switch (r.status){
+                case LOADING:
+                    //Log.d("UI", "");
+                    break;
+                case SUCCESS:
+                    favData.clear();
+                    favData.addAll(r.data);
+                    listFav.setValue(Resource.success(favData));
+                    break;
+
+                case ERROR:
+                    Log.d("UI", r.message);
+
+            }
+        });
+    }
+
 
 
 
