@@ -37,38 +37,16 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
             } else {
                 return repository.getRoutine(routinId);
             }
-<<<<<<< HEAD
-<<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
-
-=======
->>>>>>> Extended view!
-        });
-=======
 
         });
     }
     public LiveData<Resource<Routine>> getRoutine() {
 
         return routine;
->>>>>>> main
-    }
-    public LiveData<Resource<Routine>> getRoutine() {
-
-<<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
-        return routine;
     }
 
     public Integer getRoutinId(){
         return routineId.getValue();
-=======
-
-<<<<<<< HEAD
-        return routine;
->>>>>>> Extended view!
-=======
-    public Integer getRoutinId(){
-        return routineId.getValue();
->>>>>>> main
     }
 
     public LiveData<Resource<List<Cycle>>> getCycles(){
@@ -90,18 +68,6 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
                     break;
             }
         });
-<<<<<<< HEAD
-=======
-    }
-
-    public void setRoutine(int routineId) {
-        if ((this.routineId.getValue() != null) &&
-                (routineId == this.routineId.getValue())) {
-            return;
-        }
-
-        this.routineId.setValue(routineId);
->>>>>>> main
     }
 
     public void setRoutine(int routineId) {
@@ -119,20 +85,6 @@ public class ExtendedRoutineViewModel extends RepositoryViewModel<RoutineReposit
 
 
 
-<<<<<<< 612153f94094c0a3872bfa2de61f7b5cc33176b4
 
 
-
-
-<<<<<<< HEAD
-=======
->>>>>>> Extended view!
-=======
-
-
-
-
-
-
->>>>>>> main
 }

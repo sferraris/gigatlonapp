@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,7 +119,7 @@ public class Execute extends Fragment {
                 }
             }
         }.start();
-        timerRunning = true;*/
+        timerRunning = true;
     }
 
     private void finish(){
